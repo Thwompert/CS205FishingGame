@@ -11,6 +11,7 @@
         android:id="@+id/button"
         android:layout_width="113dp"
         android:layout_height="53dp"
+        android:onClick="buttonClicked"
         android:text="Start"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
