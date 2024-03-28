@@ -14,6 +14,7 @@ public class GameActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
         setContentView(R.layout.game_screen);
         hideStatusBar();
 
