@@ -41,7 +41,7 @@
         app:layout_constraintStart_toStartOf="@+id/imageView" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/imageButton2"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginStart="136dp"
@@ -51,7 +51,7 @@
         app:layout_constraintStart_toStartOf="@+id/imageView" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/imageButton3"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginEnd="124dp"
@@ -61,7 +61,7 @@
         app:layout_constraintEnd_toEndOf="@+id/imageView" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/imageButton4"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginEnd="16dp"
@@ -71,7 +71,7 @@
         app:layout_constraintEnd_toEndOf="@+id/imageView" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/imageButton5"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="16dp"
