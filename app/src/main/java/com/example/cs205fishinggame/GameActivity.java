@@ -15,15 +15,17 @@ public class GameActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
-        setContentView(R.layout.game_screen);
+//        setContentView(R.layout.game_screen);
+        // Set content view to game so objects in game class can be rendered to screen
+        setContentView(new GameView(this));
         hideStatusBar();
-
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.game_screen), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+//
+//
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.game_screen), (v, insets) -> {
+//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+//            return insets;
+//        });
     }
 
     private void hideStatusBar() {
