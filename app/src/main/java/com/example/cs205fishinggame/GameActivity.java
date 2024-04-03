@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
+import com.airbnb.lottie.LottieAnimationView;
 
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -19,6 +20,11 @@ public class GameActivity extends Activity{
         // Set content view to game so objects in game class can be rendered to screen
         setContentView(new GameView(this));
         hideStatusBar();
+        // Optionally configure LottieAnimationView
+        LottieAnimationView lottieAnimationView = findViewById(R.id.lottieAnimationView);
+
+
+
 //
 //
 //        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.game_screen), (v, insets) -> {

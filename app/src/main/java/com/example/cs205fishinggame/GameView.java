@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import com.airbnb.lottie.LottieAnimationView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
