@@ -8,6 +8,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
@@ -30,6 +31,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         // Initialising money manager -> to keep track of the money that the player currently has
         moneyManager = new MoneyManager();
+        moneyManager.loadMoney(context);
         setFocusable(true);
     }
 
@@ -114,5 +116,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void update() {
         // Update game state
         harpoonLauncher.update();
+    }
+
+    public void saveMoneyState() {
+        moneyManager.saveMoney(getContext());
     }
 }
