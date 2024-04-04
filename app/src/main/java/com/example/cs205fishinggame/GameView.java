@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.example.cs205fishinggame.Fish.FishThread;
+import com.example.cs205fishinggame.FishGraphics.FishSpriteSheet;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final HarpoonLauncher harpoonLauncher;
@@ -32,9 +33,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         gameThread = new GameThread(this, surfaceHolder);
 
+        // Initialise fish sprite sheet
+        FishSpriteSheet fishSpriteSheet = new FishSpriteSheet(context);
         // Initialise fish thread
         while (fishCount < MAX_FISH_COUNT) {
-            FishThread fishThread = new FishThread(context, fishId);
+            FishThread fishThread = new FishThread(context, fishId, fishSpriteSheet.getRedFishSprite());
             fishThreads[fishCount] = fishThread;
             fishId++;
             fishCount++;

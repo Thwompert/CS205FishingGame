@@ -6,6 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.example.cs205fishinggame.FishGraphics.FishSprite;
+
 import java.util.Random;
 
 public class Fish {
@@ -28,8 +30,10 @@ public class Fish {
     //left border stores the x position where the fish cannot cross
     private final int LEFT_BORDER = 500;
 
+    private FishSprite fishSprite;
 
-    public Fish(Context context, int id, int radius) {
+
+    public Fish(Context context, int id, int radius, FishSprite fishSprite) {
         this.context = context;
         this.id = id;
         this.radius = radius;
@@ -44,11 +48,14 @@ public class Fish {
 
         paint = new Paint();
         paint.setColor(Color.rgb(255, 0, 0));
+
+        this.fishSprite = fishSprite;
     }
 
     //draws Fish on the screen
     public void draw(Canvas canvas) {
-        canvas.drawCircle(posX, posY, radius, paint);
+        //canvas.drawCircle(posX, posY, radius, paint);
+        fishSprite.draw(canvas);
     }
 
     //moves fish in the x axis

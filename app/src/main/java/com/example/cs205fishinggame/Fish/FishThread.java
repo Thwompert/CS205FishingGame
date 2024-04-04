@@ -4,6 +4,9 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.util.DisplayMetrics;
 
+import com.example.cs205fishinggame.FishGraphics.FishSprite;
+import com.example.cs205fishinggame.FishGraphics.FishSpriteSheet;
+
 import java.util.Random;
 
 public class FishThread extends Thread{
@@ -14,12 +17,12 @@ public class FishThread extends Thread{
 
 
 
-    public FishThread(Context context, int id) {
+    public FishThread(Context context, int id, FishSprite fishSprite) {
         this.context = context;
         this.id = id;
 
         //create new fish
-        fish = new Fish(context, id, 30);
+        fish = new Fish(context, id, 30, fishSprite);
 
 
 
