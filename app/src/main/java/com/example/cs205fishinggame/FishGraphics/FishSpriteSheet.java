@@ -14,10 +14,12 @@ public class FishSpriteSheet {
         BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
         bitmapOptions.inScaled = false;
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.fish_spritesheet, bitmapOptions);
+        //resize bitmap to 3 * original size, new size will be 900 x 600
         bitmap = getResizedBitmap(bitmap, bitmap.getWidth() * 3, bitmap.getHeight() * 3);
     }
 
     public FishSprite getRedFishSprite() {
+        //add 300 to go up/down, add 150 to go left/right
         return new FishSprite(this, new Rect(0,0,150,300));
     }
 
