@@ -4,6 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import androidx.core.content.ContextCompat;
+
 public class HarpoonLauncher {
     private int outerCircleCenterPositionX;
     private int outerCircleCenterPositionY;
@@ -13,10 +15,13 @@ public class HarpoonLauncher {
     private int innerCircleRadius;
     private Paint outerCirclePaint;
     private Paint innerCirclePaint;
+    private Paint indicatorPaint;
     private double centreToTouchDistance;
     private boolean isPressed;
     private double actuatorX;
     private double actuatorY;
+    private double harpoonIndicatorBlockSize = 70;
+    private double harpoonIndicatorBlockInterval = 25;
 
     public HarpoonLauncher(int centerPositionX, int centerPositionY, int outerCircleRadius, int innerCircleRadius) {
         // Outer and inner circle of launcher
@@ -32,14 +37,41 @@ public class HarpoonLauncher {
         // Paint of circles
         outerCirclePaint = new Paint();
         outerCirclePaint.setColor(Color.GRAY);
+        outerCirclePaint.setAlpha(165);
         outerCirclePaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
         innerCirclePaint = new Paint();
         innerCirclePaint.setColor(Color.BLUE);
+        innerCirclePaint.setAlpha(165);
         innerCirclePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+
+        indicatorPaint = new Paint();
+        indicatorPaint.setColor(Color.RED);
+        indicatorPaint.setAntiAlias(true);
+        indicatorPaint.setStrokeWidth(20);
+        indicatorPaint.setStyle(Paint.Style.STROKE);
+        innerCirclePaint.setAlpha(165);
     }
 
     public void draw(Canvas canvas) {
+        // Draw indicator lines
+        if (isPressed) {
+            for (int i = 0; i < 10; i++) {
+                double startX = actuatorX * (harpoonIndicatorBlockSize + harpoonIndicatorBlockInterval) * i;
+                double startY = actuatorY * (harpoonIndicatorBlockSize + harpoonIndicatorBlockInterval) * i;
+                double endX =  startX + actuatorX * (harpoonIndicatorBlockSize);
+                double endY = startY + actuatorY * (harpoonIndicatorBlockSize);
+
+                canvas.drawLine(
+                        (float) (outerCircleCenterPositionX - startX),
+                        (float) (outerCircleCenterPositionY - startY),
+                        (float) (outerCircleCenterPositionX  - endX),
+                        (float) (outerCircleCenterPositionY  - endY),
+                        indicatorPaint
+                );
+            }
+        }
+
         canvas.drawCircle(outerCircleCenterPositionX, outerCircleCenterPositionY, outerCircleRadius, outerCirclePaint);
         canvas.drawCircle(innerCircleCenterPositionX, innerCircleCenterPositionY, innerCircleRadius, innerCirclePaint);
     }
@@ -84,5 +116,13 @@ public class HarpoonLauncher {
     public void resetActuator() {
         actuatorX = 0;
         actuatorY = 0;
+    }
+
+    public double getActuatorX() {
+        return actuatorX;
+    }
+
+    public double getActuatorY() {
+        return actuatorY;
     }
 }
