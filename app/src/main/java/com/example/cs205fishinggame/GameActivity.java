@@ -20,8 +20,6 @@ public class GameActivity extends Activity{
         // Set content view to game so objects in game class can be rendered to screen
         setContentView(new GameView(this));
         hideStatusBar();
-        // Optionally configure LottieAnimationView
-        LottieAnimationView lottieAnimationView = findViewById(R.id.lottieAnimationView);
 
 
 
