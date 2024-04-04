@@ -15,4 +15,12 @@ public class FishSprite {
     public void draw(Canvas canvas, int posX, int posY) {
         canvas.drawBitmap(fishSpriteSheet.getBitmap(), rect, new Rect(posX, posY, posX + 150, posY + 300), null);
     }
+
+    public int getWidth() {
+        return rect.width();
+    }
+
+    public int getHeight() {
+        return rect.height();
+    }
 }

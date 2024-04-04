@@ -22,7 +22,7 @@ public class FishThread extends Thread{
         this.id = id;
 
         //create new fish
-        fish = new Fish(context, id, 30, fishSprite);
+        fish = new Fish(context, id, fishSprite);
 
 
 

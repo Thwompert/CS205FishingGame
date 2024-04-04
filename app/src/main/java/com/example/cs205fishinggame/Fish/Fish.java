@@ -33,10 +33,9 @@ public class Fish {
     private FishSprite fishSprite;
 
 
-    public Fish(Context context, int id, int radius, FishSprite fishSprite) {
+    public Fish(Context context, int id, FishSprite fishSprite) {
         this.context = context;
         this.id = id;
-        this.radius = radius;
         Random rand = new Random();
 
         //set width and height of current device in landscape mode
@@ -44,10 +43,10 @@ public class Fish {
         LANDSCAPE_WIDTH = context.getResources().getDisplayMetrics().widthPixels;
 
         posX = LEFT_BORDER + rand.nextInt(LANDSCAPE_WIDTH - LEFT_BORDER);
-        posY = radius + rand.nextInt(LANDSCAPE_HEIGHT - radius);
+        posY = rand.nextInt(LANDSCAPE_HEIGHT - fishSprite.getHeight());
 
         paint = new Paint();
-        paint.setColor(Color.rgb(255, 0, 0));
+//        paint.setColor(Color.rgb(255, 0, 0));
 
         this.fishSprite = fishSprite;
     }
@@ -60,7 +59,7 @@ public class Fish {
 
     //moves fish in the x axis
     public void move() {
-        posX += ((float) radius / 2) * direction;
+        posX += ((float) fishSprite.getWidth() / 6) * direction;
 
         //switches the direction of fish
         if (posX < LEFT_BORDER || posX > LANDSCAPE_WIDTH) {
