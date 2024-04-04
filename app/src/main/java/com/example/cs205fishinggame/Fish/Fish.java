@@ -55,7 +55,7 @@ public class Fish {
     //draws Fish on the screen
     public void draw(Canvas canvas) {
         //canvas.drawCircle(posX, posY, radius, paint);
-        fishSprite.draw(canvas);
+        fishSprite.draw(canvas, (int) posX, (int) posY);
     }
 
     //moves fish in the x axis

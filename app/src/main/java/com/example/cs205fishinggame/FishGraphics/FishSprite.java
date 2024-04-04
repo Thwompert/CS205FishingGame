@@ -12,7 +12,7 @@ public class FishSprite {
         this.rect = rect;
     }
 
-    public void draw(Canvas canvas) {
-        canvas.drawBitmap(fishSpriteSheet.getBitmap(), rect, rect, null);
+    public void draw(Canvas canvas, int posX, int posY) {
+        canvas.drawBitmap(fishSpriteSheet.getBitmap(), rect, new Rect(posX, posY, posX + 150, posY + 300), null);
     }
 }
