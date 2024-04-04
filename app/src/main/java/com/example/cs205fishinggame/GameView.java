@@ -37,8 +37,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         FishSpriteSheet fishSpriteSheet = new FishSpriteSheet(context);
         // Initialise fish thread
         while (fishCount < MAX_FISH_COUNT) {
-            FishThread fishThread = new FishThread(context, fishId, fishSpriteSheet.getRedFishSprite());
-            fishThreads[fishCount] = fishThread;
+            switch(fishId % 3){
+                case 0:
+                    fishThreads[fishCount] = new FishThread(context, fishId, fishSpriteSheet.getRedFishSprite());
+                    break;
+                case 1:
+                    fishThreads[fishCount] = new FishThread(context, fishId, fishSpriteSheet.getYellowFishSprite());
+                    break;
+                case 2:
+                    fishThreads[fishCount] = new FishThread(context, fishId, fishSpriteSheet.getGreenFishSprite());
+                    break;
+            }
+
+            // FishThread fishThread = new FishThread(context, fishId, fishSpriteSheet.getRedFishSprite());
+            //fishThreads[fishCount] = fishThread;
             fishId++;
             fishCount++;
         }

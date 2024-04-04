@@ -10,6 +10,11 @@ import com.example.cs205fishinggame.R;
 
 public class FishSpriteSheet {
     private Bitmap bitmap;
+
+    //how many pixels is the sprite (including empty spaces)
+    private final int SPRITE_WIDTH = 150;
+    private final int SPRITE_HEIGHT= 300;
+
     public FishSpriteSheet(Context context) {
         BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
         bitmapOptions.inScaled = false;
@@ -20,7 +25,17 @@ public class FishSpriteSheet {
 
     public FishSprite getRedFishSprite() {
         //add 300 to go up/down, add 150 to go left/right
-        return new FishSprite(this, new Rect(0,0,150,300));
+        return new FishSprite(this, new Rect(0,0, SPRITE_WIDTH, SPRITE_HEIGHT));
+    }
+
+    public FishSprite getYellowFishSprite() {
+        //add 300 to go up/down, add 150 to go left/right
+        return new FishSprite(this, new Rect(0,SPRITE_HEIGHT, SPRITE_WIDTH,SPRITE_HEIGHT * 2));
+    }
+
+    public FishSprite getGreenFishSprite() {
+        //add 300 to go up/down, add 150 to go left/right
+        return new FishSprite(this, new Rect(0,SPRITE_HEIGHT * 2, SPRITE_WIDTH,SPRITE_HEIGHT * 3));
     }
 
     public Bitmap getBitmap() {
