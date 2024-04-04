@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import com.airbnb.lottie.LottieAnimationView;
+import android.graphics.BitmapFactory;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -23,6 +24,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Context context;
     private LottieDrawable lottieDrawable;
 
+    private Bitmap backgroundBitmap;
+
     public GameView(Context context) {
         super(context);
         this.context = context;
@@ -37,6 +40,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         harpoonLauncher = new HarpoonLauncher(275, 700, 70, 40);
         setFocusable(true);
         initLottieAnimation();
+    }
+    private void initBackground() {
+        // Load the original bitmap
+        Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.background2);
+
+        // Create a new bitmap scaled to the size of the canvas
+        backgroundBitmap = Bitmap.createScaledBitmap(originalBitmap, getWidth(), getHeight(), true);
+
+        // If the original bitmap won't be used again, you can recycle it to free up memory
+        originalBitmap.recycle();
     }
 
     private void initLottieAnimation() {
@@ -72,6 +85,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
+        initBackground();
         gameThread.startLoop();
     }
 
@@ -111,6 +125,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
+
+        if (backgroundBitmap != null) {
+            canvas.drawBitmap(backgroundBitmap, 0, 0, null);
+        }
         drawUPS(canvas);
         drawFPS(canvas);
         harpoonLauncher.draw(canvas);
