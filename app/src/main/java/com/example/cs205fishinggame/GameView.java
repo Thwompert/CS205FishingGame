@@ -10,10 +10,18 @@ import android.view.SurfaceView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
+import com.example.cs205fishinggame.Fish.FishThread;
+
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final HarpoonLauncher harpoonLauncher;
     private GameThread gameThread;
     private Context context;
+    //how many fishes are currently on screen
+    int fishCount = 0;
+    final int MAX_FISH_COUNT = 10;
+    int fishId = 0;
+
+    FishThread[] fishThreads = new FishThread[MAX_FISH_COUNT];
 
     public GameView(Context context) {
         super(context);
@@ -23,6 +31,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         surfaceHolder.addCallback(this);
 
         gameThread = new GameThread(this, surfaceHolder);
+
+        // Initialise fish thread
+        while (fishCount < MAX_FISH_COUNT) {
+            FishThread fishThread = new FishThread(context, fishId);
+            fishThreads[fishCount] = fishThread;
+            fishId++;
+            fishCount++;
+        }
 
         // Initialise game objects
         harpoonLauncher = new HarpoonLauncher(275, 700, 70, 40);
@@ -61,6 +77,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 harpoonLauncher.setIsPressed(false);
                 harpoonLauncher.resetActuator();
                 return true;
+
+
         }
 
         return super.onTouchEvent(event);
@@ -73,6 +91,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         drawFPS(canvas);
 
         harpoonLauncher.draw(canvas);
+
+        for (FishThread fishThread : fishThreads) {
+            fishThread.spawnFish(canvas);
+        }
     }
 
     public void drawUPS(Canvas canvas){
@@ -96,5 +118,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void update() {
         // Update game state
         harpoonLauncher.update();
+
+        // Update fish movement
+        for (FishThread fishThread : fishThreads) {
+            fishThread.update();
+        }
     }
 }
