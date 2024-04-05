@@ -121,7 +121,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             case MotionEvent.ACTION_UP:
                 // Spawn harpoon
                 if (harpoonLauncher.getActuatorX() != 0 || harpoonLauncher.getActuatorY() != 0){
-                    projectileList.add(new Projectile(-harpoonLauncher.getActuatorX(), -harpoonLauncher.getActuatorY()));
+                    Player player = new Player(275,800);
+                    System.out.println(player.getPositionX());
+                    System.out.println("ID2" + Thread.currentThread().getId());
+                    projectileList.add(new Projectile(player, -harpoonLauncher.getActuatorX(), -harpoonLauncher.getActuatorY()));
                 }
 
                 harpoonLauncher.setIsPressed(false);

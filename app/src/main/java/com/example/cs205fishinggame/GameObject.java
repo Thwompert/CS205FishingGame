@@ -39,11 +39,11 @@ public abstract class GameObject {
         return 0;
     }
 
-    protected double getPositionX() {
+    public double getPositionX() {
         return positionX;
     }
 
-    protected double getPositionY() {
+    public double getPositionY() {
         return positionY;
     }
 
