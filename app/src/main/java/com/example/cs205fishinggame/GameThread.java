@@ -1,10 +1,7 @@
 package com.example.cs205fishinggame;
 
 import android.graphics.Canvas;
-import android.view.Surface;
 import android.view.SurfaceHolder;
-
-import com.example.cs205fishinggame.Fish.FishThread;
 
 public class GameThread extends Thread {
     private boolean isRunning = false;

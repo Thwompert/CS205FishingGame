@@ -9,7 +9,6 @@ import android.view.SurfaceView;
 import android.graphics.BitmapFactory;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import com.airbnb.lottie.LottieDrawable;
 import com.airbnb.lottie.LottieComposition;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.example.cs205fishinggame.Fish.FishThread;
 import com.example.cs205fishinggame.FishGraphics.FishSpriteSheet;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
@@ -40,7 +38,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     final int MAX_FISH_COUNT = 10;
     int fishId = 0;
 
-    FishThread[] fishThreads = new FishThread[MAX_FISH_COUNT];
+    Fish[] fishes = new Fish[MAX_FISH_COUNT];
 
     public GameView(Context context) {
         super(context);
@@ -54,17 +52,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         // Initialise fish sprite sheet
         FishSpriteSheet fishSpriteSheet = new FishSpriteSheet(context);
-        // Initialise fish thread
+        // Initialise fish
         while (fishCount < MAX_FISH_COUNT) {
             switch(fishId % 3){
                 case 0:
-                    fishThreads[fishCount] = new FishThread(context, fishId, fishSpriteSheet.getRedFishSprite());
+                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getRedFishSprite());
                     break;
                 case 1:
-                    fishThreads[fishCount] = new FishThread(context, fishId, fishSpriteSheet.getYellowFishSprite());
+                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getYellowFishSprite());
                     break;
                 case 2:
-                    fishThreads[fishCount] = new FishThread(context, fishId, fishSpriteSheet.getGreenFishSprite());
+                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getGreenFishSprite());
                     break;
             }
 
@@ -196,8 +194,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             // Restore the canvas to its previous state
             canvas.restoreToCount(saveCount);
         }
-        for (FishThread fishThread : fishThreads) {
-            fishThread.draw(canvas);
+        for (Fish fish : fishes) {
+            fish.draw(canvas);
         }
     }
 
@@ -240,8 +238,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         // Update fish movement
-        for (FishThread fishThread : fishThreads) {
-            fishThread.update();
+        for (Fish fish : fishes) {
+            fish.move();
         }
 
         // Iterate through fishlist and projectilelist to check for collisions

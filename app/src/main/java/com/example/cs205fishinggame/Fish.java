@@ -1,4 +1,4 @@
-package com.example.cs205fishinggame.Fish;
+package com.example.cs205fishinggame;
 
 
 import android.content.Context;
