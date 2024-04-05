@@ -47,8 +47,8 @@ public class GameActivity extends Activity {
     protected void onPause() {
         super.onPause();
         // Call a method on GameView to handle saving the money
-        if (gameView != null) {
-            gameView.saveMoneyState();
-        }
+//        if (gameView != null) {
+//            gameView.saveMoneyState();
+//        }
     }
 }

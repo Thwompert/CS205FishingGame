@@ -253,8 +253,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    public void saveMoneyState() {
-        moneyManager.saveMoney(getContext());
-    }
+//    public void saveMoneyState() {
+//        moneyManager.saveMoney(getContext());
+//    }
 }
 }
