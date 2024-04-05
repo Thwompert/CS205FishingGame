@@ -14,7 +14,7 @@ import com.airbnb.lottie.LottieDrawable;
 import com.airbnb.lottie.LottieComposition;
 import com.airbnb.lottie.LottieCompositionFactory;
 import com.airbnb.lottie.LottieListener;
-import com.example.cs205fishinggame.object.Projectile;
+import com.example.cs205fishinggame.object.Harpoon;
 
 import android.graphics.Bitmap;
 
@@ -27,7 +27,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread gameThread;
     private Context context;
     private LottieDrawable lottieDrawable;
-    private List<Projectile> projectileList = new ArrayList<Projectile>();
+    private List<Harpoon> harpoonList = new ArrayList<Harpoon>();
 
     private Bitmap backgroundBitmap;
 
@@ -124,7 +124,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     Player player = new Player(275,800);
                     System.out.println(player.getPositionX());
                     System.out.println("ID2" + Thread.currentThread().getId());
-                    projectileList.add(new Projectile(player, -harpoonLauncher.getActuatorX(), -harpoonLauncher.getActuatorY()));
+                    harpoonList.add(new Harpoon(player, -harpoonLauncher.getActuatorX(), -harpoonLauncher.getActuatorY()));
                 }
 
                 harpoonLauncher.setIsPressed(false);
@@ -144,10 +144,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
         drawUPS(canvas);
         drawFPS(canvas);
-        harpoonLauncher.draw(canvas);
-        for (Projectile projectile : projectileList) {
-            projectile.draw(canvas);
+        for (Harpoon harpoon : harpoonList) {
+            harpoon.draw(canvas);
         }
+        harpoonLauncher.draw(canvas);
 
         if (lottieDrawable != null) {
             // Save the current state of the canvas
@@ -189,12 +189,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         harpoonLauncher.update();
 
         //Update state of each harpoon projectile
-        for (Projectile projectile : projectileList) {
-            projectile.update();
+        for (Harpoon harpoon : harpoonList) {
+            harpoon.update();
         }
 
         // Iterate through fishlist and projectilelist to check for collisions
-        Iterator<Projectile> iteratorProjectile = projectileList.iterator();
+        Iterator<Harpoon> iteratorProjectile = harpoonList.iterator();
         while (iteratorProjectile.hasNext()) {
             iteratorProjectile.next();
 ////            if (GameObject.isColliding(iteratorProjectile.next(), fish)) {

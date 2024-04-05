@@ -34,9 +34,14 @@ public abstract class GameObject {
         return false;
     }
 
-    private static double getDistanceBetweenGameObjects(GameObject obj1, GameObject obj2) {
-        // Use radius?
-        return 0;
+    public static double getDistanceBetweenGameObjects(GameObject obj1, GameObject obj2) {
+        // Pythagoras theorem
+        return Math.sqrt(Math.pow(obj1.positionX - obj2.positionX, 2) + Math.pow(obj1.positionY - obj2.positionY, 2));
+    }
+
+    public static double getDistanceBetweenPoints(double p1x, double p1y, double p2x, double p2y) {
+        // Pythagoras theorem
+        return Math.sqrt(Math.pow(p1x - p2x, 2) + Math.pow(p1y - p2y, 2));
     }
 
     public double getPositionX() {
