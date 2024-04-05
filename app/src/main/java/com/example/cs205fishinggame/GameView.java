@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.example.cs205fishinggame.FishGraphics.FishSpriteSheet;
+
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final HarpoonLauncher harpoonLauncher;
     private GameThread gameThread;
@@ -30,6 +32,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private List<Harpoon> harpoonList = new ArrayList<Harpoon>();
 
     private Bitmap backgroundBitmap;
+    private MoneyManager moneyManager;
+    //how many fishes are currently on screen
+    int fishCount = 0;
+    final int MAX_FISH_COUNT = 10;
+    int fishId = 0;
+
+    Fish[] fishes = new Fish[MAX_FISH_COUNT];
 
     public GameView(Context context) {
         super(context);
@@ -41,8 +50,34 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         gameThread = new GameThread(this, surfaceHolder);
 
+        // Initialise fish sprite sheet
+        FishSpriteSheet fishSpriteSheet = new FishSpriteSheet(context);
+        // Initialise fish
+        while (fishCount < MAX_FISH_COUNT) {
+            switch(fishId % 3){
+                case 0:
+                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getRedFishSprite());
+                    break;
+                case 1:
+                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getYellowFishSprite());
+                    break;
+                case 2:
+                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getGreenFishSprite());
+                    break;
+            }
+
+            // FishThread fishThread = new FishThread(context, fishId, fishSpriteSheet.getRedFishSprite());
+            //fishThreads[fishCount] = fishThread;
+            fishId++;
+            fishCount++;
+        }
+
         // Initialise game objects
         harpoonLauncher = new HarpoonLauncher(275, 800, 140, 80);
+
+        // Initialising money manager -> to keep track of the money that the player currently has
+        moneyManager = new MoneyManager();
+        moneyManager.loadMoney(context);
         setFocusable(true);
         initLottieAnimation();
     }
@@ -65,26 +100,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             public void onResult(LottieComposition composition) {
                 lottieDrawable.setComposition(composition);
                 lottieDrawable.setRepeatCount(LottieDrawable.INFINITE);
-                // Now the surface is created, can get its dimensions
-                int canvasWidth = getWidth();
-                System.out.println(canvasWidth);
-                int canvasHeight = getHeight();
 
 
-                // Define the size of the animation
-                int animationWidth = 700; // The width of Lottie animation
-                int animationHeight = 700; // The height of Lottie animation
-
-                // Calculate the starting X and Y coordinates for center alignment
-                int startX = (canvasWidth - animationWidth) / 2;
-                int startY = (canvasHeight - animationHeight) / 2;
-
-
-                lottieDrawable.setBounds(startX, startY, startX + animationWidth, startY + animationHeight);
                 lottieDrawable.playAnimation();
             }
-
-
         });
     }
 
@@ -127,9 +146,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     harpoonList.add(new Harpoon(player, -harpoonLauncher.getActuatorX(), -harpoonLauncher.getActuatorY()));
                 }
 
+//                // Check if a certain game condition is met to reward money
+//                if (harpoonLauncher.successfulHit()) {
+//                    moneyManager.addMoney(10); // Reward the player with a certain number of coins based on the fish that is caught
+//                }
                 harpoonLauncher.setIsPressed(false);
                 harpoonLauncher.resetActuator();
                 return true;
+
+
         }
 
         return super.onTouchEvent(event);
@@ -144,23 +169,35 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
         drawUPS(canvas);
         drawFPS(canvas);
+        drawMoney(canvas);
         for (Harpoon harpoon : harpoonList) {
             harpoon.draw(canvas);
         }
         harpoonLauncher.draw(canvas);
 
         if (lottieDrawable != null) {
+            int animationWidth = 800; // Adjust as needed
+            int animationHeight = 800; // Adjust as needed
+            int startX = 150; // Move 100 pixels to the right
+            int startY = 50; // Move 50 pixels down
+
+            // Correctly set the bounds for the lottieDrawable
+            lottieDrawable.setBounds(startX, startY, startX + animationWidth, startY + animationHeight +200);
+
             // Save the current state of the canvas
             int saveCount = canvas.save();
 
-            // Flip the canvas horizontally around its vertical center
-            canvas.scale(-1f, 1f, getWidth() / 2f, 0);
+            // Flip the animation horizontally around its center
+            canvas.scale(-1f, 1f, startX + (animationWidth / 2f), startY + (animationHeight / 2f));
 
-            // Draw the LottieDrawable (which is now positioned to be flipped to the left side)
+            // Draw the diver
             lottieDrawable.draw(canvas);
 
             // Restore the canvas to its previous state
             canvas.restoreToCount(saveCount);
+        }
+        for (Fish fish : fishes) {
+            fish.draw(canvas);
         }
     }
 
@@ -184,6 +221,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawText("FPS: " +  averageUPS, 100, 150, paint);
     }
 
+    private void drawMoney(Canvas canvas) {
+        String moneyText = "Money: " + moneyManager.getMoney();
+        Paint paint = new Paint();
+        int color = ContextCompat.getColor(context, R.color.magenta);
+        paint.setColor(color);
+        paint.setTextSize(50);
+        canvas.drawText(moneyText, 100, 220, paint); // Can change the coordinates for the text as needed
+    }
+
     public void update() {
         // Update game state
         harpoonLauncher.update();
@@ -191,6 +237,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         //Update state of each harpoon projectile
         for (Harpoon harpoon : harpoonList) {
             harpoon.update();
+        }
+
+        // Update fish movement
+        for (Fish fish : fishes) {
+            fish.move();
         }
 
         // Iterate through fishlist and projectilelist to check for collisions
@@ -201,6 +252,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 ////                // Stop fish movement, stop harpoonmovement, start harpoon reeling back
 //////                iteratorProjectile.remove();
 ////            }
+
         }
+
+//    public void saveMoneyState() {
+//        moneyManager.saveMoney(getContext());
+//    }
     }
 }
