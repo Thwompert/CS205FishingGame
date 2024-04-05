@@ -14,7 +14,10 @@ public class FishSpriteSheet {
     //how many pixels is the sprite (including empty spaces)
     private final int SPRITE_WIDTH = 150;
     private final int SPRITE_HEIGHT= 300;
+    //width of empty space
+    private final int WIDTH_OFFSET = 30;
 
+    private final int HEIGHT_OFFSET = 90;
     public FishSpriteSheet(Context context) {
         BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
         bitmapOptions.inScaled = false;
@@ -25,17 +28,26 @@ public class FishSpriteSheet {
 
     public FishSprite getRedFishSprite() {
         //add 300 to go up/down, add 150 to go left/right
-        return new FishSprite(this, new Rect(0,0, SPRITE_WIDTH, SPRITE_HEIGHT));
+        return new FishSprite(this, new Rect(WIDTH_OFFSET, HEIGHT_OFFSET, SPRITE_WIDTH, SPRITE_HEIGHT));
+    }
+
+    public FishSprite[] getRedFishSpriteArray() {
+        FishSprite[] spriteArray = new FishSprite[4];
+        spriteArray[0] = new FishSprite(this, new Rect(0, 0, SPRITE_WIDTH, SPRITE_HEIGHT));
+        spriteArray[1] = new FishSprite(this, new Rect(SPRITE_WIDTH, 0, 2*SPRITE_WIDTH, SPRITE_HEIGHT));
+        spriteArray[2] = new FishSprite(this, new Rect(2*SPRITE_WIDTH, 0, 3*SPRITE_WIDTH, SPRITE_HEIGHT));
+        spriteArray[3] = new FishSprite(this, new Rect(3*SPRITE_WIDTH, 0, 4*SPRITE_WIDTH, SPRITE_HEIGHT));
+        return spriteArray;
     }
 
     public FishSprite getYellowFishSprite() {
         //add 300 to go up/down, add 150 to go left/right
-        return new FishSprite(this, new Rect(0,SPRITE_HEIGHT, SPRITE_WIDTH,SPRITE_HEIGHT * 2));
+        return new FishSprite(this, new Rect(WIDTH_OFFSET,SPRITE_HEIGHT + HEIGHT_OFFSET, SPRITE_WIDTH,SPRITE_HEIGHT * 2));
     }
 
     public FishSprite getGreenFishSprite() {
         //add 300 to go up/down, add 150 to go left/right
-        return new FishSprite(this, new Rect(0,SPRITE_HEIGHT * 2, SPRITE_WIDTH,SPRITE_HEIGHT * 3));
+        return new FishSprite(this, new Rect(WIDTH_OFFSET,SPRITE_HEIGHT * 2 + HEIGHT_OFFSET, SPRITE_WIDTH,SPRITE_HEIGHT * 3));
     }
 
     public Bitmap getBitmap() {

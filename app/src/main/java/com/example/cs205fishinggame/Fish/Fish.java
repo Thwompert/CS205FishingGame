@@ -3,7 +3,6 @@ package com.example.cs205fishinggame.Fish;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.example.cs205fishinggame.FishGraphics.FishSprite;
@@ -19,6 +18,8 @@ public class Fish {
 
     //used to determine the direction of the fish's movement. -1 for left, 1 for right.
     private int direction = 1;
+
+    //private boolean canvasFlipped = false;
 
     private Paint paint;
 
@@ -51,10 +52,23 @@ public class Fish {
         this.fishSprite = fishSprite;
     }
 
-    //draws Fish on the screen
+    //draws fish on the screen
     public void draw(Canvas canvas) {
         //canvas.drawCircle(posX, posY, radius, paint);
-        fishSprite.draw(canvas, (int) posX, (int) posY);
+        //fishSprite.draw(canvas, (int) posX, (int) posY);
+
+        if (direction == 1) {
+//            canvas.save();
+//            canvas.scale(1f, -1f, (float) fishSprite.getWidth() /2, (float) fishSprite.getHeight() /2);
+////            canvas.rotate(45);
+//            System.out.println(id);
+            fishSprite.draw(canvas, (int) posX, (int) posY);
+//            canvas.restore();
+            //fishSprite.flip(canvas);
+            //canvasFlipped = true;
+        } else {
+            fishSprite.draw(canvas, (int) posX, (int) posY);
+        }
     }
 
     //moves fish in the x axis
@@ -64,6 +78,11 @@ public class Fish {
         //switches the direction of fish
         if (posX < LEFT_BORDER || posX > LANDSCAPE_WIDTH) {
             direction *= -1;
+            //canvasFlipped = false;
         }
+
+
+
+        //TODO: Fish should turn around
     }
 }

@@ -108,7 +108,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         harpoonLauncher.draw(canvas);
 
         for (FishThread fishThread : fishThreads) {
-            fishThread.spawnFish(canvas);
+            fishThread.draw(canvas);
         }
     }
 
