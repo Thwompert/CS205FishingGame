@@ -14,14 +14,12 @@ public class Fish {
     private int id;
     private float posX;
     private float posY;
-    private int radius;
 
     //used to determine the direction of the fish's movement. -1 for left, 1 for right.
     private int direction = 1;
 
     //private boolean canvasFlipped = false;
 
-    private Paint paint;
 
     //width and height of current device
     private final int LANDSCAPE_WIDTH;
@@ -46,7 +44,7 @@ public class Fish {
         posX = LEFT_BORDER + rand.nextInt(LANDSCAPE_WIDTH - LEFT_BORDER);
         posY = rand.nextInt(LANDSCAPE_HEIGHT - fishSprite.getHeight());
 
-        paint = new Paint();
+        //paint = new Paint();
 //        paint.setColor(Color.rgb(255, 0, 0));
 
         this.fishSprite = fishSprite;
@@ -56,16 +54,8 @@ public class Fish {
     public void draw(Canvas canvas) {
         //canvas.drawCircle(posX, posY, radius, paint);
         //fishSprite.draw(canvas, (int) posX, (int) posY);
-
         if (direction == 1) {
-//            canvas.save();
-//            canvas.scale(1f, -1f, (float) fishSprite.getWidth() /2, (float) fishSprite.getHeight() /2);
-////            canvas.rotate(45);
-//            System.out.println(id);
-            fishSprite.draw(canvas, (int) posX, (int) posY);
-//            canvas.restore();
-            //fishSprite.flip(canvas);
-            //canvasFlipped = true;
+            fishSprite.drawFlipped(canvas, (int) posX, (int) posY);
         } else {
             fishSprite.draw(canvas, (int) posX, (int) posY);
         }
@@ -78,11 +68,6 @@ public class Fish {
         //switches the direction of fish
         if (posX < LEFT_BORDER || posX > LANDSCAPE_WIDTH) {
             direction *= -1;
-            //canvasFlipped = false;
         }
-
-
-
-        //TODO: Fish should turn around
     }
 }

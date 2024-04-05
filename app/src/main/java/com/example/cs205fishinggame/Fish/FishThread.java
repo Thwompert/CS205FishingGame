@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 
 import com.example.cs205fishinggame.FishGraphics.FishSprite;
 
+//no need fish thread, make a fish array in gameview
 public class FishThread extends Thread{
     //spawns new fish to the screen
     private int id;

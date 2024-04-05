@@ -72,5 +72,4 @@ public class FishSpriteSheet {
         return resizedBitmap;
     }
 
-
 }
