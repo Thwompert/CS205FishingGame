@@ -239,6 +239,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             projectile.update();
         }
 
+        // Update fish movement
+        for (FishThread fishThread : fishThreads) {
+            fishThread.update();
+        }
+
         // Iterate through fishlist and projectilelist to check for collisions
         Iterator<Projectile> iteratorProjectile = projectileList.iterator();
         while (iteratorProjectile.hasNext()) {
@@ -247,10 +252,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 ////                // Stop fish movement, stop harpoonmovement, start harpoon reeling back
 //////                iteratorProjectile.remove();
 ////            }
-        // Update fish movement
-        for (FishThread fishThread : fishThreads) {
-            fishThread.update();
-        }
+
     }
 
 //    public void saveMoneyState() {
