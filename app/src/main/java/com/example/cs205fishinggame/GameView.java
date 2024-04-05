@@ -30,6 +30,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private List<Projectile> projectileList = new ArrayList<Projectile>();
 
     private Bitmap backgroundBitmap;
+    private MoneyManager moneyManager;
 
     public GameView(Context context) {
         super(context);
@@ -43,6 +44,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         // Initialise game objects
         harpoonLauncher = new HarpoonLauncher(275, 800, 140, 80);
+
+        // Initialising money manager -> to keep track of the money that the player currently has
+        moneyManager = new MoneyManager();
         setFocusable(true);
         initLottieAnimation();
     }
@@ -124,6 +128,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     projectileList.add(new Projectile(-harpoonLauncher.getActuatorX(), -harpoonLauncher.getActuatorY()));
                 }
 
+//                // Check if a certain game condition is met to reward money
+//                if (harpoonLauncher.successfulHit()) {
+//                    moneyManager.addMoney(10); // Reward the player with a certain number of coins based on the fish that is caught
+//                }
                 harpoonLauncher.setIsPressed(false);
                 harpoonLauncher.resetActuator();
                 return true;
@@ -141,6 +149,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
         drawUPS(canvas);
         drawFPS(canvas);
+        drawMoney(canvas);
+
         harpoonLauncher.draw(canvas);
         for (Projectile projectile : projectileList) {
             projectile.draw(canvas);
@@ -179,6 +189,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         paint.setColor(color);
         paint.setTextSize(50);
         canvas.drawText("FPS: " +  averageUPS, 100, 150, paint);
+    }
+
+    private void drawMoney(Canvas canvas) {
+        String moneyText = "Money: " + moneyManager.getMoney();
+        Paint paint = new Paint();
+        int color = ContextCompat.getColor(context, R.color.magenta);
+        paint.setColor(color);
+        paint.setTextSize(50);
+        canvas.drawText(moneyText, 100, 220, paint); // Can change the coordinates for the text as needed
     }
 
     public void update() {
