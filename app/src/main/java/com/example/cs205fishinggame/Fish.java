@@ -4,8 +4,10 @@ package com.example.cs205fishinggame;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 
 import com.example.cs205fishinggame.FishGraphics.FishSprite;
+import com.example.cs205fishinggame.object.Harpoon;
 
 import java.util.Random;
 
@@ -31,6 +33,9 @@ public class Fish {
 
     private FishSprite fishSprite;
 
+    private boolean isCaught = false;
+
+    private Harpoon caughtBy;
 
     public Fish(Context context, int id, FishSprite fishSprite) {
         this.context = context;
@@ -64,11 +69,26 @@ public class Fish {
 
     //moves fish in the x axis
     public void move() {
-        posX += ((float) fishSprite.getWidth() / 6) * direction * speed;
+        if (!isCaught) {
+            posX += ((float) fishSprite.getWidth() / 6) * direction * speed;
 
-        //switches the direction of fish
-        if (posX < LEFT_BORDER || posX > LANDSCAPE_WIDTH) {
-            direction *= -1;
+            //switches the direction of fish
+            if (posX < LEFT_BORDER || posX > LANDSCAPE_WIDTH) {
+                direction *= -1;
+            }
+        } else {
+            // make it follow harpoon
         }
     }
+
+    public Rect getRect() {
+        return fishSprite.getRect();
+    }
+
+    public void caught(Harpoon harpoon) {
+        caughtBy = harpoon;
+        isCaught = true;
+    }
+
+
 }

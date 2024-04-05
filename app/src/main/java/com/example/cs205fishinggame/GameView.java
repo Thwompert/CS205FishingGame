@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+
 import com.airbnb.lottie.LottieDrawable;
 import com.airbnb.lottie.LottieComposition;
 import com.airbnb.lottie.LottieCompositionFactory;
@@ -30,7 +31,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Context context;
     private LottieDrawable lottieDrawable;
     private List<Harpoon> harpoonList = new ArrayList<Harpoon>();
-
+    private Player player;
     private Bitmap backgroundBitmap;
     private MoneyManager moneyManager;
     //how many fishes are currently on screen
@@ -54,7 +55,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         FishSpriteSheet fishSpriteSheet = new FishSpriteSheet(context);
         // Initialise fish
         while (fishCount < MAX_FISH_COUNT) {
-            switch(fishId % 3){
+            switch (fishId % 3) {
                 case 0:
                     fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getRedFishSprite());
                     break;
@@ -71,7 +72,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             fishId++;
             fishCount++;
         }
-
+        this.player = new Player(275, 800);
         // Initialise game objects
         harpoonLauncher = new HarpoonLauncher(275, 800, 140, 80);
 
@@ -81,6 +82,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         setFocusable(true);
         initLottieAnimation();
     }
+
     private void initBackground() {
         // Load the original bitmap
         Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.background2);
@@ -128,21 +130,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if (harpoonLauncher.isPressed((double) event.getX(), (double)event.getY())){
+                if (harpoonLauncher.isPressed((double) event.getX(), (double) event.getY())) {
                     harpoonLauncher.setIsPressed(true);
                 }
                 return true;
             case MotionEvent.ACTION_MOVE:
                 if (harpoonLauncher.getIsPressed()) {
-                    harpoonLauncher.setActuator((double) event.getX(), (double)event.getY());
+                    harpoonLauncher.setActuator((double) event.getX(), (double) event.getY());
                 }
                 return true;
             case MotionEvent.ACTION_UP:
                 // Spawn harpoon
-                if (harpoonLauncher.getActuatorX() != 0 || harpoonLauncher.getActuatorY() != 0){
-                    Player player = new Player(275,800);
-                    System.out.println(player.getPositionX());
-                    System.out.println("ID2" + Thread.currentThread().getId());
+                if (harpoonLauncher.getActuatorX() != 0 || harpoonLauncher.getActuatorY() != 0) {
                     harpoonList.add(new Harpoon(player, -harpoonLauncher.getActuatorX(), -harpoonLauncher.getActuatorY()));
                 }
 
@@ -182,7 +181,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             int startY = 50; // Move 50 pixels down
 
             // Correctly set the bounds for the lottieDrawable
-            lottieDrawable.setBounds(startX, startY, startX + animationWidth, startY + animationHeight +200);
+            lottieDrawable.setBounds(startX, startY, startX + animationWidth, startY + animationHeight + 200);
 
             // Save the current state of the canvas
             int saveCount = canvas.save();
@@ -202,23 +201,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
 
-
-    public void drawUPS(Canvas canvas){
+    public void drawUPS(Canvas canvas) {
         String averageUPS = Double.toString(gameThread.getAverageUPS());
         Paint paint = new Paint();
         int color = ContextCompat.getColor(context, R.color.magenta);
         paint.setColor(color);
         paint.setTextSize(50);
-        canvas.drawText("UPS: " +  averageUPS, 100, 80, paint);
+        canvas.drawText("UPS: " + averageUPS, 100, 80, paint);
     }
 
-    public void drawFPS(Canvas canvas){
+    public void drawFPS(Canvas canvas) {
         String averageUPS = Double.toString(gameThread.getAverageFPS());
         Paint paint = new Paint();
         int color = ContextCompat.getColor(context, R.color.magenta);
         paint.setColor(color);
         paint.setTextSize(50);
-        canvas.drawText("FPS: " +  averageUPS, 100, 150, paint);
+        canvas.drawText("FPS: " + averageUPS, 100, 150, paint);
     }
 
     private void drawMoney(Canvas canvas) {
@@ -234,20 +232,30 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         // Update game state
         harpoonLauncher.update();
 
-        //Update state of each harpoon projectile
-        for (Harpoon harpoon : harpoonList) {
-            harpoon.update();
-        }
-
         // Update fish movement
         for (Fish fish : fishes) {
             fish.move();
         }
 
+        //Update state of each harpoon projectile
+        for (Harpoon harpoon : harpoonList) {
+            harpoon.update();
+            for (Fish fish : fishes) {
+                if (harpoon.hasCollided(fish.getRect())) {
+                    fish.caught(harpoon);
+                }
+            }
+        }
+
+
         // Iterate through fishlist and projectilelist to check for collisions
-        Iterator<Harpoon> iteratorProjectile = harpoonList.iterator();
-        while (iteratorProjectile.hasNext()) {
-            iteratorProjectile.next();
+        Iterator<Harpoon> iteratorHarpoon = harpoonList.iterator();
+        while (iteratorHarpoon.hasNext()) {
+            Harpoon harpoon = iteratorHarpoon.next();
+            if (harpoon.isRetracting() && GameObject.getDistanceBetweenGameObjects(harpoon, player) <= 100) {
+                iteratorHarpoon.remove();
+            }
+//            iteratorHarpoon.next();
 ////            if (GameObject.isColliding(iteratorProjectile.next(), fish)) {
 ////                // Stop fish movement, stop harpoonmovement, start harpoon reeling back
 //////                iteratorProjectile.remove();
@@ -255,8 +263,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         }
 
-//    public void saveMoneyState() {
-//        moneyManager.saveMoney(getContext());
-//    }
+    }
+
+    public void saveMoneyState() {
+        moneyManager.saveMoney(getContext());
     }
 }

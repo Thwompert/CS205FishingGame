@@ -36,7 +36,9 @@ public class FishSprite {
         canvas.restore();
     }
 
-
+    public Rect getRect(){
+        return rect;
+    }
 
 
 }
