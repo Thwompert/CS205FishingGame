@@ -18,7 +18,7 @@ public class Fish {
     //used to determine the direction of the fish's movement. -1 for left, 1 for right.
     private int direction = 1;
 
-    //private boolean canvasFlipped = false;
+    private final float speed;
 
 
     //width and height of current device
@@ -44,6 +44,7 @@ public class Fish {
         posX = LEFT_BORDER + rand.nextInt(LANDSCAPE_WIDTH - LEFT_BORDER);
         posY = rand.nextInt(LANDSCAPE_HEIGHT - fishSprite.getHeight());
 
+        speed = rand.nextFloat() + 0.5f;
         //paint = new Paint();
 //        paint.setColor(Color.rgb(255, 0, 0));
 
@@ -63,7 +64,7 @@ public class Fish {
 
     //moves fish in the x axis
     public void move() {
-        posX += ((float) fishSprite.getWidth() / 6) * direction;
+        posX += ((float) fishSprite.getWidth() / 6) * direction * speed;
 
         //switches the direction of fish
         if (posX < LEFT_BORDER || posX > LANDSCAPE_WIDTH) {
