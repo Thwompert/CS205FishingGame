@@ -11,13 +11,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class GameActivity extends Activity{
+public class GameActivity extends Activity {
+    private GameView gameView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
         // Set content view to game so objects in game class can be rendered to screen
-        setContentView(new GameView(this));
+        gameView = new GameView(this);
+        setContentView(gameView);
+
         hideStatusBar();
 
 
@@ -37,6 +40,15 @@ public class GameActivity extends Activity{
             if (wic != null) {
                 wic.hide(WindowInsets.Type.statusBars());
             }
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Call a method on GameView to handle saving the money
+        if (gameView != null) {
+            gameView.saveMoneyState();
         }
     }
 }

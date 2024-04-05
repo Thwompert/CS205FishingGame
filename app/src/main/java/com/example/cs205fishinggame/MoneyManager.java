@@ -1,6 +1,7 @@
 package com.example.cs205fishinggame;
 
-import android.widget.Toast;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 public class MoneyManager {
     private int money;
@@ -23,5 +24,17 @@ public class MoneyManager {
 
     public int getMoney() {
         return this.money;
+    }
+
+    public void saveMoney(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("Money", this.money);
+        editor.apply();
+    }
+
+    public void loadMoney(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
+        this.money = prefs.getInt("Money", 0); // Default to 0 if not found
     }
 }

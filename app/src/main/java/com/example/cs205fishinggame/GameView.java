@@ -9,6 +9,7 @@ import android.view.SurfaceView;
 import android.graphics.BitmapFactory;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import com.airbnb.lottie.LottieDrawable;
 import com.airbnb.lottie.LottieComposition;
@@ -78,6 +79,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         // Initialising money manager -> to keep track of the money that the player currently has
         moneyManager = new MoneyManager();
+        moneyManager.loadMoney(context);
         setFocusable(true);
         initLottieAnimation();
     }
@@ -257,6 +259,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         for (FishThread fishThread : fishThreads) {
             fishThread.update();
         }
+    }
+
+    public void saveMoneyState() {
+        moneyManager.saveMoney(getContext());
     }
 }
 }
