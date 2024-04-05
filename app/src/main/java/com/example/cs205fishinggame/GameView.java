@@ -2,7 +2,11 @@ package com.example.cs205fishinggame;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -31,8 +35,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Context context;
     private LottieDrawable lottieDrawable;
     private List<Projectile> projectileList = new ArrayList<Projectile>();
-
+    private OxygenManager oxygenManager;
     private Bitmap backgroundBitmap;
+    private Bitmap coinBitmap;
+    private Bitmap oxygenBitmap;
     private MoneyManager moneyManager;
     //how many fishes are currently on screen
     int fishCount = 0;
@@ -75,6 +81,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         // Initialise game objects
         harpoonLauncher = new HarpoonLauncher(275, 800, 140, 80);
+        oxygenManager = new OxygenManager(context);
 
         // Initialising money manager -> to keep track of the money that the player currently has
         moneyManager = new MoneyManager();
@@ -123,9 +130,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         });
     }
 
+    private void initOxygenAndCoin() {
+        float coinScale = 0.5f;
+
+        coinBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.coin_bg_removed);
+        coinBitmap = Bitmap.createScaledBitmap(coinBitmap, (int) (coinBitmap.getWidth() * coinScale), (int) (coinBitmap.getHeight() * coinScale), true);
+    }
+
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
         initBackground();
+        initOxygenAndCoin();
         gameThread.startLoop();
     }
 
@@ -180,6 +195,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if (backgroundBitmap != null) {
             canvas.drawBitmap(backgroundBitmap, 0, 0, null);
         }
+
         drawUPS(canvas);
         drawFPS(canvas);
         drawMoney(canvas);
@@ -205,6 +221,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         for (FishThread fishThread : fishThreads) {
             fishThread.draw(canvas);
         }
+        oxygenManager.draw(canvas);
+
     }
 
 
@@ -228,15 +246,49 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private void drawMoney(Canvas canvas) {
-        String moneyText = "Money: " + moneyManager.getMoney();
+        int coinBarXPos = canvas.getWidth() - 500;
+        int coinBarYPos = 60;
+        int coinBarLength = 400;
+        int coinBarHeight = 100;
+        int coinXPos = coinBarXPos - 10;
+        int coinYPos = coinBarYPos - 8;
+        int coinValXPos = coinBarXPos + (coinBarLength / 2);
+        int coinValYPos = coinYPos;
+        float cornerRadius = 60;
+
+        // Draw coin bar
         Paint paint = new Paint();
-        int color = ContextCompat.getColor(context, R.color.magenta);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(Color.BLACK); // Set color of the bar
+        paint.setStrokeWidth(5);
+
+        RectF rect = new RectF(coinBarXPos, coinBarYPos, coinBarXPos + coinBarLength, coinBarYPos + coinBarHeight);
+        canvas.drawRoundRect(rect, cornerRadius, cornerRadius, paint);
+
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.WHITE);
+
+        canvas.drawRoundRect(rect, cornerRadius, cornerRadius, paint);
+
+        // Draw coin
+        Rect coinDst = new Rect(coinXPos, coinYPos, coinXPos + coinBitmap.getWidth(), coinYPos + coinBitmap.getHeight());
+        canvas.drawBitmap(coinBitmap, null, coinDst, null);
+
+        // Draw money value
+        String moneyText =  "" + moneyManager.getMoney();
+        paint = new Paint();
+        int color = ContextCompat.getColor(context, R.color.black);
         paint.setColor(color);
         paint.setTextSize(50);
-        canvas.drawText(moneyText, 100, 220, paint); // Can change the coordinates for the text as needed
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setTypeface(Typeface.SANS_SERIF);
+        canvas.drawText(moneyText,  coinValXPos, coinValYPos + coinBitmap.getHeight() + paint.ascent(), paint); // Can change the coordinates for the text as needed
     }
 
     public void update() {
+        // Update oxygen
+        oxygenManager.update();
+
         // Update game state
         harpoonLauncher.update();
 
