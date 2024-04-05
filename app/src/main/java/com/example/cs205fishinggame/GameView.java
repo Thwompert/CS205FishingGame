@@ -13,6 +13,7 @@ import android.view.SurfaceView;
 import android.graphics.BitmapFactory;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import com.airbnb.lottie.LottieDrawable;
 import com.airbnb.lottie.LottieComposition;
@@ -85,6 +86,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         // Initialising money manager -> to keep track of the money that the player currently has
         moneyManager = new MoneyManager();
+        moneyManager.loadMoney(context);
         setFocusable(true);
         initLottieAnimation();
     }
@@ -107,26 +109,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             public void onResult(LottieComposition composition) {
                 lottieDrawable.setComposition(composition);
                 lottieDrawable.setRepeatCount(LottieDrawable.INFINITE);
-                // Now the surface is created, can get its dimensions
-                int canvasWidth = getWidth();
-                System.out.println(canvasWidth);
-                int canvasHeight = getHeight();
 
 
-                // Define the size of the animation
-                int animationWidth = 700; // The width of Lottie animation
-                int animationHeight = 700; // The height of Lottie animation
-
-                // Calculate the starting X and Y coordinates for center alignment
-                int startX = (canvasWidth - animationWidth) / 2;
-                int startY = (canvasHeight - animationHeight) / 2;
-
-
-                lottieDrawable.setBounds(startX, startY, startX + animationWidth, startY + animationHeight);
                 lottieDrawable.playAnimation();
             }
-
-
         });
     }
 
@@ -206,13 +192,21 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         if (lottieDrawable != null) {
+            int animationWidth = 800; // Adjust as needed
+            int animationHeight = 800; // Adjust as needed
+            int startX = 150; // Move 100 pixels to the right
+            int startY = 50; // Move 50 pixels down
+
+            // Correctly set the bounds for the lottieDrawable
+            lottieDrawable.setBounds(startX, startY, startX + animationWidth, startY + animationHeight +200);
+
             // Save the current state of the canvas
             int saveCount = canvas.save();
 
-            // Flip the canvas horizontally around its vertical center
-            canvas.scale(-1f, 1f, getWidth() / 2f, 0);
+            // Flip the animation horizontally around its center
+            canvas.scale(-1f, 1f, startX + (animationWidth / 2f), startY + (animationHeight / 2f));
 
-            // Draw the LottieDrawable (which is now positioned to be flipped to the left side)
+            // Draw the diver
             lottieDrawable.draw(canvas);
 
             // Restore the canvas to its previous state
@@ -310,5 +304,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             fishThread.update();
         }
     }
+
+//    public void saveMoneyState() {
+//        moneyManager.saveMoney(getContext());
+//    }
 }
 }
