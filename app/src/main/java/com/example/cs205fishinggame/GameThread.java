@@ -4,6 +4,8 @@ import android.graphics.Canvas;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
+import com.example.cs205fishinggame.Fish.FishThread;
+
 public class GameThread extends Thread {
     private boolean isRunning = false;
     private GameView game;
@@ -43,6 +45,10 @@ public class GameThread extends Thread {
         int updateCount = 0;
         int frameCount = 0;
 
+//        int fishCount = 0;
+//        final int MAX_FISH_COUNT = 10;
+//        int fishId = 0;
+
         // Game loop
         while (isRunning){
             // Try to update and render game
@@ -52,6 +58,11 @@ public class GameThread extends Thread {
                     game.update();
                     updateCount++;
 
+//                    while (fishCount < MAX_FISH_COUNT) {
+//                        FishThread fishThread = new FishThread(fishId);
+//                        fishId++;
+//                        fishCount++;
+//                    }
                     game.draw(canvas);
                 }
             } catch (IllegalArgumentException e){

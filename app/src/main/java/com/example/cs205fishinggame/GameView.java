@@ -22,6 +22,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.example.cs205fishinggame.Fish.FishThread;
+import com.example.cs205fishinggame.FishGraphics.FishSpriteSheet;
+
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final HarpoonLauncher harpoonLauncher;
     private GameThread gameThread;
@@ -31,6 +34,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private Bitmap backgroundBitmap;
     private MoneyManager moneyManager;
+    //how many fishes are currently on screen
+    int fishCount = 0;
+    final int MAX_FISH_COUNT = 10;
+    int fishId = 0;
+
+    FishThread[] fishThreads = new FishThread[MAX_FISH_COUNT];
 
     public GameView(Context context) {
         super(context);
@@ -41,6 +50,28 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 
         gameThread = new GameThread(this, surfaceHolder);
+
+        // Initialise fish sprite sheet
+        FishSpriteSheet fishSpriteSheet = new FishSpriteSheet(context);
+        // Initialise fish thread
+        while (fishCount < MAX_FISH_COUNT) {
+            switch(fishId % 3){
+                case 0:
+                    fishThreads[fishCount] = new FishThread(context, fishId, fishSpriteSheet.getRedFishSprite());
+                    break;
+                case 1:
+                    fishThreads[fishCount] = new FishThread(context, fishId, fishSpriteSheet.getYellowFishSprite());
+                    break;
+                case 2:
+                    fishThreads[fishCount] = new FishThread(context, fishId, fishSpriteSheet.getGreenFishSprite());
+                    break;
+            }
+
+            // FishThread fishThread = new FishThread(context, fishId, fishSpriteSheet.getRedFishSprite());
+            //fishThreads[fishCount] = fishThread;
+            fishId++;
+            fishCount++;
+        }
 
         // Initialise game objects
         harpoonLauncher = new HarpoonLauncher(275, 800, 140, 80);
@@ -135,6 +166,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 harpoonLauncher.setIsPressed(false);
                 harpoonLauncher.resetActuator();
                 return true;
+
+
         }
 
         return super.onTouchEvent(event);
@@ -168,6 +201,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
             // Restore the canvas to its previous state
             canvas.restoreToCount(saveCount);
+        }
+        for (FishThread fishThread : fishThreads) {
+            fishThread.draw(canvas);
         }
     }
 
@@ -217,6 +253,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 ////                // Stop fish movement, stop harpoonmovement, start harpoon reeling back
 //////                iteratorProjectile.remove();
 ////            }
+        // Update fish movement
+        for (FishThread fishThread : fishThreads) {
+            fishThread.update();
         }
     }
+}
 }
