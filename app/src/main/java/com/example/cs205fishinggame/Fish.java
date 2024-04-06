@@ -93,8 +93,8 @@ public class Fish {
             }
         } else {
             // make it follow harpoon
-            posX = (float) caughtBy.positionX;
-            posY = (float) caughtBy.positionY;
+            posX = (float) caughtBy.positionX - 50;
+            posY = (float) caughtBy.positionY - 50;
         }
     }
 

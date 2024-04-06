@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import com.example.cs205fishinggame.Constants;
 import com.example.cs205fishinggame.Fish;
 import com.example.cs205fishinggame.GameObject;
 import com.example.cs205fishinggame.Player;
@@ -27,8 +28,8 @@ public class Harpoon extends GameObject {
         super(player.getPositionX(), player.getPositionY());
         tipPaint = new Paint();
         tipPaint.setColor(Color.WHITE);
-        velocityX = strengthX * 60;
-        velocityY = strengthY * 60;
+        velocityX = strengthX * Constants.HARPOON_SPEED;
+        velocityY = strengthY * Constants.HARPOON_SPEED;
         double distance = getDistanceBetweenPoints(0, 0, strengthX, strengthY);
         dirX = velocityX / distance;
         dirY = velocityY / distance;
@@ -88,7 +89,7 @@ public class Harpoon extends GameObject {
         if (!retracting) {
             // slow down velocityx and y
             // Apply damping to slow down velocity
-            float dampingFactor = 0.95f; // Adjust this value as needed
+            float dampingFactor = 0.92f; // Adjust this value as needed
             velocityX *= dampingFactor;
             velocityY *= dampingFactor;
 
@@ -106,5 +107,9 @@ public class Harpoon extends GameObject {
             velocityX = -dirX * 0.5;
             velocityY = -dirY * 0.5;
         }
+    }
+
+    public double getSpeed() {
+        return Math.sqrt(velocityX * velocityX + velocityY * velocityY);
     }
 }

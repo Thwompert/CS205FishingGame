@@ -219,7 +219,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             int animationWidth = 600; // Adjust as needed
             int animationHeight = 600; // Adjust as needed
             int startX = 0; // Move 100 pixels to the right
-            int startY = 500; // Move 50 pixels down
+            int startY = 0; // Move 50 pixels down
 
             // Correctly set the bounds for the lottieDrawable
             lottieDrawable.setBounds(startX, startY, startX + animationWidth, startY + animationHeight + 200);
@@ -297,7 +297,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
             if (!fish.isCaught()) {
                 for (Harpoon harpoon : harpoonList) {
-                    if (!harpoon.isRetracting() && harpoon.hasCollided(fish.getRect())) {
+                    if (!harpoon.isRetracting() && harpoon.hasCollided(fish.getRect()) && harpoon.getSpeed() > Constants.CATCH_SPEED) {
                         fish.caught(harpoon);
                         harpoon.addFish(fish);
                     }

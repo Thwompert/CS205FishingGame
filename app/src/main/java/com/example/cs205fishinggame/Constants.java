@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 
 public class Constants {
+    public static final double HARPOON_SPEED = 150;
+    public static final double CATCH_SPEED = 20;
     public static int CANVAS_WIDTH;
     public static int CANVAS_HEIGHT;
     public static final int MAX_FISH_COUNT = 10;
