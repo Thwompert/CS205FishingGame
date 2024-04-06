@@ -305,36 +305,34 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         // Update fish movement
         for (Fish fish : fishes) {
             fish.move();
-        }
 
-        //Update state of each harpoon projectile
-        for (Harpoon harpoon : harpoonList) {
-            harpoon.update();
-            for (Fish fish : fishes) {
-                if (!harpoon.isRetracting() && harpoon.hasCollided(fish.getRect())) {
-                    fish.caught(harpoon);
-                    harpoon.addFish(fish);
+            if (!fish.isCaught()) {
+                for (Harpoon harpoon : harpoonList) {
+                    if (!harpoon.isRetracting() && harpoon.hasCollided(fish.getRect())) {
+                        fish.caught(harpoon);
+                        harpoon.addFish(fish);
+                    }
                 }
             }
         }
-
 
         // Iterate through fishlist and harpoonlist to check for collisions
         Iterator<Harpoon> iteratorHarpoon = harpoonList.iterator();
         while (iteratorHarpoon.hasNext()) {
             Harpoon harpoon = iteratorHarpoon.next();
-            // Handle when harpoon retract fully
-            if (harpoon.isRetracting() && GameObject.getDistanceBetweenGameObjects(harpoon, player) <= 100) {
+            harpoon.update();
 
-                Iterator<Fish> iteratorFish = fishes.iterator();
-                while (iteratorFish.hasNext()) {
-                    if (harpoon.getFishList().contains(iteratorFish.next())) {
-                        System.out.println("TEST");
-                        iteratorFish.remove();
+            if (harpoon.isRetracting()) {
+                // Handle when harpoon retracting
+                if (GameObject.getDistanceBetweenGameObjects(harpoon, player) <= 100) {
+                    for (Fish fish : harpoon.getFishList()) {
+                        fishes.remove(fish);
+
                         // Add money here
+                        moneyManager.addMoney(10);
                     }
+                    iteratorHarpoon.remove();
                 }
-                iteratorHarpoon.remove();
             }
         }
     }

@@ -115,5 +115,7 @@ public class Fish {
         isCaught = true;
     }
 
-
+    public boolean isCaught(){
+        return isCaught;
+    }
 }
