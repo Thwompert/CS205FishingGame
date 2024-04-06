@@ -2,6 +2,8 @@ package com.example.cs205fishinggame;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -18,6 +20,7 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import android.media.MediaPlayer;
 import android.content.Context;
 
 import androidx.appcompat.view.menu.MenuView;
@@ -28,6 +31,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class GameActivity extends Activity {
 
     private GameView gameView;
+    private MediaPlayer mediaPlayer;
     private PopupWindow pauseMenu;
 
     @Override
@@ -88,7 +92,15 @@ public class GameActivity extends Activity {
         });
 
 
+        mediaPlayer = MediaPlayer.create(this, R.raw.game_music);
+        mediaPlayer.setLooping(true);
+
+        // Set the volume based on SharedPreferences
+        setMediaPlayerVolume();
+        mediaPlayer.start();
+
         hideStatusBar();
+
 
 
 //
@@ -124,12 +136,40 @@ public class GameActivity extends Activity {
         finish();
     }
 
+    private void setMediaPlayerVolume() {
+        SharedPreferences prefs = getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
+        int volumeLevel = prefs.getInt("volume", 50); // Default to 50 if not found
+
+        float volume = volumeLevel / 100f; // Convert to a value between 0 and 1
+        mediaPlayer.setVolume(volume, volume);
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
+        if (mediaPlayer != null) {
+            mediaPlayer.pause();
+        }
         // Call a method on GameView to handle saving the money
 //        if (gameView != null) {
 //            gameView.saveMoneyState();
 //        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+            mediaPlayer.start();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+        }
     }
 }
