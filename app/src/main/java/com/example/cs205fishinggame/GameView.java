@@ -47,6 +47,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     int fishCount = 0;
     final int MAX_FISH_COUNT = 10;
     int fishId = 0;
+    boolean isPaused = false;
 
     FishThread[] fishThreads = new FishThread[MAX_FISH_COUNT];
     private boolean drawUPSText;
@@ -327,5 +328,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 //    public void saveMoneyState() {
 //        moneyManager.saveMoney(getContext());
 //    }
+    }
+
+    public void resume() {
+        isPaused = false;
+    }
+
+    public void pause() {
+        isPaused = true;
     }
 }
