@@ -357,7 +357,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
             if (harpoon.isRetracting()) {
                 // Handle when harpoon retracting
-                if (Math.abs(GameObject.getDistanceBetweenGameObjects(harpoon, player)) <= 100) {
+                if (GameObject.getDistanceBetweenGameObjects(harpoon, player) <= 100) {
                     for (Fish fish : harpoon.getFishList()) {
                         fishes.remove(fish);
                         spawnFish();

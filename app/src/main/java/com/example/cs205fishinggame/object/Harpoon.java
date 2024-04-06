@@ -60,7 +60,7 @@ public class Harpoon extends GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawRect(hitbox, ropePaint);
+//        canvas.drawRect(hitbox, ropePaint);
         canvas.drawLine(
                 (float) (player.getPositionX()),
                 (float) (player.getPositionY()),
@@ -107,10 +107,8 @@ public class Harpoon extends GameObject {
             velocityY *= dampingFactor;
 
             // If velocity is close to zero, set it to zero to prevent infinite small updates
-            if (Math.abs(velocityX) < Constants.HARPOON_RETURN_THRESH) { //1) {
+            if (getSpeed() < Constants.HARPOON_RETURN_THRESH) { //1) {
                 velocityX = 0;
-            }
-            if (Math.abs(velocityY) < Constants.HARPOON_RETURN_THRESH) { //< 1) {
                 velocityY = 0;
             }
             if (velocityX == 0 && velocityY == 0) {
