@@ -18,6 +18,7 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import android.content.Context;
 
 import androidx.appcompat.view.menu.MenuView;
 import androidx.core.graphics.Insets;
@@ -85,6 +86,7 @@ public class GameActivity extends Activity {
                 pauseMenu.showAtLocation(v, Gravity.CENTER, 0, 0);
             }
         });
+
 
         hideStatusBar();
 

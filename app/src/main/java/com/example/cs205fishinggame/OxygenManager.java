@@ -5,19 +5,29 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.text.style.IconMarginSpan;
 import android.widget.EditText;
+import android.os.Vibrator;
+import android.os.VibrationEffect;
+import android.os.Build;
+import android.util.Log;
 
 public class OxygenManager {
+    private final int MAX_OXYGEN = 50;
+    private final int OXYGEN_DRAIN_RATE = 1;
+    private final int LOW_OXYGEN_THRESHOLD = 5;
 
     private int currentOxygen;
     private long startTime;
+    private Vibrator vibrator;
 
     private boolean isGameOver = false;
 
     public OxygenManager() {
         currentOxygen = Constants.MAX_OXYGEN;
         startTime = System.currentTimeMillis();
+        vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        System.out.println("Oxygen created");
+        //startLoop();
     }
 
     public boolean getGameOver() {
@@ -26,6 +36,10 @@ public class OxygenManager {
 
     public int getOxygen() {
         return currentOxygen;
+    }
+
+    public int getLowOxygenThreshold() {
+        return LOW_OXYGEN_THRESHOLD;
     }
 
 
@@ -65,9 +79,27 @@ public class OxygenManager {
 
     }
 
+    private void checkOxygenLevel(int oxygenLevel) {
+        if (oxygenLevel < LOW_OXYGEN_THRESHOLD) {
+            vibratePhone();
+        }
+    }
+
+    private void vibratePhone() {
+        if (vibrator != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+            } else {
+                vibrator.vibrate(500); // Vibrate for 500 milliseconds
+            }
+            Log.d("Vibration", "Phone should be vibrating now");
+        }
+    }
+
     public void update() {
         if (System.currentTimeMillis() - startTime >= Constants.OXYGEN_DRAIN_RATE * 1000) {
             currentOxygen--;
+
             startTime = System.currentTimeMillis();
         }
 
@@ -75,6 +107,10 @@ public class OxygenManager {
             currentOxygen = 0;
             isGameOver = true;
         }
+
+        checkOxygenLevel(currentOxygen);
+        //System.out.println("Current oxygen: " + currentOxygen);
     }
+
 
 }
