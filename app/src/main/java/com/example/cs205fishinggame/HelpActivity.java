@@ -8,24 +8,30 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
+
 public class HelpActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
+        TextView backstoryTextView = findViewById(R.id.backstoryTextView);
+        Animation fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        backstoryTextView.startAnimation(fadeInAnimation);
+        backstoryTextView.setBackground(getResources().getDrawable(R.drawable.textview_border));
         Window window = getWindow();
         window.setFlags(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
         );
-        TextView backstoryTextView = findViewById(R.id.backstoryTextView);
         String backstory = "In the year 2100, the vibrant city-state of Singapore, " +
                 "once a bustling metropolis, now lies beneath the waves. " +
                 "Climate change and rising sea levels have irreversibly transformed " +
                 "the landscape, submerging the once-thriving nation under the ocean's embrace. " +
-                "The iconic Marina Bay Sands and the majestic Merlion are now part of an underwater realm, " +
-                "creating a surreal fusion of the past and the marine world.";
+                "The survivors have to do whatever it takes to survive the murky depths of the unforgiving ocean.";
         backstoryTextView.setText(backstory);
     }
 
