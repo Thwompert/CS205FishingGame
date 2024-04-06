@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
-import com.example.cs205fishinggame.FishGraphics.FishAnimator;
 import com.example.cs205fishinggame.FishGraphics.FishSprite;
 import com.example.cs205fishinggame.object.Harpoon;
 
@@ -33,7 +32,6 @@ public class Fish {
     private final int LEFT_BORDER = 500;
 
     private FishSprite fishSprite;
-    private FishAnimator fishAnimator;
 
     private boolean isCaught = false;
 
@@ -42,7 +40,7 @@ public class Fish {
     private float targetX;
     private float targetY;
 
-    public Fish(Context context, int id, FishSprite fishSprite, FishAnimator fishAnimator) {
+    public Fish(Context context, int id, FishSprite fishSprite) {
         this.context = context;
         this.id = id;
         Random rand = new Random();
@@ -62,7 +60,6 @@ public class Fish {
 //        paint.setColor(Color.rgb(255, 0, 0));
 
         this.fishSprite = fishSprite;
-        this.fishAnimator = fishAnimator;
 
         // Initialise target x and y coordinate
         targetX = rand.nextFloat() * LANDSCAPE_WIDTH;
@@ -76,10 +73,8 @@ public class Fish {
         if (directionX > 0) {
 
             fishSprite.drawFlipped(canvas, (int) posX, (int) posY);
-            // fishAnimator.drawFlipped(canvas, (int) posX, (int) posY);
         } else {
             fishSprite.draw(canvas, (int) posX, (int) posY);
-            // fishAnimator.draw(canvas, (int) posX, (int) posY);
         }
     }
 

@@ -15,7 +15,6 @@ import com.airbnb.lottie.LottieDrawable;
 import com.airbnb.lottie.LottieComposition;
 import com.airbnb.lottie.LottieCompositionFactory;
 import com.airbnb.lottie.LottieListener;
-import com.example.cs205fishinggame.FishGraphics.FishAnimator;
 import com.example.cs205fishinggame.object.Harpoon;
 
 import android.graphics.Bitmap;
@@ -289,20 +288,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     //helper function to spawn new fish
     public void spawnFish() {
-        FishAnimator fishAnimator = null;
         switch (fishId % 3) {
             case 0:
-                fishAnimator = new FishAnimator(fishSpriteSheet.getRedFishSpriteArray());
-                fishes.add(new Fish(context, fishId, fishSpriteSheet.getRedFishSprite(), fishAnimator));
+                fishes.add(new Fish(context, fishId, fishSpriteSheet.getRedFishSprite()));
                 break;
             case 1:
-                fishAnimator = new FishAnimator(fishSpriteSheet.getYellowFishSpriteArray());
-                fishes.add(new Fish(context, fishId, fishSpriteSheet.getYellowFishSprite(), fishAnimator));
+                fishes.add(new Fish(context, fishId, fishSpriteSheet.getYellowFishSprite()));
 //                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getYellowFishSprite());
                 break;
             case 2:
-                fishAnimator = new FishAnimator(fishSpriteSheet.getGreenFishSpriteArray());
-                fishes.add(new Fish(context, fishId, fishSpriteSheet.getGreenFishSprite(), fishAnimator));
+                fishes.add(new Fish(context, fishId, fishSpriteSheet.getGreenFishSprite()));
 //                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getGreenFishSprite());
                 break;
         }
