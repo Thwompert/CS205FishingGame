@@ -30,6 +30,16 @@ public class GameThread extends Thread {
         start();
     }
 
+    public void stopLoop() {
+        isRunning = false;
+        game.isPaused = true;
+        try {
+            join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void run() {
         super.run();

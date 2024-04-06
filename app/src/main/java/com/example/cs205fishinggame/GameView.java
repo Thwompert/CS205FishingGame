@@ -64,6 +64,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private Typeface chikiBubblesFont;
 
+    int fishesCaught = 0;
+
     public void loadPreferences(Context context) {
         SharedPreferences prefs = context.getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
         this.drawUPSText = prefs.getBoolean("drawUPS", false); // Default to 0 if not found
@@ -71,6 +73,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
     public GameView(GameActivity activity) {
         super((Context) activity);
+        this.activity = activity;
         context = (Context) activity;
 
         // Add callback to surface
@@ -286,6 +289,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     drawCenterText(canvas, p, Constants.GAMEOVER_TEXT);
                 }
                 else {
+                    activity.showEndScreen(fishesCaught, moneyManager.getMoney());
 //                    if (context instanceof GameActivity) {
 //                        ((GameActivity) context).finish();
 //                    } else {
@@ -294,8 +298,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 ////                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear the back stack
 ////                        context.startActivity(intent);
 //                    }
-
-                    activity.finish();
+//                    activity.finish();
                     // Navigate back to MainActivity
 //                    Intent intent = new Intent(context, MainActivity.class);
 //                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Clear back stack
@@ -312,7 +315,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 
     public void drawUPS(Canvas canvas){
-        String averageUPS = Double.toString(gameThread.getAverageUPS());
+        String averageUPS = Integer.toString((int) gameThread.getAverageUPS());
         Paint paint = new Paint();
         paint.setColor(Constants.UPS_FPS_COLOR);
         paint.setTextSize(Constants.UPS_FPS_TEXT_SIZE);
@@ -360,8 +363,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 if (GameObject.getDistanceBetweenGameObjects(harpoon, player) <= 100) {
                     for (Fish fish : harpoon.getFishList()) {
                         fishes.remove(fish);
+                        fishesCaught++;
                         spawnFish();
-
                         // Add money here
                         moneyManager.addMoney(10);
                     }
@@ -390,9 +393,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void pause() {
         isPaused = true;
-
-
-
     }
 
     public void saveMoneyState() {
@@ -417,4 +417,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         fishId++;
     }
 
+    public void stop() {
+        gameThread.stopLoop();
+    }
 }
