@@ -37,22 +37,64 @@ public class FishSpriteSheet {
     }
 
     public FishSprite[] getRedFishSpriteArray() {
+        //the edges of the first sprite
+        int leftWidth = WIDTH_OFFSET + RED_OFFSET;
+        int topHeight = HEIGHT_OFFSET + RED_OFFSET;
+        int rightWidth = SPRITE_WIDTH - RED_OFFSET;
+        int bottomHeight = SPRITE_HEIGHT - BOTTOM_HEIGHT_OFFSET - RED_OFFSET;
+
         FishSprite[] spriteArray = new FishSprite[4];
-        spriteArray[0] = new FishSprite(this, new Rect(0, 0, SPRITE_WIDTH, SPRITE_HEIGHT));
-        spriteArray[1] = new FishSprite(this, new Rect(SPRITE_WIDTH, 0, 2*SPRITE_WIDTH, SPRITE_HEIGHT));
-        spriteArray[2] = new FishSprite(this, new Rect(2*SPRITE_WIDTH, 0, 3*SPRITE_WIDTH, SPRITE_HEIGHT));
-        spriteArray[3] = new FishSprite(this, new Rect(3*SPRITE_WIDTH, 0, 4*SPRITE_WIDTH, SPRITE_HEIGHT));
+
+        //add SPRITE_WIDTH to the "left" and "right" parameter to go to the next sprite
+        spriteArray[0] = new FishSprite(this, new Rect(leftWidth, topHeight, rightWidth, bottomHeight));
+        spriteArray[1] = new FishSprite(this, new Rect(SPRITE_WIDTH + leftWidth, topHeight, SPRITE_WIDTH - rightWidth, bottomHeight));
+        spriteArray[2] = new FishSprite(this, new Rect(2*SPRITE_WIDTH + leftWidth, topHeight, 2*SPRITE_WIDTH - rightWidth, bottomHeight));
+        spriteArray[3] = new FishSprite(this, new Rect(3*SPRITE_WIDTH + leftWidth, topHeight, 3*SPRITE_WIDTH - rightWidth, bottomHeight));
         return spriteArray;
     }
 
     public FishSprite getYellowFishSprite() {
         //add 300 to go up/down, add 150 to go left/right
-        return new FishSprite(this, new Rect(WIDTH_OFFSET,SPRITE_HEIGHT + HEIGHT_OFFSET, SPRITE_WIDTH - GREEN_OFFSET,SPRITE_HEIGHT * 2 - BOTTOM_HEIGHT_OFFSET - GREEN_OFFSET));
+        return new FishSprite(this, new Rect(WIDTH_OFFSET,SPRITE_HEIGHT + HEIGHT_OFFSET, SPRITE_WIDTH - WIDTH_OFFSET,SPRITE_HEIGHT * 2 - BOTTOM_HEIGHT_OFFSET));
+    }
+
+    public FishSprite[] getYellowFishSpriteArray() {
+        //the edges of the first sprite
+        int leftWidth = WIDTH_OFFSET;
+        int topHeight = SPRITE_HEIGHT + HEIGHT_OFFSET;
+        int rightWidth = SPRITE_WIDTH - WIDTH_OFFSET;
+        int bottomHeight = SPRITE_HEIGHT * 2 - BOTTOM_HEIGHT_OFFSET;
+
+        FishSprite[] spriteArray = new FishSprite[4];
+
+        //add SPRITE_WIDTH to the "left" and "right" parameter to go to the next sprite
+        spriteArray[0] = new FishSprite(this, new Rect(leftWidth, topHeight, rightWidth, bottomHeight));
+        spriteArray[1] = new FishSprite(this, new Rect(SPRITE_WIDTH + leftWidth, topHeight, SPRITE_WIDTH - rightWidth, bottomHeight));
+        spriteArray[2] = new FishSprite(this, new Rect(2*SPRITE_WIDTH + leftWidth, topHeight, 2*SPRITE_WIDTH - rightWidth, bottomHeight));
+        spriteArray[3] = new FishSprite(this, new Rect(3*SPRITE_WIDTH + leftWidth, topHeight, 3*SPRITE_WIDTH - rightWidth, bottomHeight));
+        return spriteArray;
     }
 
     public FishSprite getGreenFishSprite() {
         //add 300 to go up/down, add 150 to go left/right
-        return new FishSprite(this, new Rect(WIDTH_OFFSET + (GREEN_OFFSET * 3),SPRITE_HEIGHT * 2 + HEIGHT_OFFSET + GREEN_OFFSET, SPRITE_WIDTH - (GREEN_OFFSET * 3),SPRITE_HEIGHT * 3 - BOTTOM_HEIGHT_OFFSET- GREEN_OFFSET));
+        return new FishSprite(this, new Rect(WIDTH_OFFSET + (GREEN_OFFSET * 3),SPRITE_HEIGHT * 2 + HEIGHT_OFFSET + GREEN_OFFSET, SPRITE_WIDTH - (GREEN_OFFSET * 3),SPRITE_HEIGHT * 3 - BOTTOM_HEIGHT_OFFSET - GREEN_OFFSET));
+    }
+
+    public FishSprite[] getGreenFishSpriteArray() {
+        //the edges of the first sprite
+        int leftWidth = WIDTH_OFFSET + (GREEN_OFFSET * 3);
+        int topHeight = SPRITE_HEIGHT * 2 + HEIGHT_OFFSET + GREEN_OFFSET;
+        int rightWidth = SPRITE_WIDTH - (GREEN_OFFSET * 3);
+        int bottomHeight =SPRITE_HEIGHT * 3 - BOTTOM_HEIGHT_OFFSET - GREEN_OFFSET;
+
+        FishSprite[] spriteArray = new FishSprite[4];
+
+        //add SPRITE_WIDTH to the "left" and "right" parameter to go to the next sprite
+        spriteArray[0] = new FishSprite(this, new Rect(leftWidth, topHeight, rightWidth, bottomHeight));
+        spriteArray[1] = new FishSprite(this, new Rect(SPRITE_WIDTH + leftWidth, topHeight, SPRITE_WIDTH - rightWidth, bottomHeight));
+        spriteArray[2] = new FishSprite(this, new Rect(2*SPRITE_WIDTH + leftWidth, topHeight, 2*SPRITE_WIDTH - rightWidth, bottomHeight));
+        spriteArray[3] = new FishSprite(this, new Rect(3*SPRITE_WIDTH + leftWidth, topHeight, 3*SPRITE_WIDTH - rightWidth, bottomHeight));
+        return spriteArray;
     }
 
     public Bitmap getBitmap() {

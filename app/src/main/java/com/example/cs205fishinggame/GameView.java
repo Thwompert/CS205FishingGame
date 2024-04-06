@@ -50,6 +50,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private boolean isGameOver = false;
     private long gameOverStartTime = -1;
 
+    private final FishSpriteSheet fishSpriteSheet;
+
     List<Fish> fishes = new ArrayList<Fish>();
     private boolean drawUPSText;
     private boolean drawFPSText;
@@ -71,27 +73,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         gameThread = new GameThread(this, surfaceHolder);
 
         // Initialise fish sprite sheet
-        FishSpriteSheet fishSpriteSheet = new FishSpriteSheet(context);
+        fishSpriteSheet = new FishSpriteSheet(context);
 
         // Initialise fish
         while (fishCount < Constants.MAX_FISH_COUNT) {
-            switch (fishId % 3) {
-                case 0:
-                    fishes.add(new Fish(context, fishId, fishSpriteSheet.getRedFishSprite()));
-                    break;
-                case 1:
-                    fishes.add(new Fish(context, fishId, fishSpriteSheet.getYellowFishSprite()));
-//                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getYellowFishSprite());
-                    break;
-                case 2:
-                    fishes.add(new Fish(context, fishId, fishSpriteSheet.getGreenFishSprite()));
-//                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getGreenFishSprite());
-                    break;
-            }
+            spawnFish();
 
             // FishThread fishThread = new FishThread(context, fishId, fishSpriteSheet.getRedFishSprite());
             //fishThreads[fishCount] = fishThread;
-            fishId++;
             fishCount++;
         }
 
@@ -227,10 +216,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         harpoonLauncher.draw(canvas);
 
         if (lottieDrawable != null) {
-            int animationWidth = 800; // Adjust as needed
-            int animationHeight = 800; // Adjust as needed
-            int startX = 150; // Move 100 pixels to the right
-            int startY = 50; // Move 50 pixels down
+            int animationWidth = 600; // Adjust as needed
+            int animationHeight = 600; // Adjust as needed
+            int startX = 0; // Move 100 pixels to the right
+            int startY = 500; // Move 50 pixels down
 
             // Correctly set the bounds for the lottieDrawable
             lottieDrawable.setBounds(startX, startY, startX + animationWidth, startY + animationHeight + 200);
@@ -327,6 +316,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 if (GameObject.getDistanceBetweenGameObjects(harpoon, player) <= 100) {
                     for (Fish fish : harpoon.getFishList()) {
                         fishes.remove(fish);
+                        spawnFish();
 
                         // Add money here
                         moneyManager.addMoney(10);
@@ -357,9 +347,30 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void pause() {
         isPaused = true;
 
+
+
     }
 
     public void saveMoneyState() {
         moneyManager.saveMoney(getContext());
     }
+
+    //helper function to spawn new fish
+    public void spawnFish() {
+        switch (fishId % 3) {
+            case 0:
+                fishes.add(new Fish(context, fishSpriteSheet.getRedFishSprite()));
+                break;
+            case 1:
+                fishes.add(new Fish(context, fishSpriteSheet.getYellowFishSprite()));
+//                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getYellowFishSprite());
+                break;
+            case 2:
+                fishes.add(new Fish(context, fishSpriteSheet.getGreenFishSprite()));
+//                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getGreenFishSprite());
+                break;
+        }
+        fishId++;
+    }
+
 }
