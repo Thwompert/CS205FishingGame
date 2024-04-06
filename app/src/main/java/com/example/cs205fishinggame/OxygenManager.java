@@ -5,27 +5,24 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.text.style.IconMarginSpan;
 import android.widget.EditText;
 
 public class OxygenManager {
-    private final int MAX_OXYGEN = 50;
-    private final int OXYGEN_DRAIN_RATE = 1;
 
     private int currentOxygen;
-    private Context context;
-
-    private EditText oxygenMeter;
-    private Thread oxygenThread;
     private long startTime;
 
-    public OxygenManager(Context context) {
-        this.context = context;
-        currentOxygen = MAX_OXYGEN;
+    private boolean isGameOver = false;
+
+    public OxygenManager() {
+        currentOxygen = Constants.MAX_OXYGEN;
         startTime = System.currentTimeMillis();
-        System.out.println("Oxygen created");
-        //startLoop();
     }
 
+    public boolean getGameOver() {
+        return isGameOver;
+    }
 
     public int getOxygen() {
         return currentOxygen;
@@ -33,67 +30,51 @@ public class OxygenManager {
 
 
     private int getColorOfCurrentOxy() {
-        float percent = (float) currentOxygen / (float) MAX_OXYGEN;
-        int startColor = Color.GREEN;
-        int endColor = Color.RED;
+        float percent = (float) currentOxygen / (float) Constants.MAX_OXYGEN;
 
-        int red = (int) (Color.red(startColor) * percent + Color.red(endColor) * (1 - percent));
-        int green = (int) (Color.green(startColor) * percent + Color.green(endColor) * (1 - percent));
-        int blue = (int) (Color.blue(startColor) * percent + Color.blue(endColor) * (1 - percent));
+        int red = (int) (Color.red(Constants.OXYGENBAR_FILL_START_COLOR) * percent + Color.red(Constants.OXYGENBAR_FILL_END_COLOR) * (1 - percent));
+        int green = (int) (Color.green(Constants.OXYGENBAR_FILL_START_COLOR) * percent + Color.green(Constants.OXYGENBAR_FILL_END_COLOR) * (1 - percent));
+        int blue = (int) (Color.blue(Constants.OXYGENBAR_FILL_START_COLOR) * percent + Color.blue(Constants.OXYGENBAR_FILL_END_COLOR) * (1 - percent));
 
         return Color.rgb(red, green, blue);
 
-//        if (currentOxygen <= 0.25 * MAX_OXYGEN) {
-//            return Color.RED;
-//        } else if (currentOxygen <= 0.75 * MAX_OXYGEN) {
-//            return Color.YELLOW;
-//        } else {
-//            return Color.GREEN;
-//        }
     }
 
     public void draw(Canvas canvas) {
-        int oxygenXPos = canvas.getWidth() - 150;
-        int oxygenYPos = canvas.getHeight() / 2;
-        int oxygenWidth = 70;
-        int oxygenHeight = 500;
-        float cornerRadius = 20;
 
-
-        // Draw inner rect
+        // Draw inner bar first
         Paint paint = new Paint();
         paint.setColor(getColorOfCurrentOxy()); // Set color of the bar
 
         // Calculate height of the bar based on current countdown value
-        int barHeight = (int) (((float) currentOxygen / (float) MAX_OXYGEN) * oxygenHeight);
+        int innerBarHeight = (int) (((float) currentOxygen / (float) Constants.MAX_OXYGEN) * Constants.OXYGENBAR_HEIGHT);
 
-        // Draw the bar using a rectangle
-        RectF rect = new RectF(oxygenXPos, oxygenYPos + (oxygenHeight - barHeight), oxygenXPos + oxygenWidth, oxygenYPos + oxygenHeight); // Adjust height and position as needed
-        canvas.drawRoundRect(rect, cornerRadius, cornerRadius, paint);
+        // Draw inner bar using a rounded rect
+        RectF rect = new RectF(Constants.OXYGENBAR_X, Constants.OXYGENBAR_Y + (Constants.OXYGENBAR_HEIGHT - innerBarHeight),
+                Constants.OXYGENBAR_X + Constants.OXYGENBAR_WIDTH, Constants.OXYGENBAR_Y + Constants.OXYGENBAR_HEIGHT);
+        canvas.drawRoundRect(rect, Constants.OXYGENBAR_CORNER_RADIUS, Constants.OXYGENBAR_CORNER_RADIUS, paint);
 
-
-        // Draw border rect
+        // Draw border
         Paint borderPaint = new Paint();
-        borderPaint.setColor(Color.BLACK); // Set color of the bar
         borderPaint.setStyle(Paint.Style.STROKE);
-        borderPaint.setStrokeWidth(5);
+        borderPaint.setColor(Constants.OXYGENBAR_BORDER_COLOR); // Set color of the bar
+        borderPaint.setStrokeWidth(Constants.OXYGENBAR_BORDER_WIDTH);
 
-        RectF borderRect = new RectF(oxygenXPos, oxygenYPos, oxygenXPos + oxygenWidth, oxygenYPos + oxygenHeight);
-        canvas.drawRoundRect(borderRect, cornerRadius, cornerRadius, borderPaint);
+        RectF borderRect = new RectF(Constants.OXYGENBAR_X, Constants.OXYGENBAR_Y,Constants.OXYGENBAR_X + Constants.OXYGENBAR_WIDTH, Constants.OXYGENBAR_Y + Constants.OXYGENBAR_HEIGHT);
+        canvas.drawRoundRect(borderRect, Constants.OXYGENBAR_CORNER_RADIUS,  Constants.OXYGENBAR_CORNER_RADIUS, borderPaint);
 
-//        Paint paint = new Paint();
-//        paint.setColor(Color.WHITE);
-//        paint.setTextSize(50);
-//        canvas.drawText(Integer.toString(currentOxygen), canvas.getWidth() - 400, 30, paint);
     }
 
     public void update() {
-        System.out.println("Oxygen delta time: " + Long.toString(System.currentTimeMillis() - startTime));
-        if (System.currentTimeMillis() - startTime >= OXYGEN_DRAIN_RATE * 1000) {
+        if (System.currentTimeMillis() - startTime >= Constants.OXYGEN_DRAIN_RATE * 1000) {
             currentOxygen--;
             startTime = System.currentTimeMillis();
         }
-        //System.out.println("Current oxygen: " + currentOxygen);
+
+        if (currentOxygen < 0) {
+            currentOxygen = 0;
+            isGameOver = true;
+        }
     }
 
 }
