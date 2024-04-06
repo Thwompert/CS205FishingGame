@@ -22,13 +22,15 @@ public class HarpoonLauncher {
     private double actuatorY;
     private double harpoonIndicatorBlockSize = 70;
     private double harpoonIndicatorBlockInterval = 25;
+    private Player player;
 
-    public HarpoonLauncher(int centerPositionX, int centerPositionY, int outerCircleRadius, int innerCircleRadius) {
+    public HarpoonLauncher(int centerPositionX, int centerPositionY, int outerCircleRadius, int innerCircleRadius, Player player) {
         // Outer and inner circle of launcher
         outerCircleCenterPositionX = centerPositionX;
         outerCircleCenterPositionY = centerPositionY;
         innerCircleCenterPositionX = centerPositionX;
         innerCircleCenterPositionY = centerPositionY;
+        this.player = player;
 
         // Radii of circle
         this.outerCircleRadius = outerCircleRadius;
@@ -63,10 +65,10 @@ public class HarpoonLauncher {
                 double endY = startY + actuatorY * (harpoonIndicatorBlockSize);
 
                 canvas.drawLine(
-                        (float) (outerCircleCenterPositionX - startX),
-                        (float) (outerCircleCenterPositionY - startY),
-                        (float) (outerCircleCenterPositionX  - endX),
-                        (float) (outerCircleCenterPositionY  - endY),
+                        (float) (player.getPositionX() - startX),
+                        (float) (player.getPositionY() - startY),
+                        (float) (player.getPositionX()  - endX),
+                        (float) (player.getPositionY()  - endY),
                         indicatorPaint
                 );
             }

@@ -70,7 +70,7 @@ public class MoneyManager {
         paint.setTextSize(Constants.COINVAL_TEXT_SIZE);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTypeface(Constants.COINVAL_TYPEFACE);
-        canvas.drawText(moneyText, Constants.COINVAL_X, Constants.COINVAL_Y + coinBitmap.getHeight() + paint.ascent(), paint); // Can change the coordinates for the text as needed
+        canvas.drawText(moneyText, Constants.COINVAL_X, Constants.COINVAL_Y - paint.ascent(), paint); // Can change the coordinates for the text as needed
     }
 
     public int getMoney() {

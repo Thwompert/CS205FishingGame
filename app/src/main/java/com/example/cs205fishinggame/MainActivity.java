@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,11 +28,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
         // Start the animation if not auto-playing
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        WindowManager windowManager = getWindowManager();
+        Display display = windowManager.getDefaultDisplay();
+        display.getMetrics(displayMetrics);
+
+        new Constants(displayMetrics.widthPixels, displayMetrics.heightPixels);
 
         // Set window to fullscreen (hide status bar)
         Window window = getWindow();

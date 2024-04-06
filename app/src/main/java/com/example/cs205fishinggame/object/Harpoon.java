@@ -24,7 +24,7 @@ public class Harpoon extends GameObject {
     private List<Fish> fishList;
 
     public Harpoon(Player player, double strengthX, double strengthY) {
-        super(275, 800);
+        super(player.getPositionX(), player.getPositionY());
         tipPaint = new Paint();
         tipPaint.setColor(Color.WHITE);
         velocityX = strengthX * 60;
