@@ -22,7 +22,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
     PopupWindow settings;
-
+    View popupView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -45,6 +45,17 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Inflate the overlay XML layout
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        popupView = inflater.inflate(R.layout.settings, null);
+
+        // Create the PopupWindow
+        settings = new PopupWindow(
+                popupView,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+        );
     }
 
     public void buttonClicked(View view) {
@@ -58,16 +69,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openSettings(View view) {
-        // Inflate the overlay XML layout
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.settings, null);
-
-        // Create the PopupWindow
-        settings = new PopupWindow(
-                popupView,
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-        );
 
         // Show the PopupWindow at the center of the screen
         settings.showAtLocation(view, Gravity.CENTER, 0, 0);
