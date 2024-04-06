@@ -1,40 +1,54 @@
 package com.example.cs205fishinggame.FishGraphics;
 
-import android.graphics.Bitmap;
+
 import android.graphics.Canvas;
-import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Rect;
 
 public class FishSprite {
 
     private final FishSpriteSheet fishSpriteSheet;
-    private final Rect rect;
-    FishSprite(FishSpriteSheet fishSpriteSheet, Rect rect) {
+    private final Rect spriteRect;
+    private Rect positionRect;
+    FishSprite(FishSpriteSheet fishSpriteSheet, Rect spriteRect) {
         this.fishSpriteSheet = fishSpriteSheet;
-        this.rect = rect;
+        this.spriteRect = spriteRect;
     }
 
     public void draw(Canvas canvas, int posX, int posY) {
-//        Matrix flipHorizontalMatrix = new Matrix();
-//        flipHorizontalMatrix.setScale(-1,1);
-//        flipHorizontalMatrix.postTranslate(fishSpriteSheet.getBitmap().getWidth(),0);
-//flipHorizontalMatrix.mapRect(rect, new Rect(posX, posY, posX + 150, posY + 300))
-//        canvas.drawBitmap(fishSpriteSheet.getBitmap(), flipHorizontalMatrix, null);
-        canvas.drawBitmap(fishSpriteSheet.getBitmap(), rect, new Rect(posX, posY, posX + 150, posY + 300), null);
+        //int canvasWidth = canvas.getWidth();
+        positionRect =  new Rect(posX, posY, posX + (spriteRect.width() * 2), posY + (spriteRect.height() * 2));
+        canvas.drawBitmap(fishSpriteSheet.getBitmap(), spriteRect, positionRect, null);
+        //positionRect = new Rect(canvasWidth - posX, posY, canvasWidth - posX + 150, posY + 300);
+
+        //canvas.drawRect(positionRect, new Paint());
     }
 
     public int getWidth() {
-        return rect.width();
+        return spriteRect.width();
     }
 
     public int getHeight() {
-        return rect.height();
+        return spriteRect.height();
     }
 
-    public void flip(Canvas canvas) {
-        canvas.save(); // first save the state of the canvas
-        canvas.scale(-1f, 1f, rect.width()/2, rect.height()/2);
-        canvas.restore(); // restore previous state (rotate it back)
-
+    public void drawFlipped(Canvas canvas, int posX, int posY) {
+        int canvasWidth = canvas.getWidth();
+        positionRect = new Rect(canvasWidth - posX, posY, canvasWidth - posX + (spriteRect.width() * 2), posY + (spriteRect.height() * 2));
+        canvas.save();
+        canvas.scale(-1, 1, (float) spriteRect.width() / 2, (float) spriteRect.height() / 2);
+        canvas.translate(-canvas.getWidth(), 0);
+        canvas.drawBitmap(fishSpriteSheet.getBitmap(), spriteRect, positionRect , null);
+//        canvas.setMatrix(null);
+//        canvas.drawRect(positionRect, new Paint());
+        canvas.restore();
     }
+
+    public Rect getRect(){
+        return positionRect;
+    }
+
+
 }
+
+

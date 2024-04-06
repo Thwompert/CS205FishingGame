@@ -12,23 +12,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CS205FishingGame"
         tools:targetApi="31">
+
         <activity
-            android:name="GameActivity"
+            android:name=".GameActivity"
             android:exported="false"
-            android:screenOrientation="landscape"
-            />
+            android:screenOrientation="landscape" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:screenOrientation="landscape"
-            >
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <!-- Add this entry for HelpActivity -->
+        <activity
+            android:name=".HelpActivity"
+            android:exported="false" /> <!-- Assuming HelpActivity should not be directly accessible from other apps -->
 
     </application>
 
