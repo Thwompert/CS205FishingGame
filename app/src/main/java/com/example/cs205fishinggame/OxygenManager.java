@@ -15,6 +15,7 @@ public class OxygenManager {
     private final int MAX_OXYGEN = 50;
     private final int OXYGEN_DRAIN_RATE = 1;
     private final int LOW_OXYGEN_THRESHOLD = 5;
+    private Context context;
 
     private int currentOxygen;
     private long startTime;
@@ -109,6 +110,7 @@ public class OxygenManager {
         }
 
         checkOxygenLevel(currentOxygen);
+
         //System.out.println("Current oxygen: " + currentOxygen);
     }
 
