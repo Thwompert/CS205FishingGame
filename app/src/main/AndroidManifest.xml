@@ -28,10 +28,10 @@
             </intent-filter>
         </activity>
 
-        <!-- Add this entry for HelpActivity -->
         <activity
             android:name=".HelpActivity"
-            android:exported="false" /> <!-- Assuming HelpActivity should not be directly accessible from other apps -->
+            android:exported="false" />
+        <activity android:name=".RulesActivity" />
 
     </application>
 

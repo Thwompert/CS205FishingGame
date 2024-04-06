@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.content.Intent;
 
 
 public class HelpActivity extends AppCompatActivity {
@@ -33,10 +34,22 @@ public class HelpActivity extends AppCompatActivity {
                 "the landscape, submerging the once-thriving nation under the ocean's embrace. " +
                 "The survivors have to do whatever it takes to survive the murky depths of the unforgiving ocean.";
         backstoryTextView.setText(backstory);
+        // Find the button and set up the onClick listener
+        findViewById(R.id.toRules).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToRulesPage();
+            }
+        });
     }
 
     // This method is called when the back button is clicked
     public void onBackButtonClicked(View view) {
         finish(); // Closes this activity and returns to the previous one
+    }
+    // Method to navigate to the RulesActivity
+    private void goToRulesPage() {
+        Intent intent = new Intent(HelpActivity.this, RulesActivity.class);
+        startActivity(intent);
     }
 }
