@@ -1,7 +1,10 @@
 package com.example.cs205fishinggame;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -24,6 +27,7 @@ import com.example.cs205fishinggame.object.Harpoon;
 
 import android.graphics.Bitmap;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -34,6 +38,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final HarpoonLauncher harpoonLauncher;
     private GameThread gameThread;
     private Context context;
+    private GameActivity activity;
     private LottieDrawable lottieDrawable;
     private List<Harpoon> harpoonList = new ArrayList<Harpoon>();
     private OxygenManager oxygenManager;
@@ -41,6 +46,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Bitmap backgroundBitmap;
     private Bitmap coinBitmap;
     private Bitmap oxygenBitmap;
+    private Bitmap merlionBitmap;
     private MoneyManager moneyManager;
     //how many fishes are currently on screen
     int fishCount = 0;
@@ -56,14 +62,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private boolean drawUPSText;
     private boolean drawFPSText;
 
+    private Typeface chikiBubblesFont;
+
     public void loadPreferences(Context context) {
         SharedPreferences prefs = context.getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
         this.drawUPSText = prefs.getBoolean("drawUPS", false); // Default to 0 if not found
         this.drawFPSText = prefs.getBoolean("drawFPS", false); // Default to 0 if not found
     }
-    public GameView(Context context) {
-        super(context);
-        this.context = context;
+    public GameView(GameActivity activity) {
+        super((Context) activity);
+        context = (Context) activity;
 
         // Add callback to surface
         SurfaceHolder surfaceHolder = this.getHolder();
@@ -78,9 +86,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         // Initialise fish
         while (fishCount < Constants.MAX_FISH_COUNT) {
             spawnFish();
-
-            // FishThread fishThread = new FishThread(context, fishId, fishSpriteSheet.getRedFishSprite());
-            //fishThreads[fishCount] = fishThread;
             fishCount++;
         }
 
@@ -94,6 +99,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         moneyManager.loadMoney(context);
         setFocusable(true);
         initLottieAnimation();
+        initOxygenAndCoin();
+        initFonts();
     }
 
     private void initBackground() {
@@ -105,6 +112,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         // If the original bitmap won't be used again, you can recycle it to free up memory
         originalBitmap.recycle();
+
+        // Create scaled merlion bitmap
+        Bitmap originalMerlionBm = BitmapFactory.decodeResource(getResources(), R.drawable.merlion);
+        merlionBitmap = Bitmap.createScaledBitmap(originalMerlionBm, (int) (originalMerlionBm.getWidth() * Constants.MERLION_SCALE), (int) (originalMerlionBm.getHeight() * Constants.MERLION_SCALE), true);
+        originalMerlionBm.recycle();
+
     }
 
     private void initLottieAnimation() {
@@ -120,6 +133,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 lottieDrawable.playAnimation();
             }
         });
+    }
+
+    private void initFonts() {
+        chikiBubblesFont = Typeface.createFromAsset(context.getAssets(), Constants.CHIKI_FONT_ID);
     }
 
     private void initOxygenAndCoin() {
@@ -193,6 +210,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             canvas.drawBitmap(backgroundBitmap, 0, 0, null);
         }
 
+        // Draw merlion
+        if (merlionBitmap != null) {
+            Paint paint = new Paint();
+            paint.setAlpha(Constants.MERLION_ALPHA);
+            canvas.drawBitmap(merlionBitmap, Constants.MERLION_X, Constants.MERLION_Y, paint);
+        }
+
 
 //        // Draw harpoons launched
 //        harpoonLauncher.draw(canvas);
@@ -245,18 +269,41 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         // Check game over
         if (isGameOver) {
+            // Save money
+            saveMoneyState();
+
             if (gameOverStartTime == -1) {
                 gameOverStartTime = System.currentTimeMillis();
             }
-            if (System.currentTimeMillis() - gameOverStartTime <= Constants.GAMEOVER_DURATION * 1000) {
-                Paint p = new Paint();
-                p.setTypeface(Constants.GAMEOVER_TYPEFACE);
-                p.setTextSize(Constants.GAMEOVER_TEXT_SIZE);
-                p.setColor(Constants.GAMEOVER_TEXT_COLOR);
+            else {
+                if (System.currentTimeMillis() - gameOverStartTime <= Constants.GAMEOVER_DURATION * 1000) {
+                    Paint p = new Paint();
+                    p.setTypeface(chikiBubblesFont);
+                    p.setTextSize(Constants.GAMEOVER_TEXT_SIZE);
+                    p.setColor(Constants.GAMEOVER_TEXT_COLOR);
 
-                // Render game over text
-                drawCenterText(canvas, p, Constants.GAMEOVER_TEXT);
+                    // Render game over text
+                    drawCenterText(canvas, p, Constants.GAMEOVER_TEXT);
+                }
+                else {
+//                    if (context instanceof GameActivity) {
+//                        ((GameActivity) context).finish();
+//                    } else {
+////                        // Create new MainActivity - Should not reach here
+////                        Intent intent = new Intent(context, MainActivity.class);
+////                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear the back stack
+////                        context.startActivity(intent);
+//                    }
+
+                    activity.finish();
+                    // Navigate back to MainActivity
+//                    Intent intent = new Intent(context, MainActivity.class);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Clear back stack
+//                    context.startActivity(intent);
+
+                }
             }
+
         }
 
 
@@ -285,9 +332,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         oxygenManager.update();
         isGameOver = oxygenManager.getGameOver();
 
-        // Update money
-        moneyManager.update();
-
         // Update harpoon game state
         harpoonLauncher.update();
 
@@ -313,7 +357,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
             if (harpoon.isRetracting()) {
                 // Handle when harpoon retracting
-                if (GameObject.getDistanceBetweenGameObjects(harpoon, player) <= 100) {
+                if (Math.abs(GameObject.getDistanceBetweenGameObjects(harpoon, player)) <= 100) {
                     for (Fish fish : harpoon.getFishList()) {
                         fishes.remove(fish);
                         spawnFish();

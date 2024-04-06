@@ -28,17 +28,6 @@ public class MoneyManager {
     }
 
     private long incMoneyStart = -1;
-    public void update() {
-        // TESTING ONLY
-        // Increment money per second
-        if (incMoneyStart == -1) {
-            incMoneyStart = System.currentTimeMillis();
-        }
-        if (System.currentTimeMillis() - incMoneyStart > 1000) {
-            money++;
-            incMoneyStart = System.currentTimeMillis();
-        }
-    }
 
     public void draw(Canvas canvas, Bitmap coinBitmap) {
         // Draw coin bar border
