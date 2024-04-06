@@ -39,6 +39,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     final int MAX_FISH_COUNT = 10;
     int fishId = 0;
 
+    private final FishSpriteSheet fishSpriteSheet;
+
     List<Fish> fishes = new ArrayList<Fish>();
 
     public GameView(Context context) {
@@ -52,26 +54,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         gameThread = new GameThread(this, surfaceHolder);
 
         // Initialise fish sprite sheet
-        FishSpriteSheet fishSpriteSheet = new FishSpriteSheet(context);
+        fishSpriteSheet = new FishSpriteSheet(context);
+
         // Initialise fish
         while (fishCount < MAX_FISH_COUNT) {
-            switch (fishId % 3) {
-                case 0:
-                    fishes.add(new Fish(context, fishId, fishSpriteSheet.getRedFishSprite()));
-                    break;
-                case 1:
-                    fishes.add(new Fish(context, fishId, fishSpriteSheet.getYellowFishSprite()));
-//                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getYellowFishSprite());
-                    break;
-                case 2:
-                    fishes.add(new Fish(context, fishId, fishSpriteSheet.getGreenFishSprite()));
-//                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getGreenFishSprite());
-                    break;
-            }
+            spawnFish();
 
             // FishThread fishThread = new FishThread(context, fishId, fishSpriteSheet.getRedFishSprite());
             //fishThreads[fishCount] = fishThread;
-            fishId++;
             fishCount++;
         }
         this.player = new Player(275, 800);
@@ -259,14 +249,25 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             if (harpoon.isRetracting() && GameObject.getDistanceBetweenGameObjects(harpoon, player) <= 100) {
 
                 Iterator<Fish> iteratorFish = fishes.iterator();
+                //how many fishes have been removed from the arraylist
+                int fishRemoved = 0;
+
                 while (iteratorFish.hasNext()) {
                     if (harpoon.getFishList().contains(iteratorFish.next())) {
                         System.out.println("TEST");
                         iteratorFish.remove();
+                        fishRemoved++;
                         // Add money here
-                    }
 
+                        // Spawns new fish afterwards
+                        //spawnFish();
+                    }
                 }
+
+                for (int i = 0; i < fishRemoved; i++) {
+                    spawnFish();
+                }
+
                 iteratorHarpoon.remove();
             }
 //            iteratorHarpoon.next();
@@ -277,9 +278,30 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         }
 
+
+
     }
 
     public void saveMoneyState() {
         moneyManager.saveMoney(getContext());
     }
+
+    //helper function to spawn new fish
+    public void spawnFish() {
+        switch (fishId % 3) {
+            case 0:
+                fishes.add(new Fish(context, fishId, fishSpriteSheet.getRedFishSprite()));
+                break;
+            case 1:
+                fishes.add(new Fish(context, fishId, fishSpriteSheet.getYellowFishSprite()));
+//                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getYellowFishSprite());
+                break;
+            case 2:
+                fishes.add(new Fish(context, fishId, fishSpriteSheet.getGreenFishSprite()));
+//                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getGreenFishSprite());
+                break;
+        }
+        fishId++;
+    }
+
 }
