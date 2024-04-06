@@ -16,11 +16,12 @@ public class FishSprite {
     }
 
     public void draw(Canvas canvas, int posX, int posY) {
-        int canvasWidth = canvas.getWidth();
-        canvas.drawBitmap(fishSpriteSheet.getBitmap(), spriteRect, new Rect(posX, posY, posX + 150, posY + 300), null);
-        positionRect = new Rect(canvasWidth - posX, posY, canvasWidth - posX + 150, posY + 300);
+        //int canvasWidth = canvas.getWidth();
+        positionRect =  new Rect(posX, posY, posX + (spriteRect.width() * 2), posY + (spriteRect.height() * 2));
+        canvas.drawBitmap(fishSpriteSheet.getBitmap(), spriteRect, positionRect, null);
+        //positionRect = new Rect(canvasWidth - posX, posY, canvasWidth - posX + 150, posY + 300);
 
-//        canvas.drawRect(positionRect, new Paint());
+        //canvas.drawRect(positionRect, new Paint());
     }
 
     public int getWidth() {
@@ -33,7 +34,7 @@ public class FishSprite {
 
     public void drawFlipped(Canvas canvas, int posX, int posY) {
         int canvasWidth = canvas.getWidth();
-        positionRect = new Rect(canvasWidth - posX, posY, canvasWidth - posX + 150, posY + 300);
+        positionRect = new Rect(canvasWidth - posX, posY, canvasWidth - posX + (spriteRect.width() * 2), posY + (spriteRect.height() * 2));
         canvas.save();
         canvas.scale(-1, 1, (float) spriteRect.width() / 2, (float) spriteRect.height() / 2);
         canvas.translate(-canvas.getWidth(), 0);

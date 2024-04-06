@@ -17,7 +17,12 @@ public class FishSpriteSheet {
     //width of empty space
     private final int WIDTH_OFFSET = 30;
 
-    private final int HEIGHT_OFFSET = 90;
+    private final int HEIGHT_OFFSET = 115;
+    private final int BOTTOM_HEIGHT_OFFSET = 115;
+
+    private final int RED_OFFSET = 10;
+
+    private final int GREEN_OFFSET = 10;
     public FishSpriteSheet(Context context) {
         BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
         bitmapOptions.inScaled = false;
@@ -28,7 +33,7 @@ public class FishSpriteSheet {
 
     public FishSprite getRedFishSprite() {
         //add 300 to go up/down, add 150 to go left/right
-        return new FishSprite(this, new Rect(WIDTH_OFFSET, HEIGHT_OFFSET, SPRITE_WIDTH, SPRITE_HEIGHT));
+        return new FishSprite(this, new Rect(WIDTH_OFFSET + RED_OFFSET, HEIGHT_OFFSET + RED_OFFSET, SPRITE_WIDTH - RED_OFFSET, SPRITE_HEIGHT - BOTTOM_HEIGHT_OFFSET - RED_OFFSET));
     }
 
     public FishSprite[] getRedFishSpriteArray() {
@@ -42,12 +47,12 @@ public class FishSpriteSheet {
 
     public FishSprite getYellowFishSprite() {
         //add 300 to go up/down, add 150 to go left/right
-        return new FishSprite(this, new Rect(WIDTH_OFFSET,SPRITE_HEIGHT + HEIGHT_OFFSET, SPRITE_WIDTH,SPRITE_HEIGHT * 2));
+        return new FishSprite(this, new Rect(WIDTH_OFFSET,SPRITE_HEIGHT + HEIGHT_OFFSET, SPRITE_WIDTH - GREEN_OFFSET,SPRITE_HEIGHT * 2 - BOTTOM_HEIGHT_OFFSET - GREEN_OFFSET));
     }
 
     public FishSprite getGreenFishSprite() {
         //add 300 to go up/down, add 150 to go left/right
-        return new FishSprite(this, new Rect(WIDTH_OFFSET,SPRITE_HEIGHT * 2 + HEIGHT_OFFSET, SPRITE_WIDTH,SPRITE_HEIGHT * 3));
+        return new FishSprite(this, new Rect(WIDTH_OFFSET + (GREEN_OFFSET * 3),SPRITE_HEIGHT * 2 + HEIGHT_OFFSET + GREEN_OFFSET, SPRITE_WIDTH - (GREEN_OFFSET * 3),SPRITE_HEIGHT * 3 - BOTTOM_HEIGHT_OFFSET- GREEN_OFFSET));
     }
 
     public Bitmap getBitmap() {
