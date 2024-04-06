@@ -6,16 +6,22 @@ public class FishAnimator {
     //moving fish
     private int idxMovingFrame = 1;
 
-    //dead fish
-    private int idxDeadFrame = 2;
+
+    //Which frame number is the last frame
+    private final int FINAL_FRAME = 4;
+
+
     public FishAnimator(FishSprite[] fishSpriteArray) {
         this.fishSpriteArray = fishSpriteArray;
     }
 
+    //go to next frame of animation
     private void toggleIdxMovingFrame() {
-        if(idxMovingFrame == 1)
-            idxMovingFrame = 2;
-        else
+        if(idxMovingFrame == FINAL_FRAME)
             idxMovingFrame = 1;
+        else
+            idxMovingFrame++;
     }
+
+
 }
