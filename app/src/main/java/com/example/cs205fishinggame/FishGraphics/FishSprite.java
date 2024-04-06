@@ -2,7 +2,6 @@ package com.example.cs205fishinggame.FishGraphics;
 
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Rect;
 
 public class FishSprite {
@@ -10,28 +9,19 @@ public class FishSprite {
     private final FishSpriteSheet fishSpriteSheet;
     private final Rect spriteRect;
     private Rect positionRect;
+    //FishSprite Constructor
     FishSprite(FishSpriteSheet fishSpriteSheet, Rect spriteRect) {
         this.fishSpriteSheet = fishSpriteSheet;
         this.spriteRect = spriteRect;
     }
 
+    //draws fish sprite (facing left) on canvas
     public void draw(Canvas canvas, int posX, int posY) {
-        //int canvasWidth = canvas.getWidth();
         positionRect =  new Rect(posX, posY, posX + (spriteRect.width() * 2), posY + (spriteRect.height() * 2));
         canvas.drawBitmap(fishSpriteSheet.getBitmap(), spriteRect, positionRect, null);
-        //positionRect = new Rect(canvasWidth - posX, posY, canvasWidth - posX + 150, posY + 300);
-
-//        canvas.drawRect(positionRect, new Paint());
     }
 
-    public int getWidth() {
-        return spriteRect.width();
-    }
-
-    public int getHeight() {
-        return spriteRect.height();
-    }
-
+    //draws fish sprite (facing right) on canvas
     public void drawFlipped(Canvas canvas, int posX, int posY) {
         int canvasWidth = canvas.getWidth();
         int spriteWidth = spriteRect.width();
