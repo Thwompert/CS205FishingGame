@@ -6,8 +6,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import com.example.cs205fishinggame.Fish;
 import com.example.cs205fishinggame.GameObject;
 import com.example.cs205fishinggame.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Harpoon extends GameObject {
     private Rect hitbox;
@@ -17,6 +21,7 @@ public class Harpoon extends GameObject {
     private double dirX;
     private double dirY;
     private boolean retracting = false;
+    private List<Fish> fishList;
 
     public Harpoon(Player player, double strengthX, double strengthY) {
         super(275, 800);
@@ -36,6 +41,7 @@ public class Harpoon extends GameObject {
         ropePaint.setStyle(Paint.Style.STROKE);
 
         hitbox = new Rect((int) (player.getPositionX() - 12.5), (int) (player.getPositionY() - 12.5), (int) (player.getPositionX() + 12.5), (int) (player.getPositionY() + 12.5));
+        fishList = new ArrayList<Fish>();
     }
 
     @Override
@@ -61,6 +67,14 @@ public class Harpoon extends GameObject {
 
     public boolean isRetracting() {
         return retracting;
+    }
+
+    public void addFish(Fish fish) {
+        fishList.add(fish);
+    }
+
+    public List<Fish> getFishList() {
+        return fishList;
     }
 
     @Override

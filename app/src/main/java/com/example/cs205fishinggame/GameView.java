@@ -39,7 +39,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     final int MAX_FISH_COUNT = 10;
     int fishId = 0;
 
-    Fish[] fishes = new Fish[MAX_FISH_COUNT];
+    List<Fish> fishes = new ArrayList<Fish>();
 
     public GameView(Context context) {
         super(context);
@@ -57,13 +57,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         while (fishCount < MAX_FISH_COUNT) {
             switch (fishId % 3) {
                 case 0:
-                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getRedFishSprite());
+                    fishes.add(new Fish(context, fishId, fishSpriteSheet.getRedFishSprite()));
                     break;
                 case 1:
-                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getYellowFishSprite());
+                    fishes.add(new Fish(context, fishId, fishSpriteSheet.getYellowFishSprite()));
+//                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getYellowFishSprite());
                     break;
                 case 2:
-                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getGreenFishSprite());
+                    fishes.add(new Fish(context, fishId, fishSpriteSheet.getGreenFishSprite()));
+//                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getGreenFishSprite());
                     break;
             }
 
@@ -241,18 +243,30 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         for (Harpoon harpoon : harpoonList) {
             harpoon.update();
             for (Fish fish : fishes) {
-                if (harpoon.hasCollided(fish.getRect())) {
+                if (!harpoon.isRetracting() && harpoon.hasCollided(fish.getRect())) {
                     fish.caught(harpoon);
+                    harpoon.addFish(fish);
                 }
             }
         }
 
 
-        // Iterate through fishlist and projectilelist to check for collisions
+        // Iterate through fishlist and harpoonlist to check for collisions
         Iterator<Harpoon> iteratorHarpoon = harpoonList.iterator();
         while (iteratorHarpoon.hasNext()) {
             Harpoon harpoon = iteratorHarpoon.next();
+            // Handle when harpoon retract fully
             if (harpoon.isRetracting() && GameObject.getDistanceBetweenGameObjects(harpoon, player) <= 100) {
+
+                Iterator<Fish> iteratorFish = fishes.iterator();
+                while (iteratorFish.hasNext()) {
+                    if (harpoon.getFishList().contains(iteratorFish.next())) {
+                        System.out.println("TEST");
+                        iteratorFish.remove();
+                        // Add money here
+                    }
+
+                }
                 iteratorHarpoon.remove();
             }
 //            iteratorHarpoon.next();

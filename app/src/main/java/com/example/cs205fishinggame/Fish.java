@@ -3,7 +3,6 @@ package com.example.cs205fishinggame;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.example.cs205fishinggame.FishGraphics.FishSprite;
@@ -37,6 +36,9 @@ public class Fish {
 
     private Harpoon caughtBy;
 
+    private float targetX;
+    private float targetY;
+
     public Fish(Context context, int id, FishSprite fishSprite) {
         this.context = context;
         this.id = id;
@@ -49,11 +51,15 @@ public class Fish {
         posX = LEFT_BORDER + rand.nextInt(LANDSCAPE_WIDTH - LEFT_BORDER);
         posY = rand.nextInt(LANDSCAPE_HEIGHT - fishSprite.getHeight());
 
-        speed = rand.nextFloat() + 0.5f;
+        speed = rand.nextFloat() * 20f;
         //paint = new Paint();
 //        paint.setColor(Color.rgb(255, 0, 0));
 
         this.fishSprite = fishSprite;
+
+        // Initialise target x and y coordinate
+        targetX = rand.nextFloat() * LANDSCAPE_WIDTH;
+        targetY = rand.nextFloat() * LANDSCAPE_HEIGHT;
     }
 
     //draws fish on the screen
@@ -70,15 +76,33 @@ public class Fish {
     //moves fish in the x axis
     public void move() {
         if (!isCaught) {
-            posX += ((float) fishSprite.getWidth() / 6) * direction * speed;
+            // Calculate direction towards the target point
+            float differenceX = targetX - posX;
+            float differenceY = targetY - posY;
+            float distance = (float) GameObject.getDistanceBetweenPoints(targetX, targetY, posX, posY);
 
-            //switches the direction of fish
-            if (posX < LEFT_BORDER || posX > LANDSCAPE_WIDTH) {
-                direction *= -1;
+            // Normalize direction vector
+            float directionX = differenceX / distance;
+            float directionY = differenceY / distance;
+
+            // Update fish position
+            posX += directionX * speed;
+            posY += directionY * speed;
+
+            // Check if fish reaches the target point
+            if (Math.abs(posX - targetX) < speed && Math.abs(posY - targetY) < speed) {
+                // Fish reached the target point, generate a new target point
+                Random random = new Random();
+                targetX = random.nextFloat() * LANDSCAPE_WIDTH;
+                targetY = random.nextFloat() * LANDSCAPE_HEIGHT;
             }
         } else {
             // make it follow harpoon
+            posX = (float) caughtBy.positionX;
+            posY = (float) caughtBy.positionY;
         }
+//        Rect rect = getRect();
+//        rect.set((int) posX, (int) posY, (int) (posX + 150), (int) (posY + 300));
     }
 
     public Rect getRect() {
