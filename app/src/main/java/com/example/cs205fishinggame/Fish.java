@@ -76,10 +76,10 @@ public class Fish {
         if (directionX > 0) {
 
             fishSprite.drawFlipped(canvas, (int) posX, (int) posY);
-            //fishAnimator.drawFlipped(canvas, (int) posX, (int) posY);
+            // fishAnimator.drawFlipped(canvas, (int) posX, (int) posY);
         } else {
             fishSprite.draw(canvas, (int) posX, (int) posY);
-            //fishAnimator.draw(canvas, (int) posX, (int) posY);
+            // fishAnimator.draw(canvas, (int) posX, (int) posY);
         }
     }
 

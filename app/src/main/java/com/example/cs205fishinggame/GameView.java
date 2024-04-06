@@ -15,6 +15,7 @@ import com.airbnb.lottie.LottieDrawable;
 import com.airbnb.lottie.LottieComposition;
 import com.airbnb.lottie.LottieCompositionFactory;
 import com.airbnb.lottie.LottieListener;
+import com.example.cs205fishinggame.FishGraphics.FishAnimator;
 import com.example.cs205fishinggame.object.Harpoon;
 
 import android.graphics.Bitmap;
@@ -259,11 +260,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                         fishRemoved++;
                         // Add money here
 
-                        // Spawns new fish afterwards
-                        //spawnFish();
+
                     }
                 }
 
+                // Spawns new fish after fish gets removed
                 for (int i = 0; i < fishRemoved; i++) {
                     spawnFish();
                 }
@@ -288,16 +289,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     //helper function to spawn new fish
     public void spawnFish() {
+        FishAnimator fishAnimator = null;
         switch (fishId % 3) {
             case 0:
-                fishes.add(new Fish(context, fishId, fishSpriteSheet.getRedFishSprite()));
+                fishAnimator = new FishAnimator(fishSpriteSheet.getRedFishSpriteArray());
+                fishes.add(new Fish(context, fishId, fishSpriteSheet.getRedFishSprite(), fishAnimator));
                 break;
             case 1:
-                fishes.add(new Fish(context, fishId, fishSpriteSheet.getYellowFishSprite()));
+                fishAnimator = new FishAnimator(fishSpriteSheet.getYellowFishSpriteArray());
+                fishes.add(new Fish(context, fishId, fishSpriteSheet.getYellowFishSprite(), fishAnimator));
 //                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getYellowFishSprite());
                 break;
             case 2:
-                fishes.add(new Fish(context, fishId, fishSpriteSheet.getGreenFishSprite()));
+                fishAnimator = new FishAnimator(fishSpriteSheet.getGreenFishSpriteArray());
+                fishes.add(new Fish(context, fishId, fishSpriteSheet.getGreenFishSprite(), fishAnimator));
 //                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getGreenFishSprite());
                 break;
         }
