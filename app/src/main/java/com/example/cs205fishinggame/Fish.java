@@ -11,8 +11,8 @@ import com.example.cs205fishinggame.object.Harpoon;
 import java.util.Random;
 
 public class Fish {
-    private Context context;
-    private int id;
+//    private Context context;
+//    private int id;
     private float posX;
     private float posY;
 
@@ -40,9 +40,9 @@ public class Fish {
     private float targetX;
     private float targetY;
 
-    public Fish(Context context, int id, FishSprite fishSprite) {
-        this.context = context;
-        this.id = id;
+    public Fish(Context context, FishSprite fishSprite) {
+//        this.context = context;
+//        this.id = id;
         Random rand = new Random();
 
         //set width and height of current device in landscape mode

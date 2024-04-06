@@ -290,14 +290,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void spawnFish() {
         switch (fishId % 3) {
             case 0:
-                fishes.add(new Fish(context, fishId, fishSpriteSheet.getRedFishSprite()));
+                fishes.add(new Fish(context, fishSpriteSheet.getRedFishSprite()));
                 break;
             case 1:
-                fishes.add(new Fish(context, fishId, fishSpriteSheet.getYellowFishSprite()));
+                fishes.add(new Fish(context, fishSpriteSheet.getYellowFishSprite()));
 //                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getYellowFishSprite());
                 break;
             case 2:
-                fishes.add(new Fish(context, fishId, fishSpriteSheet.getGreenFishSprite()));
+                fishes.add(new Fish(context, fishSpriteSheet.getGreenFishSprite()));
 //                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getGreenFishSprite());
                 break;
         }
