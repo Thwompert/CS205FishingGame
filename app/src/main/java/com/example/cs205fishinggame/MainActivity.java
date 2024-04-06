@@ -40,7 +40,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void buttonClicked(View view) {
-        Intent intent = new Intent(this, GameActivity.class);
-        startActivity(intent);
+        if(view.getId() == R.id.imageButton3) {
+            Intent intent = new Intent(this, HelpActivity.class);
+            startActivity(intent);
+        } else if(view.getId() == R.id.imageButton) {
+            Intent intent = new Intent(this, GameActivity.class);
+            startActivity(intent);
+        }
     }
 }
