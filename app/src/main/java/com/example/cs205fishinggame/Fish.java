@@ -16,8 +16,9 @@ public class Fish {
     private float posX;
     private float posY;
 
-    //used to determine the direction of the fish's movement. -1 for left, 1 for right.
-    private int direction = 1;
+    //used to determine the direction of the fish's movement.
+    private float directionX;
+    private float directionY;
 
     private final float speed;
 
@@ -66,7 +67,7 @@ public class Fish {
     public void draw(Canvas canvas) {
         //canvas.drawCircle(posX, posY, radius, paint);
         //fishSprite.draw(canvas, (int) posX, (int) posY);
-        if (direction == 1) {
+        if (directionX > 0) {
             fishSprite.drawFlipped(canvas, (int) posX, (int) posY);
         } else {
             fishSprite.draw(canvas, (int) posX, (int) posY);
@@ -82,8 +83,8 @@ public class Fish {
             float distance = (float) GameObject.getDistanceBetweenPoints(targetX, targetY, posX, posY);
 
             // Normalize direction vector
-            float directionX = differenceX / distance;
-            float directionY = differenceY / distance;
+            directionX = differenceX / distance;
+            directionY = differenceY / distance;
 
             // Update fish position
             posX += directionX * speed;
