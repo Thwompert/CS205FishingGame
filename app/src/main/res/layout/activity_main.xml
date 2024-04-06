@@ -66,8 +66,8 @@
         android:layout_marginEnd="124dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/help"
-        android:onClick="buttonClicked"
         android:contentDescription="help_button"
+        android:onClick="buttonClicked"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="@+id/imageView" />
 
@@ -79,6 +79,7 @@
         android:layout_marginBottom="24dp"
         android:background="@drawable/settings"
         android:contentDescription="settings"
+        android:onClick="openSettings"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="@+id/imageView" />
 
