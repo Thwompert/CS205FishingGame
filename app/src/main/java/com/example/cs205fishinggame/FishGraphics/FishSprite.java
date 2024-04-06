@@ -21,7 +21,7 @@ public class FishSprite {
         canvas.drawBitmap(fishSpriteSheet.getBitmap(), spriteRect, positionRect, null);
         //positionRect = new Rect(canvasWidth - posX, posY, canvasWidth - posX + 150, posY + 300);
 
-        //canvas.drawRect(positionRect, new Paint());
+//        canvas.drawRect(positionRect, new Paint());
     }
 
     public int getWidth() {
@@ -34,14 +34,21 @@ public class FishSprite {
 
     public void drawFlipped(Canvas canvas, int posX, int posY) {
         int canvasWidth = canvas.getWidth();
-        positionRect = new Rect(canvasWidth - posX, posY, canvasWidth - posX + (spriteRect.width() * 2), posY + (spriteRect.height() * 2));
+        int spriteWidth = spriteRect.width();
+        int spriteHeight = spriteRect.height();
+
+        positionRect = new Rect(posX, posY, posX + (spriteWidth * 2), posY + (spriteHeight * 2));
+        //where to draw the fish in the flipped canvas
+        Rect destRect = new Rect(canvasWidth - posX, posY, canvasWidth - posX + (spriteWidth * 2), posY + (spriteHeight * 2));
+
+        //flip canvas, then draw fish inside the flipped canvas
         canvas.save();
-        canvas.scale(-1, 1, (float) spriteRect.width() / 2, (float) spriteRect.height() / 2);
-        canvas.translate(-canvas.getWidth(), 0);
-        canvas.drawBitmap(fishSpriteSheet.getBitmap(), spriteRect, positionRect , null);
-//        canvas.setMatrix(null);
+        canvas.scale(-1, 1, (float) spriteWidth / 2, (float) spriteHeight / 2);
+        canvas.translate(- canvasWidth - spriteWidth, 0);
+        canvas.drawBitmap(fishSpriteSheet.getBitmap(), spriteRect, destRect, null);
 //        canvas.drawRect(positionRect, new Paint());
         canvas.restore();
+//        canvas.drawRect(positionRect, new Paint());
     }
 
     public Rect getRect(){
