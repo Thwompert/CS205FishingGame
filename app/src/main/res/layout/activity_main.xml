@@ -105,7 +105,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias="0.0"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/diver" />
@@ -114,10 +114,12 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Merlion Mayhem"
-        android:textSize="150px"
-        android:textColor="#828F0B"
         android:contentDescription="title"
+        android:text="Merlion Mayhem"
+        android:fontFamily="@font/swimmingfont"
+        android:textSize="40sp"
+        android:textColor="#57490E"
+
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -127,6 +129,26 @@
         app:layout_constraintHorizontal_bias="0.15"
 
         />
+
+    <ImageView
+        android:id="@+id/merlion2"
+        android:layout_width="132sp"
+        android:layout_height="88sp"
+        android:alpha="0.5"
+        android:layout_marginBottom="5sp"
+        app:layout_constraintBottom_toTopOf="@+id/imageButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/merlion" />
+
+    <ImageView
+        android:id="@+id/merlion1"
+        android:layout_width="132sp"
+        android:layout_height="88sp"
+        android:alpha="0.5"
+        android:layout_marginBottom="5sp"
+        app:layout_constraintBottom_toTopOf="@+id/imageButton4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/merlion" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

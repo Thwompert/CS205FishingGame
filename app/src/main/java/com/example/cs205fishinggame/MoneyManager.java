@@ -10,6 +10,7 @@ import android.graphics.RectF;
 
 public class MoneyManager {
     private int money;
+    private SharedPreferences prefs;
 
     public MoneyManager() {
         this.money = 0; // Setting the initial amount of money by the player to 0
@@ -67,14 +68,14 @@ public class MoneyManager {
     }
 
     public void saveMoney(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getApplicationContext().getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("Money", this.money);
         editor.apply();
     }
 
     public void loadMoney(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getApplicationContext().getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
         this.money = prefs.getInt("Money", 0); // Default to 0 if not found
     }
 }
