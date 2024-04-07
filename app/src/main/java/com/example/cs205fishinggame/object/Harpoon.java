@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 
 import com.example.cs205fishinggame.Constants;
 import com.example.cs205fishinggame.Fish;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Harpoon extends GameObject {
-    private Rect hitbox;
+    private RectF hitbox;
     private Paint ropePaint;
     private Player player;
     private Paint tipPaint;
@@ -43,9 +44,10 @@ public class Harpoon extends GameObject {
         tipPaint.setColor(Color.WHITE);
         velocityX = strengthX * harpoonSpeed;
         velocityY = strengthY * harpoonSpeed;
-        double distance = getDistanceBetweenPoints(0, 0, strengthX, strengthY);
+        double distance = getDistanceBetweenPoints(0, 0, velocityX, velocityY);
         dirX = velocityX / distance;
         dirY = velocityY / distance;
+
 
         this.player = player;
         ropePaint = new Paint();
@@ -54,7 +56,7 @@ public class Harpoon extends GameObject {
         ropePaint.setColor(Color.rgb(88, 57, 39));
         ropePaint.setStyle(Paint.Style.STROKE);
 
-        hitbox = new Rect((int) (player.getPositionX() - 12.5), (int) (player.getPositionY() - 12.5), (int) (player.getPositionX() + 12.5), (int) (player.getPositionY() + 12.5));
+        hitbox = new RectF((float) (player.getPositionX() - 12.5), (float) (player.getPositionY() - 12.5), (float) (player.getPositionX() + 12.5), (float) (player.getPositionY() + 12.5));
         fishList = new ArrayList<Fish>();
     }
 
@@ -72,7 +74,7 @@ public class Harpoon extends GameObject {
 //        }
     }
 
-    public boolean hasCollided(Rect fish) {
+    public boolean hasCollided(RectF fish) {
         if (hitbox.intersect(fish)) {
             return true;
         }
@@ -95,7 +97,6 @@ public class Harpoon extends GameObject {
     public void update(float deltaTime) {
         positionX += velocityX * deltaTime;
         positionY += velocityY * deltaTime;
-
         // Update hitbox to move with tip
         hitbox.set((int) (positionX - 12.5), (int) (positionY - 12.5), (int) (positionX + 12.5), (int) (positionY + 12.5));
 
@@ -104,7 +105,7 @@ public class Harpoon extends GameObject {
             // Apply damping to slow down velocity
             //float dampingFactor = 0.92f; // Adjust this value as needed
 
-            float dampingFactor = (float) Math.pow(0.4, deltaTime);
+            float dampingFactor = (float) Math.pow(Constants.HARPOON_DAMPING_FACTOR, deltaTime);
 
             velocityX *= dampingFactor;
             velocityY *= dampingFactor;
@@ -116,10 +117,9 @@ public class Harpoon extends GameObject {
             }
             if (velocityX == 0 && velocityY == 0) {
                 retracting = true;
+                velocityX = -dirX * Constants.RETRACT_SPEED;
+                velocityY = -dirY * Constants.RETRACT_SPEED;
             }
-        } else {
-            velocityX = -dirX * 0.5;
-            velocityY = -dirY * 0.5;
         }
     }
 

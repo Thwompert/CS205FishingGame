@@ -3,12 +3,13 @@ package com.example.cs205fishinggame.FishGraphics;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.RectF;
 
 public class FishSprite {
 
     private final FishSpriteSheet fishSpriteSheet;
     private final Rect spriteRect;
-    private Rect positionRect;
+    private RectF positionRect;
     //FishSprite Constructor
     FishSprite(FishSpriteSheet fishSpriteSheet, Rect spriteRect) {
         this.fishSpriteSheet = fishSpriteSheet;
@@ -16,20 +17,20 @@ public class FishSprite {
     }
 
     //draws fish sprite (facing left) on canvas
-    public void draw(Canvas canvas, int posX, int posY) {
-        positionRect =  new Rect(posX, posY, posX + (spriteRect.width() * 2), posY + (spriteRect.height() * 2));
+    public void draw(Canvas canvas, float posX, float posY) {
+        positionRect =  new RectF(posX, posY, posX + (spriteRect.width() * 2), posY + (spriteRect.height() * 2));
         canvas.drawBitmap(fishSpriteSheet.getBitmap(), spriteRect, positionRect, null);
     }
 
     //draws fish sprite (facing right) on canvas
-    public void drawFlipped(Canvas canvas, int posX, int posY) {
+    public void drawFlipped(Canvas canvas, float posX, float posY) {
         int canvasWidth = canvas.getWidth();
         int spriteWidth = spriteRect.width();
         int spriteHeight = spriteRect.height();
 
-        positionRect = new Rect(posX, posY, posX + (spriteWidth * 2), posY + (spriteHeight * 2));
+        positionRect = new RectF(posX, posY, posX + (spriteWidth * 2), posY + (spriteHeight * 2));
         //where to draw the fish in the flipped canvas
-        Rect destRect = new Rect(canvasWidth - posX, posY, canvasWidth - posX + (spriteWidth * 2), posY + (spriteHeight * 2));
+        RectF destRect = new RectF(canvasWidth - posX, posY, canvasWidth - posX + (spriteWidth * 2), posY + (spriteHeight * 2));
 
         //flip canvas, then draw fish inside the flipped canvas
         canvas.save();
@@ -41,7 +42,7 @@ public class FishSprite {
 //        canvas.drawRect(positionRect, new Paint());
     }
 
-    public Rect getRect(){
+    public RectF getRect(){
         return positionRect;
     }
 

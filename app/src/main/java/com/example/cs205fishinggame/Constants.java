@@ -6,7 +6,7 @@ import android.graphics.Typeface;
 public class Constants {
     public static final double HARPOON_SPEED = 1000;
 
-    public static final double HARPOON_DAMPING_FACTOR = 0.92;
+    public static final double HARPOON_DAMPING_FACTOR = 0.4;
     public static final double HARPOON_RETURN_THRESH = 50;
     public static final double CATCH_SPEED = 200;
     public static final float MIN_FISH_SPEED = 10;
@@ -14,6 +14,7 @@ public class Constants {
     public static final double BUBBLE_Y_SPEED = 9;
     public static final double BUBBLE_X_SPEED = 5;
     public static final double BUBBLE_X_THRESH = 10;
+    public static final double RETRACT_SPEED = 400;
     public static int CANVAS_WIDTH;
     public static int CANVAS_HEIGHT;
     public static int maxFishCount = 10;

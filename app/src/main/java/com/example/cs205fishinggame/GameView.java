@@ -150,12 +150,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
         initBackground();
         initOxygenAndCoin();
+
+        // Initialise constants with canvas height and width
         new Constants(getWidth(), getHeight());
-        this.player = new Player(Constants.PLAYER_X, Constants.PLAYER_Y);
+        // Init player position
+        player = new Player(Constants.PLAYER_X, Constants.PLAYER_Y);
+        // Init harpoon launcher position
         harpoonLauncher = new HarpoonLauncher(Constants.JOYSTICK_X, Constants.JOYSTICK_Y, Constants.JOYSTICK_OUTER_RADIUS, Constants.JOYSTICK_INNER_RADIUS, player);
 
-
-        for (int i = 0; i < 50; ++i) {
+        // Initialise bubbles
+        for (int i = 0; i < 20; ++i) {
             bubbles.add(new Bubble());
         }
 
@@ -203,8 +207,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 // Spawn harpoon
                 if (harpoonLauncher.getActuatorX() != 0 || harpoonLauncher.getActuatorY() != 0) {
                     harpoonList.add(new Harpoon(player, -harpoonLauncher.getActuatorX(), -harpoonLauncher.getActuatorY()));
+
+                    oxygenManager.depleteOxygen(1);
                 }
-                oxygenManager.depleteOxygen(1);
 
                 harpoonLauncher.setIsPressed(false);
                 harpoonLauncher.resetActuator();

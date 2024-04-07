@@ -4,6 +4,7 @@ package com.example.cs205fishinggame;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.RectF;
 
 import com.example.cs205fishinggame.FishGraphics.FishSprite;
 import com.example.cs205fishinggame.object.Harpoon;
@@ -56,6 +57,14 @@ public class Fish {
         // Initialise target x and y coordinate
         targetX = rand.nextFloat() * LANDSCAPE_WIDTH;
         targetY = rand.nextFloat() * LANDSCAPE_HEIGHT;
+        // Calculate direction towards the target point
+        float differenceX = targetX - posX;
+        float differenceY = targetY - posY;
+        float distance = (float) GameObject.getDistanceBetweenPoints(targetX, targetY, posX, posY);
+
+        // Normalize direction vector
+        directionX = differenceX / distance;
+        directionY = differenceY / distance;
     }
 
     //draws fish on the screen
@@ -71,14 +80,6 @@ public class Fish {
     //moves fish in the x axis
     public void move(float deltaTime) {
         if (!isCaught) {
-            // Calculate direction towards the target point
-            float differenceX = targetX - posX;
-            float differenceY = targetY - posY;
-            float distance = (float) GameObject.getDistanceBetweenPoints(targetX, targetY, posX, posY);
-
-            // Normalize direction vector
-            directionX = differenceX / distance;
-            directionY = differenceY / distance;
             // Update fish position
             posX += directionX * speed ;
             posY += directionY * speed ;
@@ -90,6 +91,15 @@ public class Fish {
                 targetX = random.nextFloat() * LANDSCAPE_WIDTH;
                 targetY = random.nextFloat() * LANDSCAPE_HEIGHT;
                 speed = Constants.MIN_FISH_SPEED + random.nextFloat() * (Constants.MAX_FISH_SPEED - Constants.MIN_FISH_SPEED);
+
+                // Calculate direction towards the target point
+                float differenceX = targetX - posX;
+                float differenceY = targetY - posY;
+                float distance = (float) GameObject.getDistanceBetweenPoints(targetX, targetY, posX, posY);
+
+                // Normalize direction vector
+                directionX = differenceX / distance;
+                directionY = differenceY / distance;
             }
         } else {
             // make it follow harpoon
@@ -98,7 +108,7 @@ public class Fish {
         }
     }
 
-    public Rect getRect() {
+    public RectF getRect() {
         return fishSprite.getRect();
     }
 
