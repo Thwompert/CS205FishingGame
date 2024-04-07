@@ -165,7 +165,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         player = new Player(Constants.PLAYER_X, Constants.PLAYER_Y);
         // Init harpoon launcher position
         harpoonLauncher = new HarpoonLauncher(Constants.JOYSTICK_X, Constants.JOYSTICK_Y, Constants.JOYSTICK_OUTER_RADIUS, Constants.JOYSTICK_INNER_RADIUS, player);
-        harpoonStrength =  (prefs.getInt("HarpoonLevel", 1) - 1) * Constants.HARPOON_SPEED_PER_LEVEL;
+        harpoonStrength = (prefs.getInt("HarpoonLevel", 1) - 1) * Constants.HARPOON_SPEED_PER_LEVEL;
 
         // Initialise bubbles
         for (int i = 0; i < Constants.BUBBLE_COUNT; ++i) {
@@ -221,13 +221,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     oxygenManager.depleteOxygen(1);
                 }
 
-//                // Check if a certain game condition is met to reward money
-//                if (harpoonLauncher.successfulHit()) {
-//                    moneyManager.addMoney(10); // Reward the player with a certain number of coins based on the fish that is caught
-//                }
-                    harpoonLauncher.setIsPressed(false);
-                    harpoonLauncher.resetActuator();
-                    return true;
+                harpoonLauncher.setIsPressed(false);
+                harpoonLauncher.resetActuator();
+                return true;
 
 
         }
@@ -250,10 +246,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             paint.setAlpha(Constants.MERLION_ALPHA);
             canvas.drawBitmap(merlionBitmap, Constants.MERLION_X, Constants.MERLION_Y, paint);
         }
-
-
-//        // Draw harpoons launched
-//        harpoonLauncher.draw(canvas);
 
         if (drawUPSText) {
             drawUPS(canvas);
@@ -328,27 +320,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     drawCenterText(canvas, p, Constants.GAMEOVER_TEXT);
                 } else {
                     activity.showEndScreen(fishesCaught, moneyManager.getMoney());
-//                    if (context instanceof GameActivity) {
-//                        ((GameActivity) context).finish();
-//                    } else {
-////                        // Create new MainActivity - Should not reach here
-////                        Intent intent = new Intent(context, MainActivity.class);
-////                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear the back stack
-////                        context.startActivity(intent);
-//                    }
-//                    activity.finish();
-                    // Navigate back to MainActivity
-//                    Intent intent = new Intent(context, MainActivity.class);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Clear back stack
-//                    context.startActivity(intent);
-
                 }
             }
-
         }
-
-
-
     }
 
 

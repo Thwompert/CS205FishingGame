@@ -52,10 +52,6 @@ public class GameThread extends Thread {
         int updateCount = 0;
         int frameCount = 0;
 
-//        int fishCount = 0;
-//        final int MAX_FISH_COUNT = 10;
-//        int fishId = 0;
-
         // Game loop
         while (isRunning) {
                 if (!game.isPaused) {
@@ -65,12 +61,6 @@ public class GameThread extends Thread {
                     synchronized (surfaceHolder) {
                         game.update();
                         updateCount++;
-
-//                    while (fishCount < MAX_FISH_COUNT) {
-//                        FishThread fishThread = new FishThread(fishId);
-//                        fishId++;
-//                        fishCount++;
-//                    }
                         game.draw(canvas);
                     }
                 } catch (IllegalArgumentException e) {

@@ -52,14 +52,6 @@ public class ShopActivity extends AppCompatActivity {
         levelText3 = findViewById(R.id.ShopItemLevel3);
         updateMoneyDisplay();
         updateLevelDisplay();
-
-//        moneyManager = new MoneyManager();
-//        moneyManager.loadMoney(this.getApplicationContext());
-
-//        coinBitmap = BitmapFactory.decodeResource(this.getApplicationContext().getResources(), R.drawable.coin_bg_removed);
-//        coinBitmap = Bitmap.createScaledBitmap(coinBitmap, (int) (coinBitmap.getWidth() * Constants.COINICON_SCALE), (int) (coinBitmap.getHeight() * Constants.COINICON_SCALE), true);
-//        new MoneyManager().draw(new Canvas(), coinBitmap);
-
     }
 
     private void updateLevelDisplay() {
