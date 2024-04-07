@@ -24,9 +24,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import android.media.MediaPlayer;
 
 public class MainActivity extends AppCompatActivity {
     PopupWindow settings;
+    private MediaPlayer mediaPlayer;
     View popupView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,11 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
         );
+
+        // Initialising MediaPlayer and setting it to the music file
+        mediaPlayer = mediaPlayer.create(this, R.raw.main_menu_music);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
 
         setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -162,6 +169,31 @@ public class MainActivity extends AppCompatActivity {
         // Dismiss the PopupWindow
         if (settings != null && settings.isShowing()) {
             settings.dismiss();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mediaPlayer != null) {
+            mediaPlayer.pause();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+            mediaPlayer.start();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
         }
     }
 }
