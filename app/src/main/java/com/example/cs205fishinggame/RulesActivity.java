@@ -67,14 +67,14 @@ public class RulesActivity extends AppCompatActivity {
         }
     }
 
-    // Method called when the 'back to main' button is clicked
+    // Method called when the back to main button is clicked
     public void onBackToMainClicked(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }
 
-    // Method called when the 'back' button is clicked
+    // Method called when the back to backstory page button is clicked
     public void onBackButtonClicked(View view) {
         finish();
     }

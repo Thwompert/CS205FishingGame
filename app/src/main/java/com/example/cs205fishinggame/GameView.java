@@ -117,7 +117,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         // Create a new bitmap scaled to the size of the canvas
         backgroundBitmap = Bitmap.createScaledBitmap(originalBitmap, getWidth(), getHeight(), true);
 
-        // If the original bitmap won't be used again, you can recycle it to free up memory
         originalBitmap.recycle();
 
         // Create scaled merlion bitmap
@@ -129,7 +128,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private void initLottieAnimation() {
         lottieDrawable = new LottieDrawable();
-        // Load your animation with the LottieDrawable here
+        // Load animation with the LottieDrawable here
         LottieCompositionFactory.fromRawRes(context, R.raw.diver).addListener(new LottieListener<LottieComposition>() {
             @Override
             public void onResult(LottieComposition composition) {
@@ -256,10 +255,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         harpoonLauncher.draw(canvas);
 
         if (lottieDrawable != null) {
-            int animationWidth = 600; // Adjust as needed
-            int animationHeight = 600; // Adjust as needed
-            int startX = 0; // Move 100 pixels to the right
-            int startY = 0; // Move 50 pixels down
+            int animationWidth = 600;
+            int animationHeight = 600;
+            int startX = 0;
+            int startY = 0;
 
             // Correctly set the bounds for the lottieDrawable
             lottieDrawable.setBounds(startX, startY, startX + animationWidth, startY + animationHeight + 200);

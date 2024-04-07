@@ -56,7 +56,7 @@ public class HelpActivity extends AppCompatActivity {
     public void onBackButtonClicked(View view) {
         finish(); // Closes this activity and returns to the previous one
     }
-    // Method to navigate to the RulesActivity
+    // Method to navigate to the rules page
     private void goToRulesPage() {
         Intent intent = new Intent(HelpActivity.this, RulesActivity.class);
         startActivity(intent);
