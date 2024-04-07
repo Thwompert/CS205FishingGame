@@ -37,13 +37,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        WindowManager windowManager = getWindowManager();
-        Display display = windowManager.getDefaultDisplay();
-        display.getMetrics(displayMetrics);
-
-        new Constants(displayMetrics.widthPixels, displayMetrics.heightPixels);
-
         // Set window to fullscreen (hide status bar)
         Window window = getWindow();
         window.setFlags(

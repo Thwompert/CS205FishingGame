@@ -21,6 +21,7 @@ public class OxygenManager {
     private Vibrator vibrator;
 
     private boolean isGameOver = false;
+    private boolean hasVibrated = false;
 
     public OxygenManager(Context context) {
         this.context = context;
@@ -81,8 +82,9 @@ public class OxygenManager {
     }
 
     private void checkOxygenLevel(int oxygenLevel) {
-        if (oxygenLevel < LOW_OXYGEN_THRESHOLD) {
+        if (oxygenLevel < LOW_OXYGEN_THRESHOLD & !hasVibrated) {
             vibratePhone();
+            hasVibrated = true;
         }
     }
 

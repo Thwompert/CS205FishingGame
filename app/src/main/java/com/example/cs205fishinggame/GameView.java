@@ -1,15 +1,12 @@
 package com.example.cs205fishinggame;
 
-import android.app.Activity;
+import static java.lang.Thread.sleep;
+
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.AssetManager;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -17,8 +14,6 @@ import android.view.SurfaceView;
 import android.graphics.BitmapFactory;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.airbnb.lottie.LottieDrawable;
 import com.airbnb.lottie.LottieComposition;
@@ -28,15 +23,15 @@ import com.example.cs205fishinggame.object.Harpoon;
 
 import android.graphics.Bitmap;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import com.example.cs205fishinggame.FishGraphics.FishSpriteSheet;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
-    private final HarpoonLauncher harpoonLauncher;
+    private HarpoonLauncher harpoonLauncher;
     private GameThread gameThread;
     private Context context;
     private GameActivity activity;
@@ -51,6 +46,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private MoneyManager moneyManager;
     //how many fishes are currently on screen
     int fishCount = 0;
+    int fishesCaught = 0;
     final int MAX_FISH_COUNT = 10;
     int fishId = 0;
     boolean isPaused = false;
@@ -66,7 +62,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private Typeface chikiBubblesFont;
 
-    int fishesCaught = 0;
+    private final BubbleUpdaterPool bubbleUpdaterPool = new BubbleUpdaterPool();
+    private final ArrayList<Bubble> bubbles = new ArrayList<Bubble>();
+
+    private final Object mutex = new Object();
 
     public void loadPreferences(Context context) {
         SharedPreferences prefs = context.getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
@@ -100,8 +99,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         // Initialise game objects
-        this.player = new Player(Constants.PLAYER_X, Constants.PLAYER_Y);
-        harpoonLauncher = new HarpoonLauncher(Constants.JOYSTICK_X, Constants.JOYSTICK_Y, Constants.JOYSTICK_OUTER_RADIUS, Constants.JOYSTICK_INNER_RADIUS, player);
         oxygenManager = new OxygenManager(context);
 
         // Initialising money manager -> to keep track of the money that the player currently has
@@ -158,6 +155,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
         initBackground();
         initOxygenAndCoin();
+        new Constants(getWidth(), getHeight());
+        this.player = new Player(Constants.PLAYER_X, Constants.PLAYER_Y);
+        harpoonLauncher = new HarpoonLauncher(Constants.JOYSTICK_X, Constants.JOYSTICK_Y, Constants.JOYSTICK_OUTER_RADIUS, Constants.JOYSTICK_INNER_RADIUS, player);
+
+
+        for (int i = 0; i < 50; ++i) {
+            bubbles.add(new Bubble());
+        }
+
+        for (int i = 0; i < 5; ++i) {
+            bubbleUpdaterPool.submit(this::bubbleMove);
+        }
+
+
         gameThread.startLoop();
     }
 
@@ -270,6 +281,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         // Draw fishes
         for (Fish fish : fishes) {
             fish.draw(canvas);
+        }
+
+        // Draw bubbles
+        for (Bubble bubble : bubbles) {
+            bubble.draw(canvas);
         }
 
         // Check game over
@@ -416,5 +432,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void stop() {
         gameThread.stopLoop();
+    }
+
+    private void bubbleMove() {
+        Random dice = new Random();
+        while (true) {
+            try {
+                sleep(dice.nextInt(10));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            int index = dice.nextInt(bubbles.size());
+            synchronized (mutex) {
+                bubbles.get(index).move();
+            }
+        }
     }
 }

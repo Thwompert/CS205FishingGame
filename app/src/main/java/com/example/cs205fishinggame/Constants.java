@@ -13,6 +13,9 @@ public class Constants {
     public static final double CATCH_SPEED = 20;
     public static final float MIN_FISH_SPEED = 20;
     public static final float MAX_FISH_SPEED = 40;
+    public static final double BUBBLE_Y_SPEED = 3;
+    public static final double BUBBLE_X_SPEED = 1;
+    public static final double BUBBLE_X_THRESH = 10;
     public static int CANVAS_WIDTH;
     public static int CANVAS_HEIGHT;
     public static final int MAX_FISH_COUNT = 10;
