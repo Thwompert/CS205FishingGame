@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/background3" />
+        app:srcCompat="@drawable/background4" />
 
     <ImageButton
         android:id="@+id/backButton"
