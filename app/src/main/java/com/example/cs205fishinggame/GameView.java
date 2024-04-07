@@ -128,14 +128,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private void initLottieAnimation() {
         lottieDrawable = new LottieDrawable();
-        // Load animation with the LottieDrawable here
+        // Load animation
         LottieCompositionFactory.fromRawRes(context, R.raw.diver).addListener(new LottieListener<LottieComposition>() {
             @Override
             public void onResult(LottieComposition composition) {
                 lottieDrawable.setComposition(composition);
                 lottieDrawable.setRepeatCount(LottieDrawable.INFINITE);
-
-
                 lottieDrawable.playAnimation();
             }
         });
@@ -254,19 +252,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         // Draw harpoon joystick
         harpoonLauncher.draw(canvas);
 
+        // Draw diver
         if (lottieDrawable != null) {
             int animationWidth = 600;
             int animationHeight = 600;
             int startX = 0;
             int startY = 0;
 
-            // Correctly set the bounds for the lottieDrawable
+            // Set the bounds for the lottieDrawable
             lottieDrawable.setBounds(startX, startY, startX + animationWidth, startY + animationHeight + 200);
 
             // Save the current state of the canvas
             int saveCount = canvas.save();
 
-            // Flip the animation horizontally around its center
+            // Flip the animation horizontally
             canvas.scale(-1f, 1f, startX + (animationWidth / 2f), startY + (animationHeight / 2f));
 
             // Draw the diver
