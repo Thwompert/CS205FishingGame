@@ -1,6 +1,7 @@
 package com.example.cs205fishinggame;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -17,6 +18,7 @@ public class OxygenManager {
     private Context context;
 
     private int currentOxygen;
+    private int maxOxygen = MAX_OXYGEN;
     private long startTime;
     private Vibrator vibrator;
 
@@ -25,7 +27,7 @@ public class OxygenManager {
 
     public OxygenManager(Context context) {
         this.context = context;
-        currentOxygen = Constants.MAX_OXYGEN;
+        currentOxygen = Constants.maxOxygen;
         startTime = System.currentTimeMillis();
         vibrator = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
         System.out.println("Oxygen created");
@@ -36,8 +38,9 @@ public class OxygenManager {
         return isGameOver;
     }
 
-    public int getOxygen() {
-        return currentOxygen;
+    public void loadOxygenPref() {
+        SharedPreferences prefs = context.getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
+        this.maxOxygen = prefs.getInt("MaxOxygen", Constants.maxOxygen);
     }
 
     public int getLowOxygenThreshold() {
@@ -46,7 +49,7 @@ public class OxygenManager {
 
 
     private int getColorOfCurrentOxy() {
-        float percent = (float) currentOxygen / (float) Constants.MAX_OXYGEN;
+        float percent = (float) currentOxygen / (float) maxOxygen;
 
         int red = (int) (Color.red(Constants.OXYGENBAR_FILL_START_COLOR) * percent + Color.red(Constants.OXYGENBAR_FILL_END_COLOR) * (1 - percent));
         int green = (int) (Color.green(Constants.OXYGENBAR_FILL_START_COLOR) * percent + Color.green(Constants.OXYGENBAR_FILL_END_COLOR) * (1 - percent));
@@ -63,7 +66,7 @@ public class OxygenManager {
         paint.setColor(getColorOfCurrentOxy()); // Set color of the bar
 
         // Calculate height of the bar based on current countdown value
-        int innerBarHeight = (int) (((float) currentOxygen / (float) Constants.MAX_OXYGEN) * Constants.OXYGENBAR_HEIGHT);
+        int innerBarHeight = (int) (((float) currentOxygen / (float) Constants.maxOxygen) * Constants.OXYGENBAR_HEIGHT);
 
         // Draw inner bar using a rounded rect
         RectF rect = new RectF(Constants.OXYGENBAR_X, Constants.OXYGENBAR_Y + (Constants.OXYGENBAR_HEIGHT - innerBarHeight),

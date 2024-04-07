@@ -90,15 +90,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         fishSpriteSheet = new FishSpriteSheet(context);
 
         // Initialise fish
-        while (fishCount < Constants.MAX_FISH_COUNT) {
+        while (fishCount < Constants.maxFishCount) {
             spawnFish();
-
-            // FishThread fishThread = new FishThread(context, fishId, fishSpriteSheet.getRedFishSprite());
-            //fishThreads[fishCount] = fishThread;
             fishCount++;
         }
 
         // Initialise game objects
+        oxygenManager = new OxygenManager(context);
+        this.player = new Player(Constants.PLAYER_X, Constants.PLAYER_Y);
+        harpoonLauncher = new HarpoonLauncher(Constants.JOYSTICK_X, Constants.JOYSTICK_Y, Constants.JOYSTICK_OUTER_RADIUS , Constants.JOYSTICK_INNER_RADIUS, player);
         oxygenManager = new OxygenManager(context);
 
         // Initialising money manager -> to keep track of the money that the player currently has
