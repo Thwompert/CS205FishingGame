@@ -144,6 +144,9 @@ public class GameActivity extends Activity {
     // Method to return to the main menu
     public void mainMenu(View view) {
         gameView.stop();
+        if (pauseMenu != null && pauseMenu.isShowing()) {
+            pauseMenu.dismiss();
+        }
         finish();
     }
 
