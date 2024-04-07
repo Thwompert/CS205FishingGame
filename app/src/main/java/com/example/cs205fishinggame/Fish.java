@@ -70,10 +70,9 @@ public class Fish {
     //draws fish on the screen
     public void draw(Canvas canvas) {
         if (directionX > 0) {
-
-            fishSprite.drawFlipped(canvas, (int) posX, (int) posY);
+            fishSprite.drawFlipped(canvas, posX, posY);
         } else {
-            fishSprite.draw(canvas, (int) posX, (int) posY);
+            fishSprite.draw(canvas, posX, posY);
         }
     }
 
@@ -81,8 +80,8 @@ public class Fish {
     public void move(float deltaTime) {
         if (!isCaught) {
             // Update fish position
-            posX += directionX * speed ;
-            posY += directionY * speed ;
+            posX += directionX * speed * deltaTime;
+            posY += directionY * speed * deltaTime;
 
             // Check if fish reaches the target point
             if (Math.abs(posX - targetX) < speed && Math.abs(posY - targetY) < speed) {

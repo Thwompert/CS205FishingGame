@@ -87,6 +87,8 @@ public class Harpoon extends GameObject {
 
     public void addFish(Fish fish) {
         fishList.add(fish);
+        velocityX *= dampingFactor;
+        velocityY *= dampingFactor;
     }
 
     public List<Fish> getFishList() {

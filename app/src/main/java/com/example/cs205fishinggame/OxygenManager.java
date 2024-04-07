@@ -26,9 +26,9 @@ public class OxygenManager {
     private boolean isGameOver = false;
     private boolean hasVibrated = false;
 
-    public OxygenManager() {
+    public OxygenManager(Context context) {
         startTime = System.currentTimeMillis();
-        vibrator = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         System.out.println("Oxygen created");
         //startLoop();
     }

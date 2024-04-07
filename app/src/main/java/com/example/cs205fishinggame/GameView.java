@@ -107,10 +107,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         // Initialise game objects
-        oxygenManager = new OxygenManager();
-        this.player = new Player(Constants.PLAYER_X, Constants.PLAYER_Y);
-        harpoonLauncher = new HarpoonLauncher(Constants.JOYSTICK_X, Constants.JOYSTICK_Y, Constants.JOYSTICK_OUTER_RADIUS , Constants.JOYSTICK_INNER_RADIUS, player);
-        oxygenManager = new OxygenManager();
+        oxygenManager = new OxygenManager(context);
         moneyManager = new MoneyManager();
 
         // Initialising money and oxygen managers
@@ -169,11 +166,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         harpoonLauncher = new HarpoonLauncher(Constants.JOYSTICK_X, Constants.JOYSTICK_Y, Constants.JOYSTICK_OUTER_RADIUS, Constants.JOYSTICK_INNER_RADIUS, player);
 
         // Initialise bubbles
-        for (int i = 0; i < 20; ++i) {
+        for (int i = 0; i < Constants.BUBBLE_COUNT; ++i) {
             bubbles.add(new Bubble());
         }
 
-        for (int i = 0; i < 5; ++i) {
+        for (int i = 0; i < Constants.BUBBLE_THREADS; ++i) {
             bubbleUpdaterPool.submit(this::bubbleMove);
         }
 
@@ -370,7 +367,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawText("FPS: " + averageUPS, 100, 150, paint);
     }
 
-    long lastUpdate;
+    long lastUpdate = System.currentTimeMillis();
 
     public void update() {
         float deltaTime = System.currentTimeMillis() - lastUpdate;
