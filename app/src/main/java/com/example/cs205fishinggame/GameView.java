@@ -66,6 +66,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final ArrayList<Bubble> bubbles = new ArrayList<Bubble>();
 
     private final Object mutex = new Object();
+    public boolean isStopped = false;
 
     public void loadPreferences(Context context) {
         SharedPreferences prefs = context.getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
@@ -342,7 +343,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawText("FPS: " + averageUPS, 100, 150, paint);
     }
 
+    long lastUpdate;
+
     public void update() {
+        float deltaTime = System.currentTimeMillis() - lastUpdate;
+        deltaTime /= 1000f;
+        lastUpdate = System.currentTimeMillis();
         // Update oxygen, check game over
         oxygenManager.update();
         isGameOver = oxygenManager.getGameOver();
@@ -352,7 +358,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         // Update fish movement
         for (Fish fish : fishes) {
-            fish.move();
+            fish.move(deltaTime);
 
             if (!fish.isCaught()) {
                 for (Harpoon harpoon : harpoonList) {
@@ -368,7 +374,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         Iterator<Harpoon> iteratorHarpoon = harpoonList.iterator();
         while (iteratorHarpoon.hasNext()) {
             Harpoon harpoon = iteratorHarpoon.next();
-            harpoon.update();
+            harpoon.update(deltaTime);
 
             if (harpoon.isRetracting()) {
                 // Handle when harpoon retracting
@@ -431,20 +437,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void stop() {
+        isStopped = true;
         gameThread.stopLoop();
     }
 
     private void bubbleMove() {
         Random dice = new Random();
         while (true) {
-            try {
-                sleep(dice.nextInt(10));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            int index = dice.nextInt(bubbles.size());
-            synchronized (mutex) {
-                bubbles.get(index).move();
+            if (!isPaused) {
+                try {
+                    sleep(dice.nextInt(10));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                int index = dice.nextInt(bubbles.size());
+                synchronized (mutex) {
+                    bubbles.get(index).move();
+                }
             }
         }
     }

@@ -69,7 +69,7 @@ public class Fish {
     }
 
     //moves fish in the x axis
-    public void move() {
+    public void move(float deltaTime) {
         if (!isCaught) {
             // Calculate direction towards the target point
             float differenceX = targetX - posX;
@@ -79,10 +79,9 @@ public class Fish {
             // Normalize direction vector
             directionX = differenceX / distance;
             directionY = differenceY / distance;
-
             // Update fish position
-            posX += directionX * speed;
-            posY += directionY * speed;
+            posX += directionX * speed ;
+            posY += directionY * speed ;
 
             // Check if fish reaches the target point
             if (Math.abs(posX - targetX) < speed && Math.abs(posY - targetY) < speed) {

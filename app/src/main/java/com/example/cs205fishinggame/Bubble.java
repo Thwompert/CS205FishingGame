@@ -19,7 +19,7 @@ public class Bubble extends GameObject {
         rand = new Random();
         columnX = rand.nextInt(Constants.CANVAS_WIDTH);
         positionX = columnX;
-        positionY += rand.nextInt(500);
+        positionY += rand.nextInt(Constants.CANVAS_HEIGHT);
         radius = rand.nextInt(25);
 
         paint = new Paint();
@@ -33,7 +33,7 @@ public class Bubble extends GameObject {
     }
 
     @Override
-    public void update() {
+    public void update(float deltaTime) {
 
     }
 

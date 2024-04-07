@@ -92,9 +92,9 @@ public class Harpoon extends GameObject {
     }
 
     @Override
-    public void update() {
-        positionX += velocityX;
-        positionY += velocityY;
+    public void update(float deltaTime) {
+        positionX += velocityX * deltaTime;
+        positionY += velocityY * deltaTime;
 
         // Update hitbox to move with tip
         hitbox.set((int) (positionX - 12.5), (int) (positionY - 12.5), (int) (positionX + 12.5), (int) (positionY + 12.5));
@@ -103,6 +103,9 @@ public class Harpoon extends GameObject {
             // slow down velocityx and y
             // Apply damping to slow down velocity
             //float dampingFactor = 0.92f; // Adjust this value as needed
+
+            float dampingFactor = (float) Math.pow(0.4, deltaTime);
+
             velocityX *= dampingFactor;
             velocityY *= dampingFactor;
 
