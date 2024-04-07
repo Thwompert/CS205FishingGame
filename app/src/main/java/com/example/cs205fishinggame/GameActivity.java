@@ -30,6 +30,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+/**
+ * GameActivity class handles creation of the game view.
+ */
 public class GameActivity extends Activity {
 
     private GameView gameView;
@@ -52,9 +55,9 @@ public class GameActivity extends Activity {
         // Set content view to game so objects in game class can be rendered to screen
         gameView = new GameView(this);
         rootLayout.addView(gameView); // Add GameView to the root layout
-        // Create a smaller button as the menu overlay
+
+        // Create a pause button
         pauseButton = new Button(this);
-        // Set the button text (optional)
         pauseButton.setText("||");
         pauseButton.setTextSize(20);
 
@@ -63,12 +66,13 @@ public class GameActivity extends Activity {
                 ViewGroup.LayoutParams.WRAP_CONTENT, // Width
                 ViewGroup.LayoutParams.WRAP_CONTENT  // Height
         );
-        buttonParams1.gravity = Gravity.TOP | Gravity.END; // Position at top right corner
-        buttonParams1.setMargins(0, 20, 20, 0); // Add margin to top and right
+        // Position at top right corner
+        buttonParams1.gravity = Gravity.TOP | Gravity.END;
+        buttonParams1.setMargins(0, 20, 20, 0);
         pauseButton.setLayoutParams(buttonParams1);
 
         // Set background color with transparency
-        pauseButton.setBackgroundColor(Color.parseColor("#80FFFFFF")); // Set transparency to 50%
+        pauseButton.setBackgroundColor(Color.parseColor("#80FFFFFF"));
 
         // Add the button to the root layout
         rootLayout.addView(pauseButton);
@@ -93,7 +97,7 @@ public class GameActivity extends Activity {
                 ViewGroup.LayoutParams.MATCH_PARENT
         );
 
-        // Set an onClickListener for the menu button
+        // Set an onClickListener for the pause button
         pauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,17 +119,9 @@ public class GameActivity extends Activity {
         mediaPlayer.start();
 
         hideStatusBar();
-
-
-//
-//
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.game_screen), (v, insets) -> {
-//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-//            return insets;
-//        });
     }
 
+    // Method to hide the status bar
     private void hideStatusBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             WindowInsetsController wic = getWindow().getInsetsController();
@@ -135,6 +131,7 @@ public class GameActivity extends Activity {
         }
     }
 
+    // Method to resume the game
     public void resume(View view) {
         // Add your menu logic here
         gameView.resume();
@@ -144,9 +141,8 @@ public class GameActivity extends Activity {
         }
     }
 
+    // Method to return to the main menu
     public void mainMenu(View view) {
-//        Intent intent = new Intent(this, MainActivity.class);
-//        startActivity(intent);
         gameView.stop();
         finish();
     }
@@ -168,10 +164,6 @@ public class GameActivity extends Activity {
         if (mediaPlayer != null) {
             mediaPlayer.pause();
         }
-        // Call a method on GameView to handle saving the money
-//        if (gameView != null) {
-//            gameView.saveMoneyState();
-//        }
     }
 
     @Override

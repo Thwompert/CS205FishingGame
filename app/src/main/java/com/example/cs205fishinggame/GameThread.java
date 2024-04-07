@@ -30,6 +30,7 @@ public class GameThread extends Thread {
         start();
     }
 
+    // join() to ensure thread can run to completion
     public void stopLoop() {
         isRunning = false;
         game.isPaused = true;

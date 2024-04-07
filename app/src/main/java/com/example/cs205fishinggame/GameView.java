@@ -359,6 +359,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         for (Fish fish : fishes) {
             fish.move(deltaTime);
 
+            // Check for collision with harpoon
+            // add fish to harpoon if collided at sufficient speed
             if (!fish.isCaught()) {
                 for (Harpoon harpoon : harpoonList) {
                     if (!harpoon.isRetracting() && harpoon.hasCollided(fish.getRect()) && harpoon.getSpeed() > Constants.CATCH_SPEED) {
@@ -377,6 +379,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
             if (harpoon.isRetracting()) {
                 // Handle when harpoon retracting
+                // Obtain money for each fish caught by harpoon and spawn new fish
+                // Then remove the harpoon
                 if (GameObject.getDistanceBetweenGameObjects(harpoon, player) <= 100) {
                     for (Fish fish : harpoon.getFishList()) {
                         fishes.remove(fish);
@@ -425,11 +429,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 break;
             case 1:
                 fishes.add(new Fish(context, fishSpriteSheet.getYellowFishSprite()));
-//                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getYellowFishSprite());
                 break;
             case 2:
                 fishes.add(new Fish(context, fishSpriteSheet.getGreenFishSprite()));
-//                    fishes[fishCount] = new Fish(context, fishId, fishSpriteSheet.getGreenFishSprite());
                 break;
         }
         fishId++;
@@ -440,6 +442,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         gameThread.stopLoop();
     }
 
+    // Method that randomly picks a bubble to move
+    // synchronised on a mutex object so a bubble
+    // is only updated one thread at a time
     private void bubbleMove() {
         Random dice = new Random();
         while (true) {

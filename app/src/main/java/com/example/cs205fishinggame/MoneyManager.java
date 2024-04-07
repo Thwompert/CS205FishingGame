@@ -23,8 +23,6 @@ public class MoneyManager {
     public void subtractMoney(int amount) {
         if (amount <= this.money) {
             this.money -= amount;
-        } else {
-            // Handle the case where there is not enough money
         }
     }
 
@@ -52,10 +50,8 @@ public class MoneyManager {
         canvas.drawBitmap(coinBitmap, null, coinDst, null);
 
         // Draw money value
-        //String moneyText =  "" + moneyManager.getMoney();
         String moneyText = Integer.toString(money);
         paint = new Paint();
-        //int color = ContextCompat.getColor(context, R.color.black);
         paint.setColor(Constants.COINVAL_COLOR);
         paint.setTextSize(Constants.COINVAL_TEXT_SIZE);
         paint.setTextAlign(Paint.Align.CENTER);
