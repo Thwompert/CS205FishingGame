@@ -7,7 +7,7 @@ public class GameThread extends Thread {
     private boolean isRunning = false;
     private GameView game;
     private SurfaceHolder surfaceHolder;
-    private static final double MAX_UPS = 60.0;
+    private static final double MAX_UPS = 120.0;
     private static final double UPS_PERIOD = 1E+3 / MAX_UPS;
     private double averageUPS;
     private double averageFPS;
@@ -28,6 +28,16 @@ public class GameThread extends Thread {
     public void startLoop() {
         isRunning = true;
         start();
+    }
+
+    public void stopLoop() {
+        isRunning = false;
+        game.isPaused = true;
+        try {
+            join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

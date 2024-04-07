@@ -21,15 +21,28 @@ public class Harpoon extends GameObject {
     private Paint tipPaint;
     private double dirX;
     private double dirY;
+
+    private static double harpoonSpeed = -1;
+    private static double dampingFactor = -1;
     private boolean retracting = false;
     private List<Fish> fishList;
 
     public Harpoon(Player player, double strengthX, double strengthY) {
         super(player.getPositionX(), player.getPositionY());
+
+        // Initialize harpoon speed
+        if (harpoonSpeed == -1) {
+            harpoonSpeed = Constants.HARPOON_SPEED;
+        }
+
+        if (dampingFactor == -1) {
+            dampingFactor = Constants.HARPOON_DAMPING_FACTOR;
+        }
+
         tipPaint = new Paint();
         tipPaint.setColor(Color.WHITE);
-        velocityX = strengthX * Constants.HARPOON_SPEED;
-        velocityY = strengthY * Constants.HARPOON_SPEED;
+        velocityX = strengthX * harpoonSpeed;
+        velocityY = strengthY * harpoonSpeed;
         double distance = getDistanceBetweenPoints(0, 0, strengthX, strengthY);
         dirX = velocityX / distance;
         dirY = velocityY / distance;
@@ -47,7 +60,7 @@ public class Harpoon extends GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawRect(hitbox, ropePaint);
+//        canvas.drawRect(hitbox, ropePaint);
         canvas.drawLine(
                 (float) (player.getPositionX()),
                 (float) (player.getPositionY()),
@@ -89,15 +102,13 @@ public class Harpoon extends GameObject {
         if (!retracting) {
             // slow down velocityx and y
             // Apply damping to slow down velocity
-            float dampingFactor = 0.92f; // Adjust this value as needed
+            //float dampingFactor = 0.92f; // Adjust this value as needed
             velocityX *= dampingFactor;
             velocityY *= dampingFactor;
 
             // If velocity is close to zero, set it to zero to prevent infinite small updates
-            if (Math.abs(velocityX) < 1) {
+            if (getSpeed() < Constants.HARPOON_RETURN_THRESH) { //1) {
                 velocityX = 0;
-            }
-            if (Math.abs(velocityY) < 1) {
                 velocityY = 0;
             }
             if (velocityX == 0 && velocityY == 0) {

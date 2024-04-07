@@ -17,6 +17,7 @@ import android.view.WindowInsetsController;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -33,6 +34,8 @@ public class GameActivity extends Activity {
     private GameView gameView;
     private MediaPlayer mediaPlayer;
     private PopupWindow pauseMenu;
+    private PopupWindow endScreen;
+    private View endView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +77,15 @@ public class GameActivity extends Activity {
         // Create the PopupWindow
         pauseMenu = new PopupWindow(
                 popupView,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+        );
+
+        endView = inflater.inflate(R.layout.end_screen, null);
+
+        // Create the PopupWindow
+        endScreen = new PopupWindow(
+                endView,
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
         );
@@ -131,8 +143,9 @@ public class GameActivity extends Activity {
     }
 
     public void mainMenu(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, MainActivity.class);
+//        startActivity(intent);
+        gameView.stop();
         finish();
     }
 
@@ -154,6 +167,21 @@ public class GameActivity extends Activity {
 //        if (gameView != null) {
 //            gameView.saveMoneyState();
 //        }
+    }
+
+    public void showEndScreen(int fishCaught, int profit) {// Run UI-related code on the main UI thread
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView fishCaughtText = endView.findViewById(R.id.fishesCaughtTextView);
+                fishCaughtText.setText("Fish Caught: " + fishCaught);
+                TextView profitText = endView.findViewById(R.id.profitTextView);
+                profitText.setText("" + profit);
+
+                // Show the PopupWindow at the center of the screen
+                endScreen.showAtLocation(gameView, Gravity.CENTER, 0, 0);
+            }
+        });
     }
 
     @Override
