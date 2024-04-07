@@ -162,7 +162,7 @@ public class GameActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (!gameView.isPaused) {
+        if (!gameView.isStopped && !gameView.isPaused) {
             pauseButton.callOnClick();
         }
         if (mediaPlayer != null) {

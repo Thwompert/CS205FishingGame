@@ -58,7 +58,7 @@ public class GameThread extends Thread {
 
         // Game loop
         while (isRunning) {
-            while (!game.isPaused) {
+                if (!game.isPaused) {
                 // Try to update and render game
                 try {
                     canvas = surfaceHolder.lockCanvas();
