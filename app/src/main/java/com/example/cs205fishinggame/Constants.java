@@ -63,6 +63,14 @@ public class Constants {
     public static String CHIKI_FONT_ID = "chikibubbles_font.ttf";
     public static String SWIMMING_FONT_ID = "swimmingpool_font.ttf";
 
+    public static final int PRICE_UPGRADE_OXYGEN = 10; // 150
+
+    public static final int UPGRADE_OXYGEN = 10;
+
+    public static final int PRICE_UPGRADE_FISHES = 10; // 200;
+    public static final int UPGRADE_FISHES = 3;
+
+
     public Constants(int widthPixels, int heightPixels) {
         CANVAS_HEIGHT = heightPixels;
         CANVAS_WIDTH = widthPixels;

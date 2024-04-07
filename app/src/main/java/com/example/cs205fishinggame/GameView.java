@@ -47,7 +47,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     //how many fishes are currently on screen
     int fishCount = 0;
     int fishesCaught = 0;
-    final int MAX_FISH_COUNT = 10;
+    int maxFishCount = 10;
     int fishId = 0;
     boolean isPaused = false;
 
@@ -62,6 +62,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private Typeface chikiBubblesFont;
 
+    private SharedPreferences prefs;
     private final BubbleUpdaterPool bubbleUpdaterPool = new BubbleUpdaterPool();
     private final ArrayList<Bubble> bubbles = new ArrayList<Bubble>();
 
@@ -73,7 +74,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 
     public void loadPreferences(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getApplicationContext().getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
         this.drawUPSText = prefs.getBoolean("drawUPS", false); // Default to 0 if not found
         this.drawFPSText = prefs.getBoolean("drawFPS", false); // Default to 0 if not found
     }
@@ -87,29 +88,38 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         SurfaceHolder surfaceHolder = this.getHolder();
         surfaceHolder.addCallback(this);
 
+        // Initialize SharedPrefs and load preferences
+        prefs = context.getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
         loadPreferences(context);
 
+        // Start game thread
         gameThread = new GameThread(this, surfaceHolder);
+        setFocusable(true);
 
         // Initialise fish sprite sheet
         fishSpriteSheet = new FishSpriteSheet(context);
 
         // Initialise fish
-        while (fishCount < Constants.maxFishCount) {
+        maxFishCount = prefs.getInt("MaxFishCount", Constants.maxFishCount);
+        while (fishCount < maxFishCount) {
             spawnFish();
             fishCount++;
         }
 
         // Initialise game objects
-        oxygenManager = new OxygenManager(context);
+        oxygenManager = new OxygenManager();
         this.player = new Player(Constants.PLAYER_X, Constants.PLAYER_Y);
         harpoonLauncher = new HarpoonLauncher(Constants.JOYSTICK_X, Constants.JOYSTICK_Y, Constants.JOYSTICK_OUTER_RADIUS , Constants.JOYSTICK_INNER_RADIUS, player);
-        oxygenManager = new OxygenManager(context);
-
-        // Initialising money manager -> to keep track of the money that the player currently has
+        oxygenManager = new OxygenManager();
         moneyManager = new MoneyManager();
+
+        // Initialising money and oxygen managers
         moneyManager.loadMoney(context);
         setFocusable(true);
+        oxygenManager.loadOxygenPrefs(context);
+
+        // Init bitmaps and animations
+
         initOxygenAndCoin();
         initFonts();
 
@@ -178,10 +188,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
+        // Save money
+        moneyManager.saveMoney(context);
+
         if (diverThread != null && diverThread.isAlive()) {
             diverThread.interrupt();
         }
-
     }
 
     @Override
@@ -211,9 +223,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     oxygenManager.depleteOxygen(1);
                 }
 
-                harpoonLauncher.setIsPressed(false);
-                harpoonLauncher.resetActuator();
-                return true;
+//                // Check if a certain game condition is met to reward money
+//                if (harpoonLauncher.successfulHit()) {
+//                    moneyManager.addMoney(10); // Reward the player with a certain number of coins based on the fish that is caught
+//                }
+                    harpoonLauncher.setIsPressed(false);
+                    harpoonLauncher.resetActuator();
+                    return true;
+
+
         }
 
         return super.onTouchEvent(event);
@@ -235,6 +253,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             canvas.drawBitmap(merlionBitmap, Constants.MERLION_X, Constants.MERLION_Y, paint);
         }
 
+
+//        // Draw harpoons launched
+//        harpoonLauncher.draw(canvas);
 
         if (drawUPSText) {
             drawUPS(canvas);
@@ -325,7 +346,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
                 }
             }
+
         }
+
+
+
     }
 
 

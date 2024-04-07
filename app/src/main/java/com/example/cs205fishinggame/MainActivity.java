@@ -67,12 +67,6 @@ public class MainActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT
         );
 
-
-        // Set font type for title
-        Typeface swimmingPoolFont = Typeface.createFromAsset(this.getAssets(), Constants.SWIMMING_FONT_ID);
-        TextView titleText = findViewById(R.id.title);
-        titleText.setTypeface(swimmingPoolFont);
-
     }
 
     public void buttonClicked(View view) {

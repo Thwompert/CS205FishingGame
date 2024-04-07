@@ -22,12 +22,11 @@ public class OxygenManager {
     private long startTime;
     private Vibrator vibrator;
 
+
     private boolean isGameOver = false;
     private boolean hasVibrated = false;
 
-    public OxygenManager(Context context) {
-        this.context = context;
-        currentOxygen = Constants.maxOxygen;
+    public OxygenManager() {
         startTime = System.currentTimeMillis();
         vibrator = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
         System.out.println("Oxygen created");
@@ -38,9 +37,10 @@ public class OxygenManager {
         return isGameOver;
     }
 
-    public void loadOxygenPref() {
-        SharedPreferences prefs = context.getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
+    public void loadOxygenPrefs(Context context) {
+        SharedPreferences prefs = context.getApplicationContext().getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
         this.maxOxygen = prefs.getInt("MaxOxygen", Constants.maxOxygen);
+        currentOxygen = maxOxygen;
     }
 
     public int getLowOxygenThreshold() {
@@ -66,7 +66,7 @@ public class OxygenManager {
         paint.setColor(getColorOfCurrentOxy()); // Set color of the bar
 
         // Calculate height of the bar based on current countdown value
-        int innerBarHeight = (int) (((float) currentOxygen / (float) Constants.maxOxygen) * Constants.OXYGENBAR_HEIGHT);
+        int innerBarHeight = (int) (((float) currentOxygen / (float) maxOxygen) * Constants.OXYGENBAR_HEIGHT);
 
         // Draw inner bar using a rounded rect
         RectF rect = new RectF(Constants.OXYGENBAR_X, Constants.OXYGENBAR_Y + (Constants.OXYGENBAR_HEIGHT - innerBarHeight),
