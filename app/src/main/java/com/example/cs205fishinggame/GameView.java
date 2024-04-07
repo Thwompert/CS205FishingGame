@@ -2,6 +2,9 @@ package com.example.cs205fishinggame;
 
 import static java.lang.Thread.sleep;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
@@ -16,9 +19,6 @@ import android.graphics.BitmapFactory;
 import androidx.annotation.NonNull;
 
 import com.airbnb.lottie.LottieDrawable;
-import com.airbnb.lottie.LottieComposition;
-import com.airbnb.lottie.LottieCompositionFactory;
-import com.airbnb.lottie.LottieListener;
 import com.example.cs205fishinggame.object.Harpoon;
 
 import android.graphics.Bitmap;
@@ -68,6 +68,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final Object mutex = new Object();
     public boolean isStopped = false;
 
+    private Thread diverThread;
+    private Handler mainHandler;
+
+
     public void loadPreferences(Context context) {
         SharedPreferences prefs = context.getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
         this.drawUPSText = prefs.getBoolean("drawUPS", false); // Default to 0 if not found
@@ -106,9 +110,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         moneyManager = new MoneyManager();
         moneyManager.loadMoney(context);
         setFocusable(true);
-        initLottieAnimation();
         initOxygenAndCoin();
         initFonts();
+
+        // Diver Thread
+        lottieDrawable = new LottieDrawable();
+        mainHandler = new Handler(Looper.getMainLooper());
+        DiverThread animationRunnable = new DiverThread(context, lottieDrawable, mainHandler);
+        diverThread = new Thread(animationRunnable);
+        diverThread.start();
     }
 
     private void initBackground() {
@@ -125,19 +135,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         merlionBitmap = Bitmap.createScaledBitmap(originalMerlionBm, (int) (originalMerlionBm.getWidth() * Constants.MERLION_SCALE), (int) (originalMerlionBm.getHeight() * Constants.MERLION_SCALE), true);
         originalMerlionBm.recycle();
 
-    }
-
-    private void initLottieAnimation() {
-        lottieDrawable = new LottieDrawable();
-        // Load animation
-        LottieCompositionFactory.fromRawRes(context, R.raw.diver).addListener(new LottieListener<LottieComposition>() {
-            @Override
-            public void onResult(LottieComposition composition) {
-                lottieDrawable.setComposition(composition);
-                lottieDrawable.setRepeatCount(LottieDrawable.INFINITE);
-                lottieDrawable.playAnimation();
-            }
-        });
     }
 
     private void initFonts() {
@@ -177,7 +174,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
-
+        if (diverThread != null && diverThread.isAlive()) {
+            diverThread.interrupt();
+        }
 
     }
 
