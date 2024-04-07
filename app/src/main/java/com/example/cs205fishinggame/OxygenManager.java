@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.widget.EditText;
 import android.os.Vibrator;
 import android.os.VibrationEffect;
 import android.os.Build;
@@ -23,10 +22,11 @@ public class OxygenManager {
 
     private boolean isGameOver = false;
 
-    public OxygenManager() {
+    public OxygenManager(Context context) {
+        this.context = context;
         currentOxygen = Constants.MAX_OXYGEN;
         startTime = System.currentTimeMillis();
-        vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
         System.out.println("Oxygen created");
         //startLoop();
     }
