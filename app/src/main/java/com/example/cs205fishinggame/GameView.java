@@ -352,6 +352,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     if (!harpoon.isRetracting() && harpoon.hasCollided(fish.getRect()) && harpoon.getSpeed() > Constants.CATCH_SPEED) {
                         fish.caught(harpoon);
                         harpoon.addFish(fish);
+                        oxygenManager.depleteOxygen(1);
                     }
                 }
             }

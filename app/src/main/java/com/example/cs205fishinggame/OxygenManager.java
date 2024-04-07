@@ -97,6 +97,10 @@ public class OxygenManager {
         }
     }
 
+    public void depleteOxygen(int amount) {
+        this.currentOxygen -= amount;
+    }
+
     public void update() {
         if (System.currentTimeMillis() - startTime >= Constants.OXYGEN_DRAIN_RATE * 1000) {
             currentOxygen--;
