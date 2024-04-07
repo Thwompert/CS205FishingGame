@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+
 import android.media.MediaPlayer;
 import android.content.Context;
 
@@ -36,6 +37,8 @@ public class GameActivity extends Activity {
     private PopupWindow pauseMenu;
     private PopupWindow endScreen;
     private View endView;
+    private boolean isPoppedUp = false;
+    Button pauseButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +53,7 @@ public class GameActivity extends Activity {
         gameView = new GameView(this);
         rootLayout.addView(gameView); // Add GameView to the root layout
         // Create a smaller button as the menu overlay
-        Button pauseButton = new Button(this);
+        pauseButton = new Button(this);
         // Set the button text (optional)
         pauseButton.setText("||");
         pauseButton.setTextSize(20);
@@ -114,7 +117,6 @@ public class GameActivity extends Activity {
         hideStatusBar();
 
 
-
 //
 //
 //        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.game_screen), (v, insets) -> {
@@ -160,6 +162,7 @@ public class GameActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
+        pauseButton.callOnClick();
         if (mediaPlayer != null) {
             mediaPlayer.pause();
         }
@@ -169,19 +172,29 @@ public class GameActivity extends Activity {
 //        }
     }
 
-    public void showEndScreen(int fishCaught, int profit) {// Run UI-related code on the main UI thread
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextView fishCaughtText = endView.findViewById(R.id.fishesCaughtTextView);
-                fishCaughtText.setText("Fish Caught: " + fishCaught);
-                TextView profitText = endView.findViewById(R.id.profitTextView);
-                profitText.setText("" + profit);
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        gameView.stop();
+    }
 
-                // Show the PopupWindow at the center of the screen
-                endScreen.showAtLocation(gameView, Gravity.CENTER, 0, 0);
-            }
-        });
+    public void showEndScreen(int fishCaught, int profit) {// Run UI-related code on the main UI thread
+        if (!isPoppedUp) {
+
+            isPoppedUp = true;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView fishCaughtText = endView.findViewById(R.id.fishesCaughtTextView);
+                    fishCaughtText.setText("Fish Caught: " + fishCaught);
+                    TextView profitText = endView.findViewById(R.id.profitTextView);
+                    profitText.setText("" + profit);
+
+                    // Show the PopupWindow at the center of the screen
+                    endScreen.showAtLocation(gameView, Gravity.CENTER, 0, 0);
+                }
+            });
+        }
     }
 
     @Override
@@ -195,6 +208,8 @@ public class GameActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        gameView.stop();
+        endScreen.dismiss();
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();

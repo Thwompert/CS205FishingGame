@@ -20,7 +20,7 @@ public class Fish {
     private float directionY;
 
     //how fast the fish will move
-    private final float speed;
+    private float speed;
 
 
     //width and height of current device
@@ -48,7 +48,7 @@ public class Fish {
         posY = rand.nextInt(LANDSCAPE_HEIGHT + 200) - 100;
 
         //randomize speed
-        speed = rand.nextFloat() * 20f;
+        speed = Constants.MIN_FISH_SPEED + rand.nextFloat() * (Constants.MAX_FISH_SPEED - Constants.MIN_FISH_SPEED);
 
         //initialize fish sprite
         this.fishSprite = fishSprite;
@@ -90,6 +90,7 @@ public class Fish {
                 Random random = new Random();
                 targetX = random.nextFloat() * LANDSCAPE_WIDTH;
                 targetY = random.nextFloat() * LANDSCAPE_HEIGHT;
+                speed = Constants.MIN_FISH_SPEED + random.nextFloat() * (Constants.MAX_FISH_SPEED - Constants.MIN_FISH_SPEED);
             }
         } else {
             // make it follow harpoon

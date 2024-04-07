@@ -11,6 +11,8 @@ public class Constants {
     public static final double HARPOON_DAMPING_FACTOR = 0.92;
     public static final double HARPOON_RETURN_THRESH = 30;
     public static final double CATCH_SPEED = 20;
+    public static final float MIN_FISH_SPEED = 20;
+    public static final float MAX_FISH_SPEED = 40;
     public static int CANVAS_WIDTH;
     public static int CANVAS_HEIGHT;
     public static final int MAX_FISH_COUNT = 10;
