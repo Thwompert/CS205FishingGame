@@ -88,7 +88,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         // Initialise game objects
         this.player = new Player(Constants.PLAYER_X, Constants.PLAYER_Y);
         harpoonLauncher = new HarpoonLauncher(Constants.JOYSTICK_X, Constants.JOYSTICK_Y, Constants.JOYSTICK_OUTER_RADIUS , Constants.JOYSTICK_INNER_RADIUS, player);
-        oxygenManager = new OxygenManager();
+        oxygenManager = new OxygenManager(context);
 
         // Initialising money manager -> to keep track of the money that the player currently has
         moneyManager = new MoneyManager();

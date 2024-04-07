@@ -1,5 +1,7 @@
 package com.example.cs205fishinggame;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -8,11 +10,15 @@ import android.graphics.RectF;
 public class OxygenManager {
 
     private int currentOxygen;
+    private int maxOxygen;
     private long startTime;
+
+    private Context context;
 
     private boolean isGameOver = false;
 
-    public OxygenManager() {
+    public OxygenManager(Context context) {
+        this.context = context;
         currentOxygen = Constants.maxOxygen;
         startTime = System.currentTimeMillis();
     }
@@ -21,13 +27,14 @@ public class OxygenManager {
         return isGameOver;
     }
 
-    public int getOxygen() {
-        return currentOxygen;
+    public void loadOxygenPref() {
+        SharedPreferences prefs = context.getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
+        this.maxOxygen = prefs.getInt("MaxOxygen", Constants.maxOxygen);
     }
 
 
     private int getColorOfCurrentOxy() {
-        float percent = (float) currentOxygen / (float) Constants.maxOxygen;
+        float percent = (float) currentOxygen / (float) maxOxygen;
 
         int red = (int) (Color.red(Constants.OXYGENBAR_FILL_START_COLOR) * percent + Color.red(Constants.OXYGENBAR_FILL_END_COLOR) * (1 - percent));
         int green = (int) (Color.green(Constants.OXYGENBAR_FILL_START_COLOR) * percent + Color.green(Constants.OXYGENBAR_FILL_END_COLOR) * (1 - percent));

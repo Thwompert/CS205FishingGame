@@ -30,7 +30,7 @@ public class Constants {
     public static final int COINVAL_TEXT_SIZE = 50;
     public static final Typeface COINVAL_TYPEFACE = Typeface.SANS_SERIF;
 
-    public static int maxOxygen = 100;
+    public static int maxOxygen = 10;
     public static final int OXYGEN_DRAIN_RATE = 1;
     public static int OXYGENBAR_X, OXYGENBAR_Y, OXYGENBAR_HEIGHT, OXYGENBAR_WIDTH;
 
