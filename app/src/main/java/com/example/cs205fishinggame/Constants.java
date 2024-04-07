@@ -4,7 +4,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 
 public class Constants {
-    public static final double HARPOON_SPEED = 1000;
+    public static double HARPOON_SPEED = 2000;
 
     public static final double HARPOON_DAMPING_FACTOR = 0.4;
     public static final double HARPOON_RETURN_THRESH = 50;
@@ -17,6 +17,8 @@ public class Constants {
     public static final double RETRACT_SPEED = 400;
     public static final int BUBBLE_THREADS = 5;
     public static final int BUBBLE_COUNT = 20;
+    public static final int PRICE_UPGRADE_HARPOON = 250;
+    public static int HARPOON_SPEED_PER_LEVEL = 250;
     public static int CANVAS_WIDTH;
     public static int CANVAS_HEIGHT;
     public static int maxFishCount = 10;
@@ -38,7 +40,7 @@ public class Constants {
     public static final int COINVAL_TEXT_SIZE = 50;
     public static final Typeface COINVAL_TYPEFACE = Typeface.SANS_SERIF;
 
-    public static int maxOxygen = 50;
+    public static int maxOxygen = 35;
     public static final int OXYGEN_DRAIN_RATE = 1;
     public static int OXYGENBAR_X, OXYGENBAR_Y, OXYGENBAR_HEIGHT, OXYGENBAR_WIDTH;
 
@@ -71,6 +73,7 @@ public class Constants {
 
     public static final int PRICE_UPGRADE_FISHES = 10; // 200;
     public static final int UPGRADE_FISHES = 3;
+    public static final int MAX_UPGRADE = 5;
 
 
     public Constants(int widthPixels, int heightPixels) {
@@ -93,6 +96,9 @@ public class Constants {
 
         JOYSTICK_X = 275;
         JOYSTICK_Y = CANVAS_HEIGHT - 275;
+
+        HARPOON_SPEED = CANVAS_WIDTH / 2;
+        HARPOON_SPEED_PER_LEVEL = CANVAS_WIDTH / 8;
 
         PLAYER_X = 275;
         PLAYER_Y = CANVAS_HEIGHT / 2;

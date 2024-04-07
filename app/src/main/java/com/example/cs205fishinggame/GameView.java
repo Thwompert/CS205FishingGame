@@ -71,6 +71,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private Thread diverThread;
     private Handler mainHandler;
+    private double harpoonStrength;
 
 
     public void loadPreferences(Context context) {
@@ -164,6 +165,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         player = new Player(Constants.PLAYER_X, Constants.PLAYER_Y);
         // Init harpoon launcher position
         harpoonLauncher = new HarpoonLauncher(Constants.JOYSTICK_X, Constants.JOYSTICK_Y, Constants.JOYSTICK_OUTER_RADIUS, Constants.JOYSTICK_INNER_RADIUS, player);
+        harpoonStrength =  (prefs.getInt("HarpoonLevel", 1) - 1) * Constants.HARPOON_SPEED_PER_LEVEL;
 
         // Initialise bubbles
         for (int i = 0; i < Constants.BUBBLE_COUNT; ++i) {
@@ -173,7 +175,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         for (int i = 0; i < Constants.BUBBLE_THREADS; ++i) {
             bubbleUpdaterPool.submit(this::bubbleMove);
         }
-
 
         gameThread.startLoop();
     }
@@ -215,7 +216,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 //                System.out.println("ID2" + Thread.currentThread().getId());
                 // Spawn harpoon
                 if (harpoonLauncher.getActuatorX() != 0 || harpoonLauncher.getActuatorY() != 0) {
-                    harpoonList.add(new Harpoon(player, -harpoonLauncher.getActuatorX(), -harpoonLauncher.getActuatorY()));
+                    harpoonList.add(new Harpoon(player, -harpoonLauncher.getActuatorX(), -harpoonLauncher.getActuatorY(), harpoonStrength));
 
                     oxygenManager.depleteOxygen(1);
                 }

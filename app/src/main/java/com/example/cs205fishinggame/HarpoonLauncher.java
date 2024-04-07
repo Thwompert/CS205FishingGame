@@ -1,5 +1,7 @@
 package com.example.cs205fishinggame;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;

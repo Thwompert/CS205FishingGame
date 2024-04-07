@@ -28,12 +28,12 @@ public class Harpoon extends GameObject {
     private boolean retracting = false;
     private List<Fish> fishList;
 
-    public Harpoon(Player player, double strengthX, double strengthY) {
+    public Harpoon(Player player, double strengthX, double strengthY, double upgradeStrength) {
         super(player.getPositionX(), player.getPositionY());
 
         // Initialize harpoon speed
         if (harpoonSpeed == -1) {
-            harpoonSpeed = Constants.HARPOON_SPEED;
+            harpoonSpeed = Constants.HARPOON_SPEED + upgradeStrength;
         }
 
         if (dampingFactor == -1) {
