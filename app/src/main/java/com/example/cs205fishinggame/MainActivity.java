@@ -82,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
         } else if (view.getId() == R.id.imageButton) {
             Intent intent = new Intent(this, GameActivity.class);
             startActivity(intent);
+        } else if (view.getId() == R.id.imageButton5) {
+            Intent intent = new Intent(this, ShopActivity.class);
+            startActivity(intent);
         }
     }
 

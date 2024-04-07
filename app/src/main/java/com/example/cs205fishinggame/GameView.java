@@ -1,15 +1,10 @@
 package com.example.cs205fishinggame;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.AssetManager;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -17,7 +12,6 @@ import android.view.SurfaceView;
 import android.graphics.BitmapFactory;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 
 import com.airbnb.lottie.LottieDrawable;
 import com.airbnb.lottie.LottieComposition;
@@ -27,7 +21,6 @@ import com.example.cs205fishinggame.object.Harpoon;
 
 import android.graphics.Bitmap;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -87,7 +80,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         fishSpriteSheet = new FishSpriteSheet(context);
 
         // Initialise fish
-        while (fishCount < Constants.MAX_FISH_COUNT) {
+        while (fishCount < Constants.maxFishCount) {
             spawnFish();
             fishCount++;
         }

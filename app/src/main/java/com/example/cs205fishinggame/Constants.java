@@ -1,7 +1,5 @@
 package com.example.cs205fishinggame;
 
-import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
 
@@ -13,7 +11,7 @@ public class Constants {
     public static final double CATCH_SPEED = 20;
     public static int CANVAS_WIDTH;
     public static int CANVAS_HEIGHT;
-    public static final int MAX_FISH_COUNT = 10;
+    public static int maxFishCount = 10;
     public static final float COINICON_SCALE = 0.5f;
     public static final int GAMEOVER_DURATION = 2;
     public static final int GAMEOVER_TEXT_SIZE = 200;
@@ -32,7 +30,7 @@ public class Constants {
     public static final int COINVAL_TEXT_SIZE = 50;
     public static final Typeface COINVAL_TYPEFACE = Typeface.SANS_SERIF;
 
-    public static final int MAX_OXYGEN = 10;
+    public static int maxOxygen = 100;
     public static final int OXYGEN_DRAIN_RATE = 1;
     public static int OXYGENBAR_X, OXYGENBAR_Y, OXYGENBAR_HEIGHT, OXYGENBAR_WIDTH;
 
