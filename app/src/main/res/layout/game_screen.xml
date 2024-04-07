@@ -20,6 +20,7 @@
 <!--        android:src="@drawable/test_rickroll"-->
 <!--        android:gravity="center"-->
 <!--        tools:visibility="visible" />-->
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="fill_parent"
@@ -38,13 +39,29 @@
         android:id="@+id/lottieAnimationView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/diver"
         android:scaleX="-1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/diver" />
+
+<!--    <ImageView-->
+<!--        android:id="@+id/merlionGameImageView"-->
+<!--        android:layout_width="145sp"-->
+<!--        android:layout_height="148sp"-->
+<!--        android:alpha="0.5"-->
+<!--        app:srcCompat="@drawable/merlion"-->
+<!--        android:background="@drawable/merlion"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.5"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.8" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

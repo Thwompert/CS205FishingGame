@@ -28,7 +28,7 @@ import java.util.List;
 import com.example.cs205fishinggame.FishGraphics.FishSpriteSheet;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
-    private final HarpoonLauncher harpoonLauncher;
+    private HarpoonLauncher harpoonLauncher;
     private GameThread gameThread;
     private Context context;
     private GameActivity activity;
@@ -36,10 +36,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private List<Harpoon> harpoonList = new ArrayList<Harpoon>();
     private OxygenManager oxygenManager;
     private Player player;
-    private Bitmap backgroundBitmap;
-    private Bitmap coinBitmap;
-    private Bitmap oxygenBitmap;
-    private Bitmap merlionBitmap;
+    private Bitmap backgroundBitmap, coinBitmap, merlionBitmap;
     private MoneyManager moneyManager;
     //how many fishes are currently on screen
     int fishCount = 0;
@@ -86,27 +83,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         // Initialise fish sprite sheet
         fishSpriteSheet = new FishSpriteSheet(context);
 
-        // Initialise fish
-        maxFishCount = prefs.getInt("MaxFishCount", Constants.maxFishCount);
-        while (fishCount < maxFishCount) {
-            spawnFish();
-            fishCount++;
-        }
-
-        // Initialise game objects
-        this.player = new Player(Constants.PLAYER_X, Constants.PLAYER_Y);
-        harpoonLauncher = new HarpoonLauncher(Constants.JOYSTICK_X, Constants.JOYSTICK_Y, Constants.JOYSTICK_OUTER_RADIUS , Constants.JOYSTICK_INNER_RADIUS, player);
+        // Initialising money and oxygen managers
         oxygenManager = new OxygenManager();
         moneyManager = new MoneyManager();
 
-        // Initialising money and oxygen managers
         moneyManager.loadMoney(context);
         oxygenManager.loadOxygenPrefs(context);
 
         // Init bitmaps and animations
         initLottieAnimation();
-        initOxygenAndCoin();
-        initFonts();
+        coinBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.coin_bg_removed);
+        coinBitmap = Bitmap.createScaledBitmap(coinBitmap, (int) (coinBitmap.getWidth() * Constants.COINICON_SCALE), (int) (coinBitmap.getHeight() * Constants.COINICON_SCALE), true);
+        chikiBubblesFont = Typeface.createFromAsset(context.getAssets(), Constants.CHIKI_FONT_ID);
     }
 
     private void initBackground() {
@@ -141,20 +129,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         });
     }
 
-    private void initFonts() {
-        chikiBubblesFont = Typeface.createFromAsset(context.getAssets(), Constants.CHIKI_FONT_ID);
-    }
-
-    private void initOxygenAndCoin() {
-        coinBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.coin_bg_removed);
-        coinBitmap = Bitmap.createScaledBitmap(coinBitmap, (int) (coinBitmap.getWidth() * Constants.COINICON_SCALE), (int) (coinBitmap.getHeight() * Constants.COINICON_SCALE), true);
-    }
-
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
         initBackground();
-        initOxygenAndCoin();
+
+        // Initialise fish
+        maxFishCount = prefs.getInt("MaxFishCount", Constants.maxFishCount);
+        while (fishCount < maxFishCount) {
+            spawnFish();
+            fishCount++;
+        }
+
+        // Initialise game objects
+        this.player = new Player(Constants.PLAYER_X, Constants.PLAYER_Y);
+        harpoonLauncher = new HarpoonLauncher(Constants.JOYSTICK_X, Constants.JOYSTICK_Y, Constants.JOYSTICK_OUTER_RADIUS , Constants.JOYSTICK_INNER_RADIUS, player);
+
         gameThread.startLoop();
+
     }
 
     @Override
